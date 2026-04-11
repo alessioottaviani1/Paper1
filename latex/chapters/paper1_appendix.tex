@@ -1,0 +1,386 @@
+%% =============================================================================
+%% PAPER 1 - Appendix
+%% =============================================================================
+
+
+%% ---- A.1 BTP Italia: Instrument Details and Arbitrage Mechanics ----
+\subsection{BTP Italia: Instrument Details and Arbitrage Mechanics}
+\label{app:btp_details}
+
+\subsubsection{Inflation Floor and Semiannual Principal Revaluation}
+\label{app:btp_floor}
+% BTP Italia: inflation-linked bond issued by Italian Treasury
+% Semiannual revaluation of principal (not at maturity like BTPei)
+% Embedded inflation floor at 0% on each coupon period
+% Eliminates ballooning risk (unlike TIPS or BTPei)
+
+\subsubsection{Repo and Collateral Treatment}
+\label{app:btp_repo}
+% BTP Italia accepted as general collateral (same as nominal BTPs)
+% Repo rate identical -> cannot explain basis via funding cost differential
+% Contrast with TIPS (different repo market, higher haircuts)
+
+\subsubsection{Comparison with US TIPS}
+\label{app:btp_vs_tips}
+% Fleckenstein et al. (2014): TIPS basis averaged 60bps, peaked 200bps
+% Today: TIPS basis ~0bps (QE, broader participation)
+% Italian IL basis persists >10 years
+% Different investor base: retail (BTP Italia) vs institutional (TIPS)
+
+
+%% ---- A.2 Trade Construction Details ----
+\subsection{Trade Construction Details}
+\label{app:trade_details}
+
+\subsubsection{Entry/Exit Rules and Thresholds}
+\label{app:entry_exit}
+Table~\ref{tab:entry_exit_rules} summarises entry and exit thresholds
+for each strategy. All strategies require a minimum of 6 months to
+maturity at entry and maintain at least one open trade after the first
+signal. The CDS--Bond universe is restricted to single-name CDS whose
+reference entity belongs to the current on-the-run iTraxx Main series;
+names that exit the index are no longer traded. All CDS are centrally
+cleared. The iTraxx skew strategy trades only on-the-run series across
+Main, SnrFin, SubFin, and Xover.
+
+\input{\tablepath/entry_exit_thresholds_article}
+
+\subsubsection{P\&L Calculation}
+\label{app:pnl}
+% P&L = Capital Gain + Carry
+% Capital Gain = sign * (prev_basis - current_basis) * DV01
+% Carry = sign * prev_basis * (days/365)
+% DV01 updated daily (current, not entry)
+
+\subsubsection{Trade-Level Statistics}
+\label{app:trade_stats}
+
+\input{\tablepath/trade_statistics_article}
+
+\noindent\textit{A.2.4\quad Transaction Costs}
+\label{app:fees}
+Transaction costs are computed at the individual trade level and applied
+as entry and exit fees proportional to DV01 (bonds) or duration (CDS).
+Fee levels are regime-dependent: at each trade date, the prevailing level
+of the iTraxx Main 5Y index determines which of three tiers applies
+(Table~\ref{tab:fee_schedule}). Thresholds are set at 60 and 100~bps,
+reflecting the empirical widening of bid-ask spreads in stressed markets.
+For trades held to maturity, the exit fee is waived. All return series
+in Sections~3--6 are net of these costs.
+
+\input{\tablepath/fee_schedule_article}
+
+%% ---- A.3 Signal-Weighted vs Equal-Weighted Comparison ----
+\subsection{Signal-Weighted vs Equal-Weighted Comparison}
+\label{app:sw_ew}
+
+Table~\ref{tab:sw_ew_basic} compares the signal-weighted (SW,
+\citealp{rebonato2021convexity}) and equal-weighted (EW,
+\citealp{duarte2007risk}) indices. SW is adopted as the baseline in the
+main text; EW results confirm robustness to the weighting scheme.
+
+\input{\tablepath/SW_EW_basic_metrics_3strategies_article}
+
+
+%% ---- A.4 Candidate Factor Universe ----
+\subsection{Candidate Factor Universe}
+\label{app:factors}
+
+\subsubsection{Complete Factor List with Sources}
+\label{app:factor_list}
+Table~\ref{tab:factor_list} reports the full set of candidate risk
+factors used in the penalised regressions of Section~5, together with
+their data sources, transformations, and economic category.
+\input{\tablepath/factor_list}
+
+\subsubsection{Stationarity Tests}
+\label{app:stationarity}
+% ADF + KPSS on all factors
+% 63 stationary, 3 differenced (CREDIT_EU, YSP_US, YSP_EU)
+% 6 borderline discussed
+% TABLE REF: \ref{tab:stationarity}
+
+
+%% ---- A.5 PCA Robustness ----
+\subsection{PCA Robustness}
+\label{app:pca_robustness}
+
+\subsubsection{Robustness across Window Length and Number of Components}
+\label{app:pca_wk}
+
+Table~\ref{tab:pca_robustness} reports alpha and $\bar{R}^2$ for all
+$(W,K)$ combinations. Results are robust to the choice of window length
+and number of components.
+
+\input{../results/robustness/tables/PCA_robustness_alpha_R2_article}
+
+\subsubsection{Subperiod and Regime Analysis}
+\label{app:pca_subperiod}
+
+Half-sample splits and regime-dependent alpha confirm that PCA-based
+alpha is stable across sub-periods and increases during stress.
+
+\input{\tablepath/PCA_subperiod_results_article}
+
+\input{\tablepath/PCA_regime_summary_article}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{\figpath/pca/pca_rolling_alpha.pdf}
+\caption{Rolling Alpha with Regime Shading (PCA Factors).
+Grey bands: 95\% confidence intervals.
+Red shading: iTraxx Main 5Y $> 100$ bps.}
+\label{fig:app_pca_rolling_alpha}
+\end{figure}
+
+\subsubsection{Conditional Alpha: Ferson--Schadt and Threshold Robustness (PCA)}
+\label{app:pca_conditional}
+
+Table~\ref{tab:pca_cond_fs_contemporaneous_article} reports Ferson--Schadt
+conditional alpha using PCA factors.
+Table~\ref{tab:pca_cond_threshold_contemporaneous_article} confirms
+robustness across stress thresholds (80, 100, 120 bps).
+
+\input{\tablepath/PCA_Cond_Alpha_FS_article_contemporaneous}
+
+\input{\tablepath/PCA_Cond_Alpha_Threshold_article_contemporaneous}
+
+\subsubsection{Variance and Loadings Diagnostics}
+\label{app:pca_diagnostics}
+
+Figure~\ref{fig:app_pca_variance_ts} shows the time-varying cumulative
+variance explained.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{\figpath/pca/pca_variance_timeseries.pdf}
+\caption{Time Series of Cumulative Variance Explained by Rolling PCA.}
+\label{fig:app_pca_variance_ts}
+\end{figure}
+
+
+
+
+%% ---- A.6 AEN Robustness ----
+\subsection{AEN Robustness}
+\label{app:aen_robustness}
+
+\subsubsection{Sensitivity to Hyperparameters}
+\label{app:aen_sensitivity}
+
+We verify that factor selection, model dimension, and post-selection alpha are invariant to the correlation pre-cleaning threshold ($\rho \in \{0.75, 0.80, 0.85, 0.90, 0.95\}$) and the adaptive weight exponent ($\gamma \in \{0.5, 1, 2, 3\}$).
+In all configurations, the AEN selects the same factors with identical post-selection OLS results.
+No selected factor belongs to a highly correlated pair, so varying the cleaning criterion does not alter the surviving set; similarly, the Stage~1 elastic net coefficients exhibit sufficient separation between relevant and irrelevant factors to make the adaptive weighting insensitive to the exponent.
+Detailed results are available upon request.
+
+\subsubsection{Factor Selection Across Methods}
+\label{app:aen_selection_matrix}
+
+Table~\ref{tab:aen_selection_names} reports the factors selected by each penalised method for each strategy.
+LASSO, Elastic Net, and Adaptive LASSO produce broadly overlapping selections, while AEN---which retains only factors exceeding the 60\% bootstrap stability threshold---yields the sparsest models.
+ALASSO-Chen selects substantially more factors across all strategies, consistent with the lighter penalisation implied by its data-driven $\lambda_1$ rule \citep{chen2008extended}.
+
+\input{\tablepath/AEN_Selection_Names_article}
+
+
+\subsubsection{Conditional Alpha: Detailed Results (AEN)}
+\label{app:aen_conditional}
+
+Table~\ref{tab:conditional_alpha_fs} reports the full Ferson--Schadt
+conditional alpha model with AEN-selected factors.
+Table~\ref{tab:conditional_alpha_threshold} confirms robustness across
+stress thresholds (80, 100, 120 bps).
+
+\input{../results/aen/hqc/tables/Cond_Alpha_FS_Thesis}
+
+\input{../results/aen/hqc/tables/Cond_Alpha_Threshold_Thesis}
+
+
+\subsubsection{Rolling Alpha}
+\label{app:aen_rolling}
+
+Figure~\ref{fig:app_aen_rolling_alpha}
+plot rolling 36-month alpha with regime shading for AEN and PCA factors.
+Alpha spikes during stress episodes under both methods.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{\figpath/aen/aen_rolling_alpha.pdf}
+\caption{Rolling Alpha with Regime Shading (AEN Stable Factors).
+Grey bands: 95\% confidence intervals.
+Red shading: iTraxx Main 5Y $> 100$ bps. Rolling window: 36 months.}
+\label{fig:app_aen_rolling_alpha}
+\end{figure}
+
+
+%% ---- A.7 Subperiod and Rolling Window Analysis ----
+\subsection{Subperiod and Rolling Window Analysis}
+\label{app:subperiod}
+ 
+This appendix reports sub-period splits and threshold robustness
+for the benchmark factor models of Section~4. Each table contains
+Panel~A (full sample, first half, second half, HIGH, and NORMAL regimes)
+and Panel~B (stress threshold robustness at 80, 100, and 120 bps of
+iTraxx Main 5Y).
+ 
+ 
+%% ---- A.7.1 Duarte et al. (2007) ----
+\subsubsection{Duarte et al.\ (2007)}
+\label{app:subperiod_duarte}
+Table~\ref{tab:subperiod_regime_duarte} reports sub-period splits and stress
+regime alpha for the \citet{duarte2007risk} specification.
+\input{\tablepath/subperiod_regime_duarte_monthly}
+ 
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{\figpath/rolling_alpha_regime_btp_italia_duarte_monthly.pdf}
+\includegraphics[width=\textwidth]{\figpath/rolling_alpha_regime_cds_bond_basis_duarte_monthly.pdf}
+\includegraphics[width=\textwidth]{\figpath/rolling_alpha_regime_itraxx_combined_duarte_monthly.pdf}
+\caption{Rolling 36-Month Alpha with Regime Shading --- Duarte et al.\ (2007).
+  95\% confidence bands. Red: HIGH stress (iTraxx Main $> 100$ bps).}
+\label{fig:app_rolling_duarte}
+\end{figure}
+
+%% ---- A.7.2 Brooks et al. (2020) / Active FI ----
+\subsubsection{Brooks et al.\ (2020) --- Active Fixed Income}
+\label{app:subperiod_activefi}
+Table~\ref{tab:subperiod_regime_activefi} reports the same analysis under the
+\citet{brooks2020active} specification.
+\input{\tablepath/subperiod_regime_activefi_monthly}
+ 
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{\figpath/rolling_alpha_regime_btp_italia_activefi_monthly.pdf}
+\includegraphics[width=\textwidth]{\figpath/rolling_alpha_regime_cds_bond_basis_activefi_monthly.pdf}
+\includegraphics[width=\textwidth]{\figpath/rolling_alpha_regime_itraxx_combined_activefi_monthly.pdf}
+\caption{Rolling 36-Month Alpha with Regime Shading --- Brooks et al.\ (2020).
+  Same format as Figure~\ref{fig:app_rolling_duarte}.}
+\label{fig:app_rolling_activefi}
+\end{figure}
+ 
+ 
+%% ---- A.7.3 Fung & Hsieh (2004) ----
+\subsubsection{Fung \& Hsieh (2004)}
+\label{app:subperiod_fh}
+Table~\ref{tab:subperiod_regime_fh} reports results for the
+\citet{fung2002risk} specification.
+
+ 
+\input{\tablepath/subperiod_regime_fh_monthly}
+ 
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{\figpath/rolling_alpha_regime_btp_italia_funghsieh_monthly.pdf}
+\includegraphics[width=\textwidth]{\figpath/rolling_alpha_regime_cds_bond_basis_funghsieh_monthly.pdf}
+\includegraphics[width=\textwidth]{\figpath/rolling_alpha_regime_itraxx_combined_funghsieh_monthly.pdf}
+\caption{Rolling 36-Month Alpha with Regime Shading --- Fung \& Hsieh (2004).
+  Same format as Figure~\ref{fig:app_rolling_duarte}.}
+\label{fig:app_rolling_fh}
+\end{figure}
+
+
+%% ---- A.8 Cross-Strategy Interdependencies: Additional Tests ----
+\subsection{Cross-Strategy Interdependencies: Additional Tests}
+\label{app:rq3_additional}
+ 
+This appendix collects robustness checks and supplementary analyses for
+Section~\ref{sec:interdependencies}. All tests use the same mispricing
+magnitudes $m_{i,t}$ and regime definitions as the main text.
+ 
+ 
+%% ---- A.8.1 Purged Correlations ----
+\subsubsection{Purged Correlations}
+\label{app:purged_corr}
+ 
+To verify that cross-strategy co-movement is not driven solely by common
+risk-factor exposures, we regress each $\Delta m_i$ on the AEN-selected
+factors from Section~5 and compute correlations on the residuals.
+Table~\ref{tab:rq3_purged_corr} shows that pairwise correlations remain
+positive and significant after purging, indicating that the interdependencies
+documented in Section~6.1 reflect capital-market linkages beyond shared
+factor exposures.
+ 
+\input{\tablepath/RQ3_Purged_Correlations_article}
+ 
+ 
+%% ---- A.8.2 DCC-GARCH ----
+\subsubsection{DCC-GARCH}
+\label{app:dcc}
+ 
+We estimate bivariate DCC-GARCH(1,1) models on each pair
+of $\Delta m$ series. Figure~\ref{fig:app_dcc} plots the time-varying
+conditional correlations. Spikes in conditional correlation coincide with
+stress episodes (COVID-19, ECB hiking cycle), corroborating the
+regime-dependent results in Section~6.1.
+ 
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{../results/rq3_duffie/figures/F1_dcc_garch.pdf}
+\caption{Dynamic Conditional Correlations (DCC-GARCH).
+  Bivariate DCC(1,1) estimates for each pair of $\Delta m$.
+  Shaded areas: HIGH stress regime (iTraxx Main $> 100$ bps).}
+\label{fig:app_dcc}
+\end{figure}
+ 
+ 
+
+ 
+%% ---- A.8.6 Granger Causality: Lag Robustness ----
+\subsubsection{Granger Causality: Lag Robustness}
+\label{app:granger_multilag}
+
+Table~\ref{tab:rq3_granger_multilag} reports Granger causality tests
+at lag lengths $p = 1, 2, 3$. The main result --- iTraxx Combined
+Granger-causes BTP Italia --- is robust across all specifications.
+
+\input{\tablepath/RQ3_Granger_Multilag_article}
+
+ 
+%% ---- A.8.7 Alternative Stress Proxies ----
+\subsubsection{Alternative Stress Proxies}
+\label{app:alt_stress}
+ 
+Table~\ref{tab:rq3_alt_proxies} replicates key tests from Section~6
+(unconditional correlations, regime correlations, interaction regressions)
+using iTraxx Crossover, V2X, and VIX as alternative conditioning variables
+instead of iTraxx Main. Results are qualitatively unchanged, confirming that
+the documented interdependencies are not an artifact of the stress-proxy choice.
+ 
+\input{\tablepath/RQ3_Alternative_Proxies_article}
+ 
+ 
+%% ---- A.8.8 Threshold Clustering ----
+\subsubsection{Threshold Clustering}
+\label{app:clustering}
+ 
+
+ 
+ 
+%% ---- A.8.9 Pairwise Long-Sample Analysis ----
+\subsubsection{Pairwise Long-Sample Analysis}
+\label{app:pairwise}
+ 
+
+%% ---- A.9 VIF Diagnostics ----
+\subsection{VIF Diagnostics}
+\label{app:vif}
+ 
+Tables~\ref{tab:vif_duarte}--\ref{tab:vif_funghsieh} report Variance
+Inflation Factors for the EUR factor specifications used in the benchmark
+regressions of Section~4. VIF is computed on the factor matrix for each
+strategy's sample period; because the factors are identical across strategies,
+differences in VIF reflect only the different estimation windows.
+ 
+All equity and bond-market factors exhibit VIF below~10, confirming
+acceptable multicollinearity levels. The Duarte specification shows
+elevated VIF for the term-structure factors R2, R5, and R10
+(VIF~$\approx$~15--55), which is expected given the high correlation
+structure of yield-curve returns and does not affect inference on alpha.
+The Active~FI and Fung~\&~Hsieh specifications show VIF below~5 for
+all factors.
+ 
+\input{\tablepath/Duarte_VIF_article_monthly}
+ 
+\input{\tablepath/ActiveFI_VIF_article_monthly}
+ 
+\input{\tablepath/FungHsieh_VIF_article_monthly}
