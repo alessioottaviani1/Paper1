@@ -1,0 +1,348 @@
+%% =============================================================================
+%% PAPER 1 - Section 6: Cross-Strategy Interdependencies
+%% =============================================================================
+%% Full prose. Tables/figures referenced via \ref{} only.
+%% Actual tables in paper1_tables_sec6.tex; figures in paper1_figures_sec6.tex.
+%% Maps to: rq3_01 through rq3_07
+%% =============================================================================
+
+
+%% ---- 6.1 Correlations, Co-Widening, and Persistence ----
+\subsection{Correlations, Co-Widening, and Persistence}
+\label{sec:rq3_corr}
+
+% TODO: Full prose covering:
+%
+% Mispricing magnitude construction (rq3_01):
+%   m_{i,t} = basis levels (not returns), Duffie (2010) framework
+%   Negate CDS-bond basis so Delta_m > 0 = widening for all
+%   BTP Italia: cross-sectional mean with maturity filter
+%   CDS-Bond: top_n_negative
+%   Regime definition: iTraxx Main fixed thresholds (60/120)
+%
+% Unconditional correlations (rq3_02 Section A):
+%   Pearson + Spearman on returns, Delta_m, and levels m
+%   HAC-robust inference (Newey-West, 6 lags)
+%   Forbes-Rigobon bias correction for heteroskedasticity
+%   → Table \ref{tab:rq3_unconditional_corr}
+%
+% Regime-dependent correlations (rq3_02 Section C):
+%   Correlations by regime (LOW/NORMAL/HIGH)
+%   Block bootstrap test for difference in co-widening across regimes
+%   → Table \ref{tab:rq3_regime_corr}, Figure \ref{fig:rq3_regime_bar}
+%
+% Persistence analysis (rq3_02 Section D):
+%   AR(1) coefficient phi per regime
+%   Half-life of mispricing by regime
+%   Duffie prediction: persistence higher in stress
+%
+% Rolling correlations (rq3_02 Section B):
+%   12-month and 24-month windows
+%   Visual evidence of time-varying co-movement
+
+
+%% ---- 6.2 Spanning Regressions Across Strategies ----
+\subsection{Spanning Regressions Across Strategies}
+\label{sec:rq3_crossreg}
+
+% TODO: Full prose covering:
+%
+% Fleckenstein-style spanning regressions (rq3_03 Sections A-B):
+%   Delta_m_i = alpha + beta * Delta_m_j + epsilon
+%   Contemporaneous + lagged specifications
+%   HAC standard errors (Newey-West, 6 lags)
+%   → Table \ref{tab:rq3_spanning}
+%
+% Interaction regressions (rq3_03 Section D):
+%   Delta_m_i = alpha + beta_1*Delta_m_j + beta_2*(Delta_m_j * z_t) + beta_3*z_t + eps
+%   z_t continuous (iTraxx Main standardized) + dummy HIGH
+%   beta_2 > 0 implies stronger transmission during stress
+%   → Table \ref{tab:rq3_interaction}
+%
+% PCA common factor structure (rq3_03 Section E):
+%   PCA on Delta_m of the 3 strategies
+%   PC1 variance share — common slow-moving capital factor?
+%   PC1 regressed on funding stress proxies
+%   → Table \ref{tab:rq3_pc1_funding}
+
+
+%% ---- 6.3 VAR Analysis and Impulse Responses ----
+\subsection{VAR Analysis and Impulse Responses}
+\label{sec:rq3_var}
+
+% TODO: Full prose covering:
+%
+% VAR on Delta_m: lag selection (BIC), estimation
+% Granger Causality tests (rq3_04 Section B)
+%   → Table \ref{tab:rq3_granger}
+%
+% GIRF — Generalized Impulse Response Functions (Pesaran-Shin 1998)
+%   Invariant to ordering, bootstrap CI
+%   → Figure \ref{fig:rq3_girf}
+%
+% Forecast Error Variance Decomposition (rq3_04 Section E)
+%   Rising cross-strategy share at longer horizons
+%   → Figure \ref{fig:rq3_fevd}
+%
+% Robustness in Appendix \ref{app:rq3_additional}:
+%   All Cholesky permutations (rq3_04 Section D)
+%   Threshold VAR: regime-dependent IRF (rq3_04 Section F)
+%   VARX: exogenous stress proxy (rq3_04 Section G)
+
+
+%% ---- 6.4 Discussion: Evidence for Slow-Moving Capital ----
+\subsection{Discussion: Evidence for Slow-Moving Capital}
+\label{sec:rq3_discussion}
+
+% TODO: Full prose covering:
+%
+% Duffie scorecard — 6 testable predictions
+%   P1. Positive cross-strategy correlation in Delta_m
+%   P2. Co-widening in excess (P_joint > P_indep)
+%   P3. Spanning R^2 > 0
+%   P4. Granger causality (bidirectional)
+%   P5. PC1 > 50% variance
+%   P6. Persistence higher in stress (phi_HIGH > phi_LOW)
+%   → Table \ref{tab:rq3_duffie_scorecard}, Figure \ref{fig:rq3_scorecard}
+%
+\paragraph{Scorecard Assessment.}
+Table~\ref{tab:rq3_duffie_scorecard} summarises the evidence against six
+testable predictions derived from the slow-moving capital framework of
+\citet{duffie2010presidential}.  In the full sample, three of the six
+predictions are confirmed at conventional significance levels.  Prediction~P1
+(positive cross-strategy correlation in $\Delta m$) is confirmed for the
+corporate credit cluster and, with opposite sign, for pairs involving
+BTP~Italia, consistent with the two-cluster structure discussed below.
+Prediction~P3 (spanning regressions with $R^{2}>0$) holds for three of the
+six directional pairs, with particularly strong results for the
+iTraxx$\,\to\,$BTP~Italia channel.  Prediction~P4 (Granger causality)
+survives both Benjamini--Hochberg and Holm--Bonferroni corrections for
+multiple testing, with the iTraxx$\,\to\,$BTP~Italia link emerging as the
+single most robust result in the analysis.
+
+The remaining predictions are limited by sample characteristics rather than
+by contradictory evidence.  Prediction~P2 (excess co-widening in stress) is
+confirmed for the corporate credit pair---co-widening rises by 14 to
+22~percentage points in the \textsc{high} regime---but not for pairs
+involving BTP~Italia, whose basis moves in the opposite direction during
+stress.  Prediction~P5 (PC1 explaining more than 50\% of the variance in
+$\Delta m$) is narrowly missed: PC1 accounts for 44.8\% of the variance,
+and the 50\% threshold is conservative for a three-variable system.
+Importantly, the economic content of PC1 is confirmed: it is significantly
+explained by funding-stress variables (Table~\ref{tab:rq3_pc1_funding}),
+establishing a direct link between the common factor driving correlated
+mispricings and the intermediary balance-sheet conditions emphasised by
+\citet{he2017intermediary}.  Prediction~P6 (higher persistence in stress)
+cannot be reliably tested because only 8--9~months fall in the \textsc{high}
+regime, which is insufficient for within-regime AR(1) estimation.  The
+unconditional persistence, however, is substantial: half-lives range from
+1.2~months (iTraxx) to 4.0~months (CDS--Bond), confirming that arbitrage
+opportunities are slow to close.
+
+Figure~\ref{fig:rq3_scorecard} shows that the scorecard is broadly stable
+across sub-periods, with the corporate credit cluster consistently
+satisfying more predictions than the full trivariate system.
+
+\paragraph{Investor Base Segmentation: The Two-Cluster Structure.}
+The central finding of this section is that the three strategies do not form a
+single homogeneous group but two distinct clusters, and the key determinant is
+the composition of the investor base.
+
+The CDS--Bond basis and iTraxx Combined both operate within European corporate
+credit, and their participants are overwhelmingly institutional: hedge funds
+running relative value books, proprietary trading desks at dealer banks, and
+leveraged accounts that rely on repo funding and derivatives margining.  These
+investors share the same prime brokers, the same clearing infrastructure (ICE
+Clear Credit, LCH), and the same balance sheet constraints.  When funding
+conditions tighten---a margin call at a prime broker, a spike in repo haircuts,
+or a redemption wave from fund investors---the same capital is withdrawn from
+both markets simultaneously.  This is precisely the mechanism formalised by
+\citet{BrunnermeierPedersen2009}: a negative funding shock forces leveraged
+arbitrageurs to unwind positions across all markets where they are active,
+generating correlated widening of mispricings.  Our finding that co-widening
+between CDS--Bond and iTraxx rises by 14 to 22~percentage points in
+\textsc{high} stress, and that the interaction coefficient amplifies by an order
+of magnitude ($\hat{\beta}_{2} = -10.91$), is a direct empirical counterpart of
+the margin-spiral prediction.
+
+The BTP~Italia market is fundamentally different.  BTP~Italia bonds are
+inflation-linked retail securities issued by the Italian Treasury specifically
+to attract domestic household savings.  The \textit{Ministero dell'Economia e
+delle Finanze} has consistently reported that approximately 65--70\% of
+outstanding BTP~Italia are held by Italian retail investors, who purchase them
+during dedicated placement windows attracted by the inflation protection and the
+loyalty bonus (\textit{premio fedelt\`{a}}) paid at maturity to holders who
+retain the bond from issuance.  These investors do not employ leverage, are not
+subject to margin calls, do not use repo financing, and do not rebalance in
+response to Value-at-Risk signals or institutional mandates.  They are, in the
+language of \citet{VayanosVila2021}, ``preferred-habitat'' investors whose
+demand is driven by personal savings decisions rather than by relative value
+considerations.  As a consequence, the inflation-linked basis can persist
+without attracting arbitrage capital, because the institutional relative-value
+accounts that could close it represent only a small fraction of the outstanding
+supply.  If anything, a flight-to-safety or a search for inflation protection
+by retail investors may \emph{compress} the BTP~Italia basis precisely when
+corporate credit bases are widening---generating the negative correlation
+($\rho = -0.234$, $p = 0.018$) that we document.
+
+This two-cluster result echoes the international evidence in
+\citet{FontaineNolin2019}, who construct model-free indices of limits of
+arbitrage across eight sovereign bond markets and find an analogous
+segmentation: the indices of the United States, United Kingdom, Germany, Canada,
+and Switzerland are strongly correlated with each other
+($\rho = 0.44$--$0.86$), whereas Italy and France form a separate cluster
+(mutually correlated at $\rho = 0.62$ but largely uncorrelated with the
+Anglo-Saxon group).  The authors attribute this to the idiosyncratic impact of
+the European sovereign debt crisis on Italian and French government bond
+markets.  Our finding generalises this pattern: market segmentation in the
+geography of slow-moving capital is determined not by the label of the asset
+class but by the network of financial intermediaries---and ultimately by
+\emph{who holds the bonds}.
+
+\paragraph{Limits to Arbitrage in Corporate Credit.}
+The persistence of the CDS--Bond basis is well understood in the literature as
+a consequence of implementation frictions that prevent leveraged arbitrageurs
+from fully closing the gap between cash bond and CDS spreads.
+\citet{bai2019cds} provide the most detailed cross-sectional
+decomposition: using Fama--MacBeth regressions on individual U.S.\ corporate
+bonds from 2006 to 2014, they show that four limit-to-arbitrage channels
+jointly explain approximately 37\% of the cross-sectional variation in the
+negative basis at the bond level and roughly 77\% at the portfolio level during
+the post-Lehman crisis.  The four channels are funding risk (the arbitrageur
+must roll overnight-to-term repo financing at a haircut-dependent cost that
+rises with balance-sheet stress), bond illiquidity (higher bid-ask spreads and
+the transitory price-impact component of \citet{bao2011illiquidity} increase the
+cost of entering and unwinding the cash leg), counterparty risk (the CDS
+protection seller may default jointly with the reference entity, rendering the
+hedge worthless at the worst possible moment), and collateral quality (lower
+credit ratings imply larger haircuts and higher repo rates, reducing effective
+leverage per unit of risk capital).  Perhaps most strikingly, bond lending fees
+enter with a negative sign: rather than proxying for collateral value, high
+lending fees during the crisis signal heavy short interest, and arbitrageurs
+appear to avoid these bonds for fear that the basis will diverge further---a
+``catching a falling knife'' effect that is itself a manifestation of
+slow-moving capital.
+
+\citet{oehmke2017anatomy} complement this cross-sectional evidence with a
+quantity-based perspective.  Using net notional CDS positions from the DTCC,
+they show that positions are significantly larger when the CDS--bond basis is
+more negative, confirming that arbitrageurs lean against the mispricing.
+Crucially, the sensitivity of CDS positions to the negative basis weakens when
+funding conditions are tight, as measured by the TED spread: basis traders are
+less active precisely when the opportunities are largest, because the same
+funding shock that widens the basis also constrains the capital available to
+exploit it.  When basis traders are active, they compress the negative basis and
+reduce price impact in the bond market, acting as ``shock absorbers'' for bond
+supply shocks.
+
+This dynamic is exactly what \citet{mitchell2012arbitrage} document at the
+aggregate level during the 2008 crisis: hedge funds running basis trades were
+forced to liquidate when prime brokers withdrew financing, and the resulting
+fire sales amplified the very dislocations the trades were designed to exploit.
+The basis began to revert only after the U.S.\ government injected capital
+through the Troubled Asset Relief Program (TARP), providing direct evidence
+that the speed of convergence depends on the speed of capital replenishment.
+Our European CDS--Bond basis strategy, while constructed on a different
+universe of reference entities, operates through identical economic
+mechanisms and is subject to the same funding-liquidity spirals.
+
+\paragraph{Regulatory Capital and Index Replication Costs.}
+The iTraxx index skew presents a third, and to our knowledge less studied,
+channel through which limits to arbitrage sustain persistent mispricings in
+European credit markets.  The CDS index is the instrument of first resort for
+macro hedging: \citet{oehmke2017anatomy} document that CDS markets function
+as ``alternative trading venues'' whose standardisation and liquidity advantages
+attract both hedging and speculative flows, with speculative trading
+concentrating almost exclusively in the CDS rather than the underlying bonds.
+Index CDS contracts, as the most standardised instruments in the credit
+derivative market, are the natural vehicle for this activity.  When investors
+seek aggregate credit protection---whether to hedge portfolio exposures or to
+express a directional view on credit spreads---they buy index CDS with little
+regard for the fundamentals of individual constituent names.  This generates a
+persistent demand pressure that pushes the index spread away from the intrinsic
+value implied by the PV01-weighted average of the underlying 125~single-name
+CDS.
+
+Closing this gap requires assembling all 125~offsetting single-name positions
+simultaneously, each with its own margin, counterparty, and clearing
+arrangements.  This is operationally complex and capital-intensive.
+\citet{boyarchenko2016trends} quantify the economics of this trade
+from the dealer's perspective within a stylised balance-sheet framework.  They
+show that post-crisis regulatory changes---in particular the Supplementary
+Leverage Ratio (SLR) finalised in September 2014---have fundamentally altered
+the cost structure of credit basis trades.  At a 6\% leverage ratio, which
+corresponds to the effective SLR requirement for the largest U.S.\ bank
+holding companies, the return on equity for a CDS-bond basis trade falls to
+approximately 3\%, far below the 15\% internal hurdle rate that dealers
+reportedly target.  Moreover, the breakeven CDS-bond basis required to achieve
+a 15\% ROE shifts from $-134$ basis points under a 1\% leverage ratio to
+$-218$ basis points under a 6\% ratio---a near-doubling of the dislocation
+required before the trade becomes attractive.
+
+The CDX-CDS skew trade faces an additional structural impediment that the
+CDS-bond trade does not: index CDS contracts are subject to mandatory central
+clearing, whereas single-name CDS contracts generally are not.  This asymmetry
+in clearing mandates means that the margin requirements on the index leg
+(posted with ICE) and the single-name legs (posted bilaterally or with a
+different CCP) cannot be netted against each other.  The resulting capital
+inefficiency further inflates the cost of carrying the trade.
+\citet{boyarchenko2016trends} also document that investment advisors
+have increasingly used index CDS contracts as substitutes for cash bond
+purchases, selling protection on the index to gain credit exposure while
+retaining liquidity in anticipation of fund outflows.  This strategic
+positioning concentrates liquidity even more heavily in the index, draining
+it from single-name CDS and widening the skew.
+
+These regulatory and structural frictions explain why the iTraxx skew persists
+even in benign market conditions and why it amplifies sharply during stress:
+when funding conditions deteriorate, dealers not only refrain from new skew
+arbitrage but may unwind existing positions, further widening the basis---the
+same procyclical dynamic documented by \citet{mitchell2012arbitrage} for the
+CDS-bond basis during the 2008 crisis.  Our finding that the iTraxx skew
+belongs to the same cluster as the CDS--Bond basis, and that both widen
+simultaneously in stress (with the interaction coefficient $\hat{\beta}_{2}$
+amplifying by an order of magnitude in the \textsc{high} regime), is fully
+consistent with this regulatory-capital channel operating across both segments
+of the European corporate credit market.
+
+\paragraph{From Alpha to Market Structure.}
+The three limits to arbitrage identified above---retail investor segmentation,
+funding and liquidity frictions, and regulatory capital costs---map directly
+onto the alpha documented in Sections~4 and~5.  If capital were fast-moving and
+unconstrained, the mispricings underlying all three strategies would be
+arbitraged away rapidly, and the excess returns documented in our spanning and
+conditional-alpha regressions would vanish.  The persistence of statistically
+significant alpha, even after risk adjustment via rolling PCA
+(Section~\ref{sec:rq1_pca}) and Adaptive Elastic Net
+(Section~\ref{sec:rq2_aen}), is therefore not evidence of market inefficiency
+in the classical sense but rather compensation for bearing the implementation
+risks that prevent full arbitrage convergence.
+
+This interpretation aligns with the broader theoretical literature on
+intermediary-based asset pricing.  \citet{he2017intermediary} show that when
+intermediaries are the marginal investors, asset risk premia depend on the
+intermediary capital ratio rather than on consumption risk alone.
+\citet{garleanu2011margin} demonstrate that margin constraints generate
+deviations from the law of one price proportional to the difference in funding
+requirements between otherwise identical assets.  And
+\citet{mitchell2007slow} provide the original empirical evidence
+that, following negative shocks to arbitrageur capital, prices of ``close
+substitute'' assets diverge and then converge \emph{slowly}---at a speed
+determined by the pace at which new risk capital enters the market, not by the
+speed of information diffusion.
+
+\citet{duffie2010presidential} synthesises these insights into the
+slow-moving capital framework that motivates our RQ3.  The testable
+implications he derives---correlated mispricings, predictable convergence,
+cross-market transmission, and heightened co-movement during stress---are
+precisely the patterns we document in Sections~6.1 through~6.3.  The three
+strategies in our sample span what might be termed a ``liquidity pecking
+order'' of increasing implementation cost: BTP~Italia requires no leverage and
+no derivatives (buy and hold), the iTraxx skew is derivatives-only but requires
+capital-intensive replication of 125~single-name positions, and the CDS--Bond
+basis demands repo funding with rollover risk, CDS counterparty exposure, and
+bond-market illiquidity.  The ranking of unconditional alpha across the three
+strategies---BTP~Italia the lowest, CDS--Bond the highest---is qualitatively
+consistent with this pecking order, suggesting that the cross-section of
+arbitrage returns reflects a cross-section of implementation costs, exactly as
+the slow-moving capital framework predicts.

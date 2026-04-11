@@ -1,0 +1,168 @@
+%% =============================================================================
+%% SKELETON - Section 5: Factor Selection and Spanning Regressions
+%% =============================================================================
+%% Tables/figures INLINE (working draft for supervisor).
+%% Same structure as paper1_sec5_factor_selection.tex.
+%% =============================================================================
+
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Principal Component Analysis}
+\label{sec:pca}
+% ─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection{Rolling PCA Methodology}
+\label{sec:pca_method}
+
+We extract principal components from a rolling window of $W=24$ months
+over 80+ standardised candidate factors (\citealp{ludvigson2009macro}).
+$K=8$ components are retained (approximately 80\% cumulative variance;
+Figure~\ref{fig:pca_scree}). Both predictive ($PC_t \to R_{t+1}$)
+and contemporaneous ($PC_t \to R_t$) timing are tested. Spanning
+regressions are estimated by OLS with Newey--West HAC standard errors.
+Robustness across $(W,K)$ grids is reported in
+Appendix~\ref{app:pca_robustness}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{\figpath/pca/pca_scree_plot.pdf}
+\caption{Scree Plot: Cumulative Variance Explained by Principal Components.
+Dashed line indicates 80\% threshold. Baseline specification uses $K=8$ components.}
+\label{fig:pca_scree}
+\end{figure}
+
+
+\subsubsection{Results}
+\label{sec:pca_results}
+
+Table~\ref{tab:pca_spanning} reports spanning regression results.
+Alpha is statistically significant for all three strategies under both
+timing conventions, while $\bar{R}^2$ remains moderate, indicating that
+diffuse systematic risk does not span strategy returns.
+
+\input{\tablepath/PCA_article}
+
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Adaptive Elastic Net}
+\label{sec:aen}
+% ─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection{Candidate Factor Universe and Preprocessing}
+\label{sec:aen_preproc}
+
+The same 80+ candidate factors used in the PCA analysis
+(Appendix~\ref{app:factor_list}) are preprocessed for penalised
+regression: stationarity is verified via ADF tests, factors are
+standardised to unit $L_2$-norm \citep{zou2009adaptive}, and
+near-duplicate pairs ($|\rho| > 0.95$) are removed. After cleaning,
+approximately 75+ factors remain per strategy.
+
+
+\subsubsection{Estimation and Tuning}
+\label{sec:aen_estimation}
+
+The Adaptive Elastic Net \citep{zou2009adaptive} proceeds in two stages.
+Stage~1 estimates a standard Elastic Net:
+\[
+\hat{\beta}^{EN} = \arg\min_{\beta}
+\left\{
+\frac{1}{T}\sum_{t=1}^{T}(r_t - \alpha - \beta'f_t)^2
++ \lambda_2\|\beta\|_2^2 + \lambda_1\|\beta\|_1
+\right\}.
+\]
+Stage~2 constructs adaptive weights
+$w_j = |\hat{\beta}^{EN}_j|^{-\gamma}$ ($\gamma=1$) and re-solves
+with factor-specific $\ell_1$ penalties:
+\[
+\hat{\beta}^{AEN} = \arg\min_{\beta}
+\left\{
+\frac{1}{T}\sum_{t=1}^{T}(r_t - \alpha - \beta'f_t)^2
++ \lambda_2\|\beta\|_2^2
++ \lambda_1\sum_{j=1}^{p} w_j|\beta_j|
+\right\}.
+\]
+Both stages use the same $\lambda_2$; $(\lambda_1, \lambda_2)$ are
+selected by minimising the Hannan--Quinn criterion (HQC). The solution
+is obtained via coordinate descent \citep{friedman2010regularization}.
+
+\subsubsection{Stability Selection}
+\label{sec:aen_stability}
+
+To address selection uncertainty, we apply stability selection
+\citep{meinshausen2010stability} adapted for time-series dependence:
+$B=100$ stationary bootstrap resamples (expected block length 9 months)
+are drawn, and the full AEN is re-run on each. A factor is retained
+only if its selection frequency $\hat{\pi}_j \geq 60\%$. The expected
+number of false selections is bounded by
+$q^2 / [p(2\pi^* - 1)]$. Cluster-level frequency aggregation corrects
+for vote-splitting among correlated factors
+%(Figure~\ref{fig:stability_barplot}).
+
+%\begin{figure}[H]
+%\centering
+%\includegraphics[width=\textwidth]{\figpath/aen/aen_stability_frequencies.pdf}
+%\caption{Bootstrap Selection Frequencies for Candidate Risk Factors.
+%Dashed line at $\hat\Pi = 60\%$ threshold. Blue bars indicate stably selected factors.}
+%\label{fig:stability_barplot}
+%\end{figure}
+
+
+\subsubsection{Post-Selection OLS Results}
+\label{sec:aen_results}
+
+Once the stable set $\hat{S}_i$ is identified, we estimate unrestricted
+OLS on the original (un-standardised) factors:
+\[
+r_{i,t} = \alpha_i + \beta_i' f_{\hat{S}_i,t} + \varepsilon_{i,t}
+\]
+with Newey--West HAC standard errors (6 lags).
+
+Table~\ref{tab:aen_stable_ols} reports results. Alpha is statistically
+significant for all three strategies. The selected factors are
+economically interpretable and span several categories: liquidity and
+funding frictions, credit risk premia, equity style factors, and
+interest rate term structure variables. Each strategy loads on a
+distinct combination, consistent with the different market
+microstructures and investor bases involved. Compared with the three
+benchmark frameworks (Section~4) and the PCA spanning regressions,
+the AEN-selected factors deliver higher adjusted $\bar{R}^2$ while
+preserving significant alpha, confirming that these targeted risk
+drivers capture strategy-specific exposures that diffuse models miss.
+
+\input{\tablepath/AEN_Stable_OLS_article}
+
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Conditional Alpha}
+\label{sec:conditional_alpha}
+% ─────────────────────────────────────────────────────────────────────────────
+
+Alpha increases during periods of financial stress across all strategies
+and both factor-selection methods (Table~\ref{tab:alpha_regime_pca_aen}).
+This is consistent with the limits-to-arbitrage mechanism
+\citep{duffie2010presidential, mitchell2007slow}: when funding constraints
+bind, capital retreats, mispricings widen, and alpha grows. Detailed
+Ferson--Schadt and threshold robustness results are in
+Appendix~\ref{app:pca_conditional} and~\ref{app:aen_conditional}.
+
+\input{\tablepath/alpha_regime_synthesis_pca_aen}
+
+% Ferson-Schadt and threshold robustness (AEN) in Appendix~\ref{app:aen_conditional}.
+% Ferson-Schadt and threshold robustness (PCA) in Appendix~\ref{app:pca_conditional}.
+
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Discussion, Method Comparison, and Robustness}
+\label{sec:factor_discussion}
+% ─────────────────────────────────────────────────────────────────────────────
+
+Table~\ref{tab:aen_method_comparison} compares alpha across estimation
+methods: AEN, Elastic Net, LASSO, Adaptive LASSO, and ALASSO-Chen. Alpha is robust to
+the choice of method. AEN is preferred for its oracle property, its
+ability to handle collinearity, and the stability selection step that
+reduces post-selection bias. Sensitivity to the correlation threshold
+$\rho$ and the adaptive exponent $\gamma$ is reported in
+Appendix~\ref{app:aen_sensitivity}.
+
+\input{\tablepath/AEN_Method_Comparison_article}

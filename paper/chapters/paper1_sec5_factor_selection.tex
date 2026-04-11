@@ -1,0 +1,97 @@
+%% =============================================================================
+%% PAPER 1 - Section 5: Factor Selection and Spanning Regressions
+%% =============================================================================
+%% TEXT ONLY — no inline tables/figures.
+%% Tables/figures are collected in paper1_tables_final.tex and
+%% paper1_figures_final.tex (at end of document, per EDHEC format guide).
+%% =============================================================================
+
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Principal Component Analysis}
+\label{sec:pca}
+% ─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection{Rolling PCA Methodology}
+\label{sec:pca_method}
+
+% TODO: Write full prose.
+% Z-score standardization of all 71 candidate factors.
+% Rolling window W=24 months (Rebonato; Ludvigson \& Ng 2009).
+% K=8 fixed PCs (cumulative variance $\approx$ 80\%, Figure~\ref{fig:pca_scree}).
+% Predictive (PC_t -> R_{t+1}) and contemporaneous (PC_t -> R_t).
+% Spanning regression: R_t = alpha + beta' PC_t + epsilon, OLS + NW HAC.
+% Robustness across (W,K) in Appendix~\ref{sec:app_pca_robustness}.
+
+
+\subsubsection{Results}
+\label{sec:pca_results}
+
+% TODO: Write full prose.
+% Table~\ref{tab:pca_spanning}: alpha, R-squared adj for 3 strategies.
+% Alpha significant for [strategy names]. R-squared moderate.
+% Compare with benchmark models (Section~\ref{sec:benchmarks}).
+
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Adaptive Elastic Net}
+\label{sec:aen}
+% ─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection{Candidate Factor Universe and Preprocessing}
+\label{sec:aen_preproc}
+
+% TODO: Write full prose.
+% 71 candidate factors, 5 categories (Appendix~\ref{sec:app_factor_list}).
+% Stationarity (ADF), z-score, deduplication $|\rho|>0.95$.
+
+
+\subsubsection{Estimation and Tuning}
+\label{sec:aen_estimation}
+
+% TODO: Write full prose.
+% Two-stage AEN (Zou \& Zhang 2009). Stage 1: EN + HQC.
+% Adaptive weights $w_j = (|\hat\beta_j^{EN}| + 1/T)^{-\gamma}$, $\gamma=1$.
+% Stage 2: weighted $\ell_1$ + uniform $\ell_2$, coordinate descent.
+
+
+\subsubsection{Stability Selection}
+\label{sec:aen_stability}
+
+% TODO: Write full prose.
+% Block bootstrap B=100. $\hat\Pi(j, \lambda^*) \geq 0.60$.
+% Table~\ref{tab:stability_freq} and Figure~\ref{fig:stability_barplot}.
+% Cluster-level aggregation (Faletto \& Bien 2022).
+
+
+\subsubsection{Post-Selection OLS Results}
+\label{sec:aen_results}
+
+% TODO: Write full prose.
+% Table~\ref{tab:aen_stable_ols}: alpha, betas, t-stats, R-squared adj.
+% Economic interpretation of selected factors.
+
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Conditional Alpha}
+\label{sec:conditional_alpha}
+% ─────────────────────────────────────────────────────────────────────────────
+
+% TODO: Write full prose.
+% Central result: alpha increases during stress. Limits to arbitrage.
+% Table~\ref{tab:conditional_alpha_fs}: Ferson-Schadt with AEN factors.
+% Table~\ref{tab:conditional_alpha_threshold}: threshold robustness (AEN).
+% Table~\ref{tab:pca_conditional_alpha_fs}: Ferson-Schadt with PCA.
+% Table~\ref{tab:pca_conditional_alpha_threshold}: threshold robustness (PCA).
+% Robust across factor selection method → structural, not artifact.
+
+
+% ─────────────────────────────────────────────────────────────────────────────
+\subsection{Discussion, Method Comparison, and Robustness}
+\label{sec:factor_discussion}
+% ─────────────────────────────────────────────────────────────────────────────
+
+% TODO: Write full prose.
+% Table~\ref{tab:aen_method_comparison}: AEN vs Adaptive LASSO vs LASSO vs Ridge.
+% Alpha robust across all methods. AEN preferred (oracle property).
+% Sensitivity and half-sample in Appendix.

@@ -1,0 +1,123 @@
+%% =============================================================================
+%% SKELETON - Section 4: Benchmark Factor Models
+%% =============================================================================
+%% Tables/figures INLINE (working draft for supervisor).
+%% Same structure as paper1_sec4_benchmarks.tex.
+%% Maps to: 02a, 02b, 02c, 03_subperiod_rolling_analysis
+%% =============================================================================
+
+
+\subsection{Benchmark Specifications}
+\label{sec:bench_specs}
+
+We estimate three benchmark spanning regressions from the literature,
+each designed to capture different sources of systematic risk in fixed
+income strategies. \citet{duarte2007risk} specify 10 factors spanning
+equity, bond market, and Treasury returns.
+\citet{fung2002risk} use 7 asset-based style factors including
+trend-following lookback straddles on bonds, currencies, and commodities.
+\citet{brooks2020active} decompose active fixed income performance into
+traditional risk premia (term, credit, emerging market debt, volatility,
+inflation-linked). All models are estimated via OLS with Newey--West HAC
+standard errors (6 lags).
+
+Each benchmark is estimated in two panels. The first uses the original
+USD-denominated factors, replicating each framework exactly as specified
+by its authors. The second uses euro equivalents as a robustness check,
+since all three strategies operate in European markets.
+For the Fama--French factors---used directly in
+\citet{duarte2007risk} and indirectly in \citet{fung2002risk}---we source
+the European portfolios from the Kenneth French data library; because
+these are reported in USD, we convert them to EUR following
+\citet{gluck2021currency}. For long factors (market excess return):
+\begin{equation}\label{eq:gluck_long}
+  F_{t}^{\textsc{eur}}
+  = \frac{1 + F_{t}^{\textsc{usd}} + r_{f,t}^{\textsc{usd}}}
+         {1 + r_{t}^{\textsc{usd/eur}}}
+  - 1 - r_{f,t}^{\textsc{eur}},
+\end{equation}
+and for long-short factors (SMB, HML, UMD):
+\begin{equation}\label{eq:gluck_ls}
+  \mathit{LS}_{t}^{\textsc{eur}}
+  = \frac{\mathit{LS}_{t}^{\textsc{usd}}}
+         {1 + r_{t}^{\textsc{usd/eur}}},
+\end{equation}
+where $F_{t}^{\textsc{usd}}$ and $\mathit{LS}_{t}^{\textsc{usd}}$ are
+the original factors in US dollars, $r_{f,t}^{\textsc{usd}}$ and
+$r_{f,t}^{\textsc{eur}}$ are the US and euro risk-free rates
+(Fama--French T-bill rate and Euribor 1M, respectively), and
+$r_{t}^{\textsc{usd/eur}}$ is the USD/EUR exchange rate return.
+All remaining factors use native European equivalents: European bank
+stocks, euro-area corporate bond indices, and German government bonds
+(Duarte); euro-area term, credit, and inflation-linked indices
+(Brooks et al.); 10Y Bund yield and Baa--Bund credit spread
+(Fung \& Hsieh). The Fung \& Hsieh trend-following lookback straddle
+factors (PTFSBD, PTFSFX, PTFSCOM) are currency-independent by
+construction (D.~Hsieh, private communication) and are therefore
+identical in both panels. The complete factor list is reported in
+Appendix~\ref{app:factors}; VIF diagnostics are in Appendix~\ref{app:vif}. 
+
+
+\subsection{Results and Discussion}
+\label{sec:bench_results}
+
+\paragraph{Factor Model Regressions.}
+Tables~\ref{tab:duarte}--\ref{tab:active_fi} report full
+regression results for the three benchmark specifications. Alpha is
+statistically significant across all frameworks and strategies, while
+$R^2_{\mathrm{adj}}$ remains low (5--15\%), indicating that standard risk
+factors do not span returns.
+
+\input{\tablepath/Duarte_article_monthly}
+
+\input{\tablepath/FungHsieh_article_monthly}
+
+\input{\tablepath/ActiveFI_article_monthly}
+
+\paragraph{Cross-Model Comparison and Regime Analysis.}
+Table~\ref{tab:alpha_synthesis} summarizes alpha across frameworks
+(Panel~A) and decomposes it by stress regime (Panel~B). Alpha is
+uniformly higher during HIGH stress months (iTraxx Main $> 100$ bps),
+consistent with \citet{duffie2010presidential}: when funding constraints bind,
+arbitrage capital withdraws, mispricings widen, and alpha increases.
+This pattern motivates the cross-strategy analysis in Section~6.
+
+\input{\tablepath/alpha_synthesis_across_models_monthly}
+
+\paragraph{Conditional Alpha.}
+Panel~C of Table~\ref{tab:alpha_synthesis} formalises the regime effect
+using the \citet{ferson1996measuring} conditional model:
+\begin{equation}\label{eq:ferson_schadt}
+  r_{i,t} = \alpha_0 + \alpha_1\, z_t
+  + \boldsymbol{\beta}' \mathbf{X}_t + \varepsilon_t,
+\end{equation}
+where $\mathbf{X}_t$ are the benchmark factors and $z_t$ is the
+standardized iTraxx Main 5Y spread, proxying for intermediary funding
+stress. Unlike the binary regime split in Panel~B, this specification
+allows alpha to vary continuously with market conditions.
+The coefficient $\alpha_1 > 0$ indicates that alpha increases during
+stress, consistent with \citet{duffie2010presidential}: when
+intermediary capital is scarce, arbitrage positions offer a higher
+premium to compensate for the additional funding risk and
+balance-sheet cost of entering the trade.
+
+\paragraph{Rolling Alpha.}
+
+Figure~\ref{fig:rolling_alpha_composite} plots rolling 36-month alpha
+estimates for all three strategies under each benchmark specification.
+Alpha spikes visibly during stress episodes (shaded red), confirming
+that the regime effect documented in Table~\ref{tab:alpha_synthesis}
+is not driven by a single sub-period. Detailed sub-period splits
+and threshold robustness for each framework are reported in
+Appendix~\ref{app:subperiod}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{\figpath/rolling_alpha_composite_monthly.pdf}
+\caption{Rolling 36-Month Alpha Across Benchmark Factor Models.
+  Each panel shows one strategy. Lines represent rolling alpha under
+  Duarte et al.\ (2007, blue), Brooks et al.\ (2020, orange), and
+  Fung \& Hsieh (2004, green). Red shading: HIGH stress regime
+  (iTraxx Main 5Y $> 100$ bps).}
+\label{fig:rolling_alpha_composite}
+\end{figure}
