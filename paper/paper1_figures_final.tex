@@ -1,0 +1,117 @@
+%% =============================================================================
+%% Paper 1 - ALL FIGURES (for main_final.tex, EDHEC format)
+%% =============================================================================
+%% Figures placed after Tables, on single pages. Captions at bottom.
+%% =============================================================================
+
+%% -----------------------------------------------------------------------------
+%% SECTION 3 - Data, Strategy Construction, and Performance
+%% -----------------------------------------------------------------------------
+
+%% Figure: TIPS--Treasury basis, pre-2009 vs. today (referenced in sec3 BTP-Italia
+%% paragraph; two side-by-side panels in a single float, JoF-style).
+\clearpage
+\begin{figure}[p]
+\centering
+\begin{minipage}[t]{0.48\textwidth}
+\centering
+\includegraphics[width=\textwidth, height=5.5cm, keepaspectratio=false]{\figpath/TIPSpre2009.pdf}
+\caption[TIPS--Treasury basis, 2004--2009]{TIPS--Treasury basis, 2004--2009 (from \citealp{fleckenstein2014tips}).}
+\label{fig:tips_pre2009}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\textwidth}
+\centering
+\includegraphics[width=\textwidth, height=5.5cm, keepaspectratio=false]{\figpath/TIPS_today.pdf}
+\caption[TIPS--Treasury Basis, 2009--Present]{TIPS--Treasury basis, 2009--present. The mispricing has vanished.}
+\label{fig:tips_today}
+\end{minipage}
+\end{figure}
+
+%% Figure: raw market-level basis time series (one panel per strategy)
+\clearpage
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{\figpath/basis_time_series.pdf}
+\caption[Market-Level Basis Time Series]{Market-Level Basis Time Series for Fixed Income Arbitrage Strategies.
+For BTP~Italia, the basis is the cross-sectional mean of all outstanding
+issues with at least six months to maturity. For iTraxx~Combined, it is
+the mean of the four on-the-run sub-index skews. For CDS--Bond~Basis,
+it is the mean of the $N=20$ most negative single-name bases in the
+iTraxx~Main universe on each day (only bonds with negative basis are
+included). Dashed lines indicate entry thresholds.}
+\label{fig:basis_time_series}
+\end{figure}
+
+%% Figure: cumulative return indices and drawdowns
+\clearpage
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{\figpath/equity_curves_combined.pdf}
+\caption[Cumulative Return Indices and Drawdowns]{Cumulative Return Indices and Drawdowns of Fixed Income Arbitrage
+Strategies (Signal-Weighted). Each row shows one strategy: the upper
+sub-panel reports the cumulative return index from inception, and the
+lower sub-panel reports the running drawdown (peak-to-trough). Sample
+periods differ across strategies: BTP~Italia from 2014, iTraxx Combined
+from 2008, CDS--Bond Basis from 2005. All series end in May~2025 and
+are net of transaction costs.}
+\label{fig:equity_curves}
+\end{figure}
+
+%% -----------------------------------------------------------------------------
+%% SECTION 4 - Benchmark Factor Models
+%% -----------------------------------------------------------------------------
+
+%% Figure: Rolling 36-month alpha across benchmark factor models
+\clearpage
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{\figpath/rolling_alpha_composite_monthly.pdf}
+\caption[Rolling Alpha Across Benchmark Factor Models]{Rolling 36-Month Alpha Across Benchmark Factor Models.
+  Each panel shows one strategy. Lines represent rolling alpha under
+  Duarte et al.\ (2007, blue), Brooks et al.\ (2020, orange), and
+  Fung \& Hsieh (2004, green). Red shading: HIGH stress regime
+  (iTraxx Main 5Y $> 100$ bps).}
+\label{fig:rolling_alpha_composite}
+\end{figure}
+
+%% -----------------------------------------------------------------------------
+%% SECTION 5 - Factor Selection and Spanning Regressions
+%% -----------------------------------------------------------------------------
+
+%% Figure: PCA scree plot — variance explained by principal components
+\clearpage
+\begin{figure}[p]
+\centering
+\includegraphics[width=0.85\textwidth]{\figpath/pca/pca_scree_plot.pdf}
+\caption[PCA Scree Plot]{Scree Plot: Cumulative Variance Explained by Principal Components.
+  Dashed line indicates 80\% threshold. Baseline specification uses
+  $K=8$ components.}
+\label{fig:pca_scree}
+\end{figure}
+
+%% -----------------------------------------------------------------------------
+%% SECTION 6 - Cross-Strategy Interdependencies
+%% -----------------------------------------------------------------------------
+
+%% Figure: Pairwise correlations by stress regime (bar chart)
+\clearpage
+\begin{figure}[p]
+\centering
+\includegraphics[width=0.9\textwidth]{../results/rq3_duffie/figures/C1_regime_correlations_bar.pdf}
+\caption[Pairwise Correlations by Stress Regime]{Pairwise Correlations by Stress Regime.
+  Bars show Pearson correlations of $\Delta m$ in LOW, MEDIUM, and HIGH
+  stress regimes defined by iTraxx Main 5Y thresholds (60/120 bps).}
+\label{fig:rq3_regime_bar}
+\end{figure}
+
+%% Figure: Generalized Impulse Response Functions (Pesaran-Shin 1998)
+\clearpage
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{../results/rq3_duffie/figures/E1_girf.pdf}
+\caption[Generalized Impulse Response Functions]{Generalized Impulse Response Functions.
+  Responses of $\Delta m$ to one-standard-deviation shocks.
+  Shaded areas: 95\% bootstrap confidence intervals (1000 replications).}
+\label{fig:rq3_girf}
+\end{figure}
