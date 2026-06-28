@@ -38,7 +38,6 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 # Try to load config
 config_paths = [
     PROJECT_ROOT / "src" / "pca" / "00_pca_config.py",
-    PROJECT_ROOT / "src" / "pca" / "00_pca_config_fix.py",
 ]
 
 pca_config = None

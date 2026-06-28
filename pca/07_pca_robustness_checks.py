@@ -30,7 +30,6 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 config_paths = [
     PROJECT_ROOT / "src" / "pca" / "00_pca_config.py",
-    PROJECT_ROOT / "src" / "pca" / "00_pca_config_fix.py",
 ]
 pca_config = None
 for config_path in config_paths:

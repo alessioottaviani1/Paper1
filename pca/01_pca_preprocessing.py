@@ -370,8 +370,6 @@ def main():
     print(f"\n   PCA Configuration:")
     print(f"   {'─' * 50}")
     print(f"   Start date:          {PCA_START_DATE}")
-    print(f"   Window length:       {PCA_WINDOW_LENGTH} months")
-    print(f"   Variance threshold:  {PCA_VARIANCE_THRESHOLD:.0%}")
     print(f"   Timing:              {PCA_TIMING}")
     
     print(f"\n   Factors:")

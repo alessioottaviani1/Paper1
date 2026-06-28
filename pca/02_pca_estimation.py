@@ -42,7 +42,6 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 # Try multiple config paths
 config_paths = [
     PROJECT_ROOT / "src" / "pca" / "00_pca_config.py",
-    PROJECT_ROOT / "src" / "pca" / "00_pca_config_fix.py",
 ]
 
 pca_config = None
@@ -84,18 +83,17 @@ def print_header(title, char="="):
 # ROLLING PCA CLASS
 # ============================================================================
 
-class RollingPCA:
+class FullSamplePCA:
     """
-    Implementa PCA rolling con standardizzazione in-window.
-    
+    Stima K componenti principali UNA volta sul panel full-sample
+    (standardizzazione full-sample). Vedi fit_full_sample.
+
     Attributes:
-        window_length: lunghezza rolling window in mesi
         n_components: numero FISSO di PC da usare
         variance_threshold: soglia varianza (solo per diagnostica)
     """
     
-    def __init__(self, window_length: int, n_components: int, variance_threshold: float = 0.80):
-        self.window_length = window_length
+    def __init__(self, n_components: int, variance_threshold: float = 0.80):
         self.n_components = n_components
         self.variance_threshold = variance_threshold
         
@@ -291,8 +289,7 @@ def main():
     
     pca_start = pd.Timestamp(PCA_START_DATE)
     
-    rolling_pca = RollingPCA(
-        window_length=PCA_WINDOW_LENGTH,
+    rolling_pca = FullSamplePCA(
         n_components=PCA_N_COMPONENTS,
         variance_threshold=PCA_VARIANCE_THRESHOLD
     )
@@ -364,11 +361,11 @@ def main():
     
     print_header("SUMMARY RESULTS")
     
-    print(f"\n   {'Strategy':<20} {'N':<6} {'R²':<8} {'Alpha':<10} {'t-stat':<8} {'p-val':<8} {'Sig':<5}")
+    print(f"\n   {'Strategy':<20} {'N':<6} {'R²':<8} {'Alpha(ann%)':<12} {'t-stat':<8} {'p-val':<8} {'Sig':<5}")
     print(f"   {'-' * 70}")
     
     for strategy_name, results in all_results.items():
-        alpha = results['alpha']
+        alpha = results['alpha'] * 12
         tstat = results['alpha_tstat']
         pval = results['alpha_pvalue']
         
@@ -382,7 +379,7 @@ def main():
             sig = ""
         
         print(f"   {strategy_name:<20} {results['n_obs']:<6} {results['r_squared']:<8.4f} "
-              f"{alpha:<10.4f} {tstat:<8.2f} {pval:<8.4f} {sig:<5}")
+              f"{alpha:<12.2f} {tstat:<8.2f} {pval:<8.4f} {sig:<5}")
     
     print(f"\n   Significance: *** p<0.01, ** p<0.05, * p<0.10")
     

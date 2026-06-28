@@ -1,18 +1,17 @@
 """
 ================================================================================
-05b_pca_conditional_alpha.py — Conditional Alpha Analysis (PCA Pipeline)
+04_pca_conditional_alpha.py — Conditional Alpha Analysis (PCA Pipeline)
 ================================================================================
-Tests whether strategy alpha varies with financial stress, using rolling
+Tests whether strategy alpha varies with financial stress, using full-sample
 PCA factors (PC scores) from 02_pca_estimation.py.
 
-Same five tests as 06e_conditional_alpha.py (ML pipeline), but with
-PC scores replacing AEN-selected factors:
+Same conditional tests as the ML pipeline, but with PC scores replacing
+AEN-selected factors:
 
   (e1) Ferson–Schadt (1996, JF) conditional alpha + conditional beta
-  (e2) Dummy interaction (Mitchell & Pulvino 2001, JF) with threshold
-       robustness (80, 100, 120 bps — Patton 2009, RFS)
+  (e2) Regime dummies, common beta — 3 states LOW/MEDIUM/HIGH on iTraxx
+       Main 5Y (cutoffs 60/100 bps)
   (e3) Sub-sample split by regime (HIGH vs NORMAL)
-  (e4) Multiple conditioning variables (iTraxx Main, V2X, EURIBOR-OIS)
   (e5) Rolling alpha with regime shading (iTraxx Main)
 
 Using the same tests across PCA and AEN pipelines demonstrates that the
@@ -23,11 +22,8 @@ Timing convention:
   "contemporaneous": PC_t → R_t   (baseline; Connor & Korajczyk 1986, 1988)
 
 References:
-    Ferson, W. and Schadt, R. (1996, JF)
-    Mitchell, M. and Pulvino, T. (2001, JF)
-    Patton, A. (2009, RFS)
-    Ludvigson, S.C. and Ng, S. (2009), "Macro Factors in Bond Risk Premia",
-        Review of Financial Studies, 22(12), 5027-5067.
+    Ferson, W. and Schadt, R. (1996, JF) — conditional alpha & beta
+    Connor, G. and Korajczyk, R. (1986, 1988) — PCs as factors
 
 Author:      Alessio Ottaviani
 Institution: EDHEC Business School – PhD Thesis
@@ -56,7 +52,6 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 # Load PCA config
 config_paths = [
     PROJECT_ROOT / "src" / "pca" / "00_pca_config.py",
-    PROJECT_ROOT / "src" / "pca" / "00_pca_config_fix.py",
 ]
 
 pca_config = None
@@ -255,8 +250,7 @@ def ferson_schadt_conditional(strategy_name, timing):
     alpha1_p_contemp = cfg_alpha1_bootstrap_p(y, X, z_contemp)  # z_t  (robustness)
 
 
-    print(f"\n   Unconditional: α = {res_unc.params['const']:+.4f}% mo"
-          f" ({res_unc.params['const'] * 12:+.2f}% ann.)")
+    print(f"\n   Unconditional: α = {res_unc.params['const'] * 12:+.2f}% ann.")
     print(f"   Conditional:   α₀ = {alpha0:+.4f}, "
           f"α₁ = {alpha1:+.4f} (t={alpha1_t:.3f}, p={alpha1_p:.4f})"
           f" {significance_stars(alpha1_p)}")
@@ -424,7 +418,7 @@ def subsample_regime(strategy_name, timing):
             res = sm.OLS(y_sub, X_const).fit()
 
         alpha = res.params['const']
-        print(f"   α = {alpha:+.4f}% mo ({alpha * 12:+.2f}% ann.)"
+        print(f"   α = {alpha * 12:+.2f}% ann."
               f" t={res.tvalues['const']:.3f}, p={res.pvalues['const']:.4f}"
               f" {significance_stars(res.pvalues['const'])} ({se_type})")
 
