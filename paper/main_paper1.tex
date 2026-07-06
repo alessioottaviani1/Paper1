@@ -62,12 +62,22 @@
 %% Appendix (with inline tables/figures specific to the appendix)
 \clearpage
 \appendix
+%% JoF-style appendix exhibits: Table AI, AII, ...; Figure A1, A2, ...
+\setcounter{table}{0}
+\renewcommand{\thetable}{A.\Roman{table}}
+\setcounter{figure}{0}
+\renewcommand{\thefigure}{A.\arabic{figure}}
 \section{Appendix}
 \label{sec:appendix}
 \input{chapters/paper1_appendix}
 
 %% Tables (one per page, after the appendix - EDHEC format)
+%% Main-text exhibits restart: Table I, II, ...; Figure 1, 2, ...
 \clearpage
+\setcounter{table}{0}
+\renewcommand{\thetable}{\Roman{table}}
+\setcounter{figure}{0}
+\renewcommand{\thefigure}{\arabic{figure}}
 \input{paper1_tables_final}
 
 %% Figures (one per page, after the tables - EDHEC format)

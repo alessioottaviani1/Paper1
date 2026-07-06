@@ -62,8 +62,8 @@ equity, fixed-income, and trend-following exposures:
   &+ \beta_1\,\textit{S\&P}_t + \beta_2\,\textit{SC\text{-}LC}_t
    + \beta_3\,\textit{BdOpt}_t + \beta_4\,\textit{FXOpt}_t \\
   &+ \beta_5\,\textit{ComOpt}_t
-   + \beta_6\,\Delta\textit{10Y}_t
-   + \beta_7\,\Delta\textit{CredSpr}_t + \varepsilon_{i,t},
+   + \beta_6\,\textit{10Y}_t
+   + \beta_7\,\textit{CredSpr}_t + \varepsilon_{i,t},
 \end{split}
 \end{equation}
 where $\textit{S\&P}$ is the S\&P~500 excess return,
@@ -71,9 +71,15 @@ $\textit{SC\text{-}LC}$ is the small-minus-large-cap total return,
 $\textit{BdOpt}$, $\textit{FXOpt}$, and $\textit{ComOpt}$ are the three
 trend-following factors constructed as
 lookback straddle returns on bond, currency, and commodity futures,
-$\Delta\textit{10Y}$ is the change in the 10-year Treasury yield,
-and $\Delta\textit{CredSpr}$ is the change in the Baa--Treasury
-credit spread.
+$\textit{10Y}$ is the excess return on a 10-year government bond
+total-return index, and $\textit{CredSpr}$ is the return spread between
+BAA-rated corporate bonds and 10-year government bonds. The last two
+factors replace the yield and spread \emph{changes} of the original
+specification with their tradable total-return counterparts: a yield
+change is not the return on an investable position, so the intercept of
+a regression on yield changes lacks the Jensen-alpha interpretation;
+with all seven regressors entered as realised excess returns, the
+intercept retains its meaning as abnormal return.
 
 \citet{brooks2020active} take a different angle,
 decomposing the returns of active fixed-income managers into eight
@@ -109,7 +115,9 @@ original U.S.-denominated factors as specified by the respective authors,
 which is the natural way to replicate each framework as it was first
 published. The second uses euro equivalents, since all three strategies
 trade European instruments and may therefore be better explained by
-European factor exposures.
+European factor exposures. The euro panel is the primary specification
+and is reported in the main text; the US-factor estimates are reported
+in Appendix~\ref{app:benchmark_us}.
 
 For the euro panel, the Fama--French factors---used directly in
 \citet{duarte2007risk} and indirectly in
@@ -147,8 +155,9 @@ list is reported in Appendix~\ref{app:factor_list}.
 
 All specifications are estimated by ordinary least squares with
 Newey--West HAC standard errors \citep{newey1987simple}, with the
-truncation lag set as $\lfloor T^{1/4} \rfloor$ following
-\citet{newey1994automatic}. Variance inflation factors for each specification are reported in
+truncation lag set by the automatic rule of \citet{newey1994automatic},
+$\lfloor 4\,(T/100)^{2/9} \rfloor$, which equals four lags for every
+sample in this paper. Variance inflation factors for each specification are reported in
 Appendix~\ref{app:vif}. All factors exhibit VIF below~$10$ except
 for the Fama bond portfolios (R2, R5, R10) in the Duarte
 specification (VIF~$\approx 15$--$55$), which reflects the
@@ -164,10 +173,12 @@ returns.
 \paragraph{Factor Model Regressions.}
 
 Tables~\ref{tab:duarte}, \ref{tab:fung_hsieh}, and~\ref{tab:active_fi}
-report the full regression results. Across all three frameworks, all
-three strategies, and both currency denominations, the estimated
-intercept is positive and statistically significant at the one-percent
-level. The annualised alphas are economically meaningful:
+report the full euro-panel regression results; the US-factor
+counterparts are Tables~\ref{tab:duarte_us}, \ref{tab:fung_hsieh_us},
+and~\ref{tab:active_fi_us} in Appendix~\ref{app:benchmark_us}. Across
+all three frameworks, all three strategies, and both currency
+denominations, the estimated intercept is positive and statistically
+significant at the one-percent level. The annualised alphas are economically meaningful:
 approximately $+5\%$ p.a.\ for the CDS--Bond basis across all
 specifications, $+1.6$--$3.5\%$ for iTraxx Combined, and
 $+1.6$--$2\%$ for BTP~Italia.
@@ -195,23 +206,29 @@ reinforcing that the intercepts are not an artefact of any single factor set.
 \paragraph{Cross-Model Comparison and Regime Analysis.}
 
 Table~\ref{tab:alpha_synthesis} consolidates the alpha estimates from
-the three frameworks and decomposes them by market regime. Panel~A
+the three frameworks. Panel~A
 reports the unconditional alphas side by side: for each strategy, all
 three frameworks deliver positive and significant alpha, and the
 estimates are consistent across specifications despite their different
 factor structures.
 
-Panel~B decomposes alpha into two sub-samples defined by the level of
-the iTraxx Europe Main 5-year spread, using the same regime
-classification introduced in Section~\ref{sec:performance}: HIGH-stress
-months are those in which the spread exceeds $100$~basis points, and
-NORMAL the remaining observations. In every cell of the table, alpha during HIGH-stress
-months is substantially larger than alpha during NORMAL months, in most specifications by a factor of two
-to four. The pattern holds across all three benchmark
-specifications and across all three strategies, and it does not depend on
-the precise threshold used to define the HIGH regime: in
-Appendix~\ref{app:subperiod} we report the same exercise at threshold
-levels of 80, 100, and 120 basis points, with similar results.
+The discrete regime decomposition---alpha estimated separately in the
+LOW, MEDIUM, and HIGH stress regimes defined on the level of the iTraxx
+Europe Main 5-year spread, with the same classification introduced in
+Section~\ref{sec:performance} (LOW below $60$~basis points, MEDIUM
+between $60$ and $100$, HIGH above $100$)---is reported for each
+framework in Appendix~\ref{app:subperiod}. In every cell of those
+tables, alpha rises monotonically from the LOW to the HIGH regime, and
+the HIGH-regime alpha is a multiple of the LOW-regime alpha---in most
+specifications by a factor of three to four. The pattern holds across
+all three benchmark specifications and across all three strategies. The
+regime cutoffs are not arbitrary: they are the same 60 and 100
+basis-point thresholds that govern the stress-dependent transaction-cost
+tiers applied to every return series in the paper
+(Appendix~\ref{app:fees}); and the conditional model in Panel~B, which
+uses the full continuous variation in the stress proxy rather than a
+discrete split, confirms that the regime effect does not hinge on the
+choice of cutoffs.
 
 This regime dependence is consistent with the theoretical mechanism that
 \citet{duffie2010presidential} formalises in his presidential address.
@@ -223,7 +240,7 @@ credit spreads---the arbitrageurs who ordinarily close the gap retreat
 from the trade or are forced to unwind existing positions, the
 mispricings widen, and the residual premium for those who can still
 deploy capital rises sharply. This is precisely the regime dependence
-documented in Panel~B, and it is also the empirical pattern that
+documented in those tables, and it is also the empirical pattern that
 motivates the cross-strategy analysis in
 Section~\ref{sec:interdependencies}, where we test whether the same
 intermediary balance-sheet shocks drive co-movement of mispricings across
@@ -231,7 +248,7 @@ the three strategies.
 
 \paragraph{Conditional Alpha.}
 
-Panel~C of Table~\ref{tab:alpha_synthesis} formalises the regime effect
+Panel~B of Table~\ref{tab:alpha_synthesis} formalises the regime effect
 using the conditional performance evaluation framework of
 \citet{christopherson1998conditioning}, which lets the alpha intercept vary
 continuously with a publicly observable state variable rather than across
@@ -254,7 +271,7 @@ split in Panel~B by using the full continuous variation in the stress
 proxy rather than collapsing it into a dummy, which is more efficient
 when the underlying state varies meaningfully over time.
 
-The estimates of $\alpha_1$ in Panel~C are positive for all three
+The estimates of $\alpha_1$ in Panel~B are positive for all three
 strategies and all three benchmark specifications, and the
 unconditional intercept $\alpha_0$ remains significant in every case,
 confirming that a baseline alpha persists even after conditioning on
@@ -267,8 +284,8 @@ less precisely estimated (significant only at the 5--10\% level),
 consistent with the shorter sample available for this strategy. For all three strategies, the implied alpha at
 $z = +1\sigma$ is approximately three to nine times larger than at
 $z = -1\sigma$, indicating that the bulk of the unconditional alpha
-is earned during periods of elevated funding stress. Reading Panel~B and Panel~C
-together, the unconditional alpha masks a pronounced time variation
+is earned during periods of elevated funding stress. Reading the regime
+decomposition and Panel~B together, the unconditional alpha masks a pronounced time variation
 consistent with the slow-moving capital mechanism of
 \citet{duffie2010presidential}.
 
@@ -280,7 +297,7 @@ is that the benchmark loadings in
 Tables~\ref{tab:duarte}--\ref{tab:active_fi} are themselves estimated in
 sample, so the surviving alpha could in principle reflect an
 in-sample-optimal combination of the factors rather than an abnormal
-return that an investor could have earned in real time. Panel~D of
+return that an investor could have earned in real time. Panel~C of
 Table~\ref{tab:alpha_synthesis} addresses this directly. For each
 strategy and each benchmark, we re-estimate the factor loadings on an
 expanding past-only window in the recursive out-of-sample design of
@@ -299,7 +316,7 @@ strategies is preserved, with the CDS--Bond basis the largest and
 BTP~Italia, estimated over the shortest sample, the least precisely
 identified. The rolling-window counterpart, which additionally relaxes
 the assumption of constant loadings, is reported in
-Appendix~\ref{app:subperiod} and delivers the same conclusion.
+Appendix~\ref{app:oos_rolling} and delivers the same conclusion.
 
 \paragraph{Rolling Alpha.}
 
@@ -313,12 +330,10 @@ directly by plotting rolling 36-month alpha estimates for each strategy
 under each of the three benchmark specifications. The rolling alpha is
 positive across essentially the whole sample for all three strategies,
 so the estimates are not the product of a single favourable sub-period
-but persist throughout, and the elevated-alpha intervals are not
-confined to one crisis: they recur across the distinct stress episodes
-spanned by the sample. The three benchmark estimates move broadly
+but persist throughout. The three benchmark estimates move broadly
 together within each panel, reinforcing the cross-model robustness
 documented in Panel~A of Table~\ref{tab:alpha_synthesis}. Detailed
-sub-period splits and threshold robustness for each framework
+sub-period splits and regime decompositions for each framework
 individually are reported in Appendix~\ref{app:subperiod}.
 
 Taken together, the five sets of results in this section establish two
