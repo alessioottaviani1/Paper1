@@ -1,0 +1,74 @@
+\contentsline {section}{\numberline {1}Introduction}{8}{section.1}%
+\contentsline {section}{\numberline {2}Data, Strategy Construction, and Performance}{12}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Data and Strategy Construction}{13}{subsection.2.1}%
+\contentsline {paragraph}{BTP Italia: The Inflation-Linked Basis.}{13}{paragraph*.1}%
+\contentsline {paragraph}{CDS--Bond Basis: The Negative Basis Trade.}{15}{paragraph*.2}%
+\contentsline {paragraph}{iTraxx Combined: The CDS Index Skew.}{16}{paragraph*.3}%
+\contentsline {subsection}{\numberline {2.2}Index Construction and Weighting Schemes}{17}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Performance Analysis}{18}{subsection.2.3}%
+\contentsline {paragraph}{Manipulation-Proof Performance.}{19}{paragraph*.4}%
+\contentsline {paragraph}{Volatility-Managed Portfolios.}{19}{paragraph*.5}%
+\contentsline {section}{\numberline {3}Benchmark Factor Models}{21}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Benchmark Specifications}{21}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Results and Discussion}{24}{subsection.3.2}%
+\contentsline {paragraph}{Factor Model Regressions.}{24}{paragraph*.6}%
+\contentsline {paragraph}{Cross-Model Comparison and Regime Analysis.}{25}{paragraph*.7}%
+\contentsline {paragraph}{Conditional Alpha.}{26}{paragraph*.8}%
+\contentsline {paragraph}{Out-of-Sample Alpha.}{27}{paragraph*.9}%
+\contentsline {paragraph}{Rolling Alpha.}{27}{paragraph*.10}%
+\contentsline {section}{\numberline {4}Factor Selection and Spanning Regressions}{28}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Candidate Factor Universe}{29}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Principal Component Analysis}{30}{subsection.4.2}%
+\contentsline {paragraph}{Out-of-Sample Alpha.}{31}{paragraph*.11}%
+\contentsline {subsection}{\numberline {4.3}Adaptive Elastic Net}{32}{subsection.4.3}%
+\contentsline {paragraph}{Preprocessing.}{32}{paragraph*.12}%
+\contentsline {paragraph}{Estimation.}{32}{paragraph*.13}%
+\contentsline {paragraph}{Stability Selection.}{33}{paragraph*.14}%
+\contentsline {paragraph}{Post-Selection OLS.}{34}{paragraph*.15}%
+\contentsline {paragraph}{Results.}{34}{paragraph*.16}%
+\contentsline {subsection}{\numberline {4.4}Conditional Alpha}{35}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.5}Discussion, Method Comparison, and Robustness}{36}{subsection.4.5}%
+\contentsline {section}{\numberline {5}Cross-Strategy Interdependencies}{37}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Mispricing Construction and Stress Regimes}{38}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}P1: Cross-Market Co-Movement}{39}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}P2: Stress Amplification}{40}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}P3: Lead--Lag Transmission}{41}{subsection.5.4}%
+\contentsline {subsection}{\numberline {5.5}P4: Persistence and Funding-Dependence}{43}{subsection.5.5}%
+\contentsline {subsection}{\numberline {5.6}P5: The Common Factor}{44}{subsection.5.6}%
+\contentsline {subsection}{\numberline {5.7}Discussion: Why These Arbitrages Persist}{45}{subsection.5.7}%
+\contentsline {paragraph}{Holder-Base Heterogeneity as the Source of Identification.}{45}{paragraph*.17}%
+\contentsline {paragraph}{Why the Mispricings Persist.}{46}{paragraph*.18}%
+\contentsline {paragraph}{Summary: The Five Predictions.}{47}{paragraph*.19}%
+\contentsline {section}{\numberline {6}Conclusion}{48}{section.6}%
+\contentsline {section}{\numberline {A}Appendix}{56}{appendix.A}%
+\contentsline {subsection}{\numberline {A.1}BTP Italia: Indexation Coefficient and Deflation Floors}{56}{subsection.A.1}%
+\contentsline {subsection}{\numberline {A.2}Trade Construction Details}{57}{subsection.A.2}%
+\contentsline {subsubsection}{\numberline {A.2.1}Entry/Exit Rules and Thresholds}{57}{subsubsection.A.2.1}%
+\contentsline {subsubsection}{\numberline {A.2.2}Trade-Level Statistics}{57}{subsubsection.A.2.2}%
+\contentsline {subsubsection}{\numberline {A.2.3}Transaction Costs}{57}{subsubsection.A.2.3}%
+\contentsline {subsection}{\numberline {A.3}Signal-Weighted vs Equal-Weighted Comparison}{59}{subsection.A.3}%
+\contentsline {subsection}{\numberline {A.4}Volatility-Managed Portfolios}{59}{subsection.A.4}%
+\contentsline {subsection}{\numberline {A.5}Benchmark Regressions with US Factors}{60}{subsection.A.5}%
+\contentsline {subsection}{\numberline {A.6}Subperiod and Rolling Window Analysis}{62}{subsection.A.6}%
+\contentsline {subsubsection}{\numberline {A.6.1}Duarte et al.\ (2007)}{62}{subsubsection.A.6.1}%
+\contentsline {subsubsection}{\numberline {A.6.2}Brooks et al.\ (2020) --- Active Fixed Income}{62}{subsubsection.A.6.2}%
+\contentsline {subsubsection}{\numberline {A.6.3}Fung \& Hsieh (2004)}{63}{subsubsection.A.6.3}%
+\contentsline {subsubsection}{\numberline {A.6.4}Out-of-Sample Alpha: Rolling-Window Robustness}{64}{subsubsection.A.6.4}%
+\contentsline {subsection}{\numberline {A.7}VIF Diagnostics}{65}{subsection.A.7}%
+\contentsline {subsection}{\numberline {A.8}Candidate Factor Universe}{67}{subsection.A.8}%
+\contentsline {subsubsection}{\numberline {A.8.1}Complete Factor List with Sources}{67}{subsubsection.A.8.1}%
+\contentsline {subsection}{\numberline {A.9}PCA Robustness}{72}{subsection.A.9}%
+\contentsline {subsubsection}{\numberline {A.9.1}Robustness across the Number of Components}{72}{subsubsection.A.9.1}%
+\contentsline {subsubsection}{\numberline {A.9.2}Subperiod and Regime Analysis}{72}{subsubsection.A.9.2}%
+\contentsline {subsubsection}{\numberline {A.9.3}Conditional Alpha: Christopherson--Ferson--Glassman and Threshold Robustness (PCA)}{76}{subsubsection.A.9.3}%
+\contentsline {subsubsection}{\numberline {A.9.4}Variance Diagnostics}{76}{subsubsection.A.9.4}%
+\contentsline {subsection}{\numberline {A.10}AEN Robustness}{77}{subsection.A.10}%
+\contentsline {subsubsection}{\numberline {A.10.1}Sensitivity to Hyperparameters}{77}{subsubsection.A.10.1}%
+\contentsline {subsubsection}{\numberline {A.10.2}Factor Selection Across Methods}{77}{subsubsection.A.10.2}%
+\contentsline {subsubsection}{\numberline {A.10.3}Conditional Alpha: Detailed Results (AEN)}{78}{subsubsection.A.10.3}%
+\contentsline {subsubsection}{\numberline {A.10.4}Rolling Alpha}{80}{subsubsection.A.10.4}%
+\contentsline {subsection}{\numberline {A.11}Cross-Strategy Interdependencies: Additional Tests}{81}{subsection.A.11}%
+\contentsline {subsubsection}{\numberline {A.11.1}Purged Correlations}{82}{subsubsection.A.11.1}%
+\contentsline {subsubsection}{\numberline {A.11.2}DCC-GARCH}{82}{subsubsection.A.11.2}%
+\contentsline {subsubsection}{\numberline {A.11.3}Granger Causality: Lag Robustness}{83}{subsubsection.A.11.3}%
+\contentsline {section}{Tables}{85}{table.caption.53}%
