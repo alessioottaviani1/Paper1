@@ -1,0 +1,417 @@
+\begin{thebibliography}{64}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Amihud and Mendelson(2015)]{amihud2015pricing}
+Yakov Amihud and Haim Mendelson.
+\newblock The pricing of illiquidity as a characteristic and as risk.
+\newblock \emph{Multinational Finance Journal}, 19\penalty0 (3):\penalty0
+  149--168, 2015.
+
+\bibitem[Asness et~al.(2013)Asness, Moskowitz, and Pedersen]{asness2013value}
+Clifford~S Asness, Tobias~J Moskowitz, and Lasse~Heje Pedersen.
+\newblock Value and momentum everywhere.
+\newblock \emph{The journal of finance}, 68\penalty0 (3):\penalty0 929--985,
+  2013.
+
+\bibitem[Asness et~al.(2019)Asness, Frazzini, and Pedersen]{asness2019quality}
+Clifford~S Asness, Andrea Frazzini, and Lasse~Heje Pedersen.
+\newblock Quality minus junk.
+\newblock \emph{Review of Accounting Studies}, 24\penalty0 (1):\penalty0
+  34--112, 2019.
+
+\bibitem[Asvanunt and Richardson(2017)]{asvanunt2017credit}
+Attakrit Asvanunt and Scott Richardson.
+\newblock The credit risk premium.
+\newblock \emph{Journal of Fixed Income}, 26\penalty0 (3):\penalty0 6--24,
+  2017.
+
+\bibitem[Bai and Collin-Dufresne(2019)]{bai2019cds}
+Jennie Bai and Pierre Collin-Dufresne.
+\newblock The cds-bond basis.
+\newblock \emph{Financial Management}, 48\penalty0 (2):\penalty0 417--439,
+  2019.
+
+\bibitem[Bai and Ng(2002)]{bai2002determining}
+Jushan Bai and Serena Ng.
+\newblock Determining the number of factors in approximate factor models.
+\newblock \emph{Econometrica}, 70\penalty0 (1):\penalty0 191--221, 2002.
+
+\bibitem[Bai and Ng(2006)]{bai2006confidence}
+Jushan Bai and Serena Ng.
+\newblock Confidence intervals for diffusion index forecasts and inference for
+  factor-augmented regressions.
+\newblock \emph{Econometrica}, 74\penalty0 (4):\penalty0 1133--1150, 2006.
+
+\bibitem[Bongaerts et~al.(2011)Bongaerts, De~Jong, and
+  Driessen]{bongaerts2011liquidity}
+Dion Bongaerts, Frank De~Jong, and Joost Driessen.
+\newblock Derivative pricing with liquidity risk: Theory and evidence from the
+  credit default swap market.
+\newblock \emph{Journal of Finance}, 66\penalty0 (1):\penalty0 203--240, 2011.
+
+\bibitem[Boyarchenko et~al.(2016)Boyarchenko, Gupta, Steele, and
+  Yen]{boyarchenko2016trends}
+Nina Boyarchenko, Pooja Gupta, Nick Steele, and Jacqueline Yen.
+\newblock Trends in credit market arbitrage.
+\newblock Technical report, Staff Report, 2016.
+
+\bibitem[Breeden et~al.(1989)Breeden, Gibbons, and
+  Litzenberger]{breeden1989empirical}
+Douglas~T. Breeden, Michael~R. Gibbons, and Robert~H. Litzenberger.
+\newblock Empirical test of the consumption-oriented {CAPM}.
+\newblock \emph{Journal of Finance}, 44\penalty0 (2):\penalty0 231--262, 1989.
+
+\bibitem[Brooks et~al.(2020)Brooks, Gould, and Richardson]{brooks2020active}
+Jordan Brooks, Tony Gould, and Scott~A Richardson.
+\newblock Active fixed income illusions.
+\newblock \emph{Journal of Fixed Income}, 29\penalty0 (4), 2020.
+
+\bibitem[Brunnermeier and Pedersen(2009)]{brunnermeier2009market}
+Markus~K Brunnermeier and Lasse~Heje Pedersen.
+\newblock Market liquidity and funding liquidity.
+\newblock \emph{The review of financial studies}, 22\penalty0 (6):\penalty0
+  2201--2238, 2009.
+
+\bibitem[Carhart(1997)]{carhart1997persistence}
+Mark~M Carhart.
+\newblock On persistence in mutual fund performance.
+\newblock \emph{The Journal of finance}, 52\penalty0 (1):\penalty0 57--82,
+  1997.
+
+\bibitem[Carr and Wu(2009)]{carr2009variance}
+Peter Carr and Liuren Wu.
+\newblock Variance risk premiums.
+\newblock \emph{Review of Financial Studies}, 22\penalty0 (3):\penalty0
+  1311--1341, 2009.
+
+\bibitem[Cederburg et~al.(2020)Cederburg, O’Doherty, Wang, and
+  Yan]{cederburg2020performance}
+Scott Cederburg, Michael~S O’Doherty, Feifei Wang, and Xuemin~Sterling Yan.
+\newblock On the performance of volatility-managed portfolios.
+\newblock \emph{Journal of financial Economics}, 138\penalty0 (1):\penalty0
+  95--117, 2020.
+
+\bibitem[Chen et~al.(2025)Chen, Li, Tang, and Zhou]{chen2025anomalies}
+Yong Chen, Sophia~Zhengzi Li, Yushan Tang, and Guofu Zhou.
+\newblock Anomalies as new hedge fund factors.
+\newblock \emph{Journal of Financial and Quantitative Analysis}, 60\penalty0
+  (8):\penalty0 3660--3693, 2025.
+
+\bibitem[Christopherson et~al.(1998)Christopherson, Ferson, and
+  Glassman]{christopherson1998conditioning}
+Jon~A Christopherson, Wayne~E Ferson, and Debra~A Glassman.
+\newblock Conditioning manager alphas on economic information: Another look at
+  the persistence of performance.
+\newblock \emph{The Review of Financial Studies}, 11\penalty0 (1):\penalty0
+  111--142, 1998.
+
+\bibitem[Connor and Korajczyk(1986)]{connor1986performance}
+Gregory Connor and Robert~A Korajczyk.
+\newblock Performance measurement with the arbitrage pricing theory: A new
+  framework for analysis.
+\newblock \emph{Journal of Financial Economics}, 15\penalty0 (3):\penalty0
+  373--394, 1986.
+
+\bibitem[Connor and Korajczyk(1988)]{connor1988risk}
+Gregory Connor and Robert~A Korajczyk.
+\newblock Risk and return in an equilibrium apt: Application of a new test
+  methodology.
+\newblock \emph{Journal of Financial Economics}, 21\penalty0 (2):\penalty0
+  255--289, 1988.
+
+\bibitem[Cremers et~al.(2021)Cremers, Fleckenstein, and
+  Gandhi]{cremers2021treasury}
+Martijn Cremers, Matthias Fleckenstein, and Priyank Gandhi.
+\newblock Treasury yield implied volatility and real activity.
+\newblock \emph{Journal of Financial Economics}, 140\penalty0 (2):\penalty0
+  412--435, 2021.
+
+\bibitem[Duarte et~al.(2007)Duarte, Longstaff, and Yu]{duarte2007risk}
+Jefferson Duarte, Francis~A Longstaff, and Fan Yu.
+\newblock Risk and return in fixed-income arbitrage: Nickels in front of a
+  steamroller?
+\newblock \emph{The Review of Financial Studies}, 20\penalty0 (3):\penalty0
+  769--811, 2007.
+
+\bibitem[Duffie(2010)]{duffie2010presidential}
+Darrell Duffie.
+\newblock Presidential address: Asset price dynamics with slow-moving capital.
+\newblock \emph{The Journal of finance}, 65\penalty0 (4):\penalty0 1237--1267,
+  2010.
+
+\bibitem[Eraker and Wu(2017)]{eraker2017explaining}
+Bj{\o}rn Eraker and Yue Wu.
+\newblock Explaining the negative returns to volatility claims: An equilibrium
+  approach.
+\newblock \emph{Journal of Financial Economics}, 125\penalty0 (1):\penalty0
+  72--98, 2017.
+
+\bibitem[Fama and French(1993)]{fama1993common}
+Eugene~F Fama and Kenneth~R French.
+\newblock Common risk factors in the returns on stocks and bonds.
+\newblock \emph{Journal of financial economics}, 33\penalty0 (1):\penalty0
+  3--56, 1993.
+
+\bibitem[Fama and French(2017)]{fama2017international}
+Eugene~F Fama and Kenneth~R French.
+\newblock International tests of a five-factor asset pricing model.
+\newblock \emph{Journal of financial Economics}, 123\penalty0 (3):\penalty0
+  441--463, 2017.
+
+\bibitem[Fleckenstein et~al.(2014)Fleckenstein, Longstaff, and
+  Lustig]{fleckenstein2014tips}
+Matthias Fleckenstein, Francis~A Longstaff, and Hanno Lustig.
+\newblock The tips-treasury bond puzzle.
+\newblock \emph{the Journal of Finance}, 69\penalty0 (5):\penalty0 2151--2197,
+  2014.
+
+\bibitem[Forbes and Rigobon(2002)]{forbes2002no}
+Kristin~J Forbes and Roberto Rigobon.
+\newblock No contagion, only interdependence: measuring stock market
+  comovements.
+\newblock \emph{The journal of Finance}, 57\penalty0 (5):\penalty0 2223--2261,
+  2002.
+
+\bibitem[Frazzini and Pedersen(2014)]{frazzini2014betting}
+Andrea Frazzini and Lasse~Heje Pedersen.
+\newblock Betting against beta.
+\newblock \emph{Journal of financial economics}, 111\penalty0 (1):\penalty0
+  1--25, 2014.
+
+\bibitem[Friedman et~al.(2010)Friedman, Hastie, and
+  Tibshirani]{friedman2010regularization}
+Jerome~H Friedman, Trevor Hastie, and Rob Tibshirani.
+\newblock Regularization paths for generalized linear models via coordinate
+  descent.
+\newblock \emph{Journal of statistical software}, 33:\penalty0 1--22, 2010.
+
+\bibitem[Fung and Hsieh(2001)]{fung2001risk}
+William Fung and David~A Hsieh.
+\newblock The risk in hedge fund strategies: Theory and evidence from trend
+  followers.
+\newblock \emph{The review of financial studies}, 14\penalty0 (2):\penalty0
+  313--341, 2001.
+
+\bibitem[Fung and Hsieh(2004)]{fung2004hedge}
+William Fung and David~A Hsieh.
+\newblock Hedge fund benchmarks: A risk-based approach.
+\newblock \emph{Financial Analysts Journal}, 60\penalty0 (5):\penalty0 65--80,
+  2004.
+
+\bibitem[Giglio and Xiu(2021)]{giglio2021asset}
+Stefano Giglio and Dacheng Xiu.
+\newblock Asset pricing with omitted factors.
+\newblock \emph{Journal of Political Economy}, 129\penalty0 (7):\penalty0
+  1947--1990, 2021.
+
+\bibitem[Gl{\"u}ck et~al.(2021)Gl{\"u}ck, H{\"u}bel, and
+  Scholz]{gluck2021currency}
+Maximilian Gl{\"u}ck, Benjamin H{\"u}bel, and Hendrik Scholz.
+\newblock Currency conversion of fama--french factors: How and why.
+\newblock \emph{Journal of portfolio management}, 47\penalty0 (2):\penalty0
+  157--175, 2021.
+
+\bibitem[Goetzmann et~al.(2007)Goetzmann, Ingersoll, Spiegel, and
+  Welch]{goetzmann2007portfolio}
+William Goetzmann, Jonathan Ingersoll, Matthew Spiegel, and Ivo Welch.
+\newblock Portfolio performance manipulation and manipulation-proof performance
+  measures.
+\newblock \emph{The Review of Financial Studies}, 20\penalty0 (5):\penalty0
+  1503--1546, 2007.
+
+\bibitem[Han and Zhou(2015)]{hanzhou2015cds}
+Bing Han and Yi~Zhou.
+\newblock Understanding the term structure of credit default swap spreads.
+\newblock \emph{Journal of Empirical Finance}, 31:\penalty0 18--35, 2015.
+
+\bibitem[Han et~al.(2017)Han, Subrahmanyam, and Zhou]{hansubrahmanyamzhou2017}
+Bing Han, Avanidhar Subrahmanyam, and Yi~Zhou.
+\newblock The term structure of credit spreads, firm fundamentals, and expected
+  stock returns.
+\newblock \emph{Journal of Financial Economics}, 124\penalty0 (1):\penalty0
+  147--171, 2017.
+
+\bibitem[Haubrich et~al.(2012)Haubrich, Pennacchi, and
+  Ritchken]{haubrich2012inflation}
+Joseph Haubrich, George Pennacchi, and Peter Ritchken.
+\newblock Inflation expectations, real rates, and risk premia: Evidence from
+  inflation swaps.
+\newblock \emph{The Review of Financial Studies}, 25\penalty0 (5):\penalty0
+  1588--1629, 2012.
+
+\bibitem[He et~al.(2017)He, Kelly, and Manela]{he2017intermediary}
+Zhiguo He, Bryan Kelly, and Asaf Manela.
+\newblock Intermediary asset pricing: New evidence from many asset classes.
+\newblock \emph{Journal of Financial Economics}, 126\penalty0 (1):\penalty0
+  1--35, 2017.
+
+\bibitem[Huberman et~al.(1987)Huberman, Kandel, and
+  Stambaugh]{huberman1987mimicking}
+Gur Huberman, Shmuel Kandel, and Robert~F. Stambaugh.
+\newblock Mimicking portfolios and exact arbitrage pricing.
+\newblock \emph{Journal of Finance}, 42\penalty0 (1):\penalty0 1--9, 1987.
+
+\bibitem[Hull et~al.(2004)Hull, Predescu, and White]{hull2004relationship}
+John Hull, Mirela Predescu, and Alan White.
+\newblock The relationship between credit default swap spreads, bond yields,
+  and credit rating announcements.
+\newblock \emph{Journal of banking \& finance}, 28\penalty0 (11):\penalty0
+  2789--2811, 2004.
+
+\bibitem[Ilmanen et~al.(2021)Ilmanen, Israel, Lee, Moskowitz, and
+  Thapar]{ilmanen2021factor}
+Antti Ilmanen, Ronen Israel, Rachel Lee, Tobias~J. Moskowitz, and Ashwin
+  Thapar.
+\newblock How do factor premia vary over time? {A} century of evidence.
+\newblock \emph{Journal of Investment Management}, 19\penalty0 (4), 2021.
+
+\bibitem[Junge and Trolle(2015)]{junge2015liquidity}
+Benjamin Junge and Anders~B Trolle.
+\newblock Liquidity risk in credit default swap markets.
+\newblock Research Paper 13-65, Swiss Finance Institute, 2015.
+
+\bibitem[Klingler and Sundaresan(2019)]{klingler2019swap}
+Sven Klingler and Suresh Sundaresan.
+\newblock An explanation of negative swap spreads: Demand for duration from
+  underfunded pension plans.
+\newblock \emph{The Journal of Finance}, 74\penalty0 (2):\penalty0 675--710,
+  2019.
+\newblock \doi{10.1111/jofi.12750}.
+
+\bibitem[Koijen et~al.(2018)Koijen, Moskowitz, Pedersen, and
+  Vrugt]{koijen2018carry}
+Ralph S.~J. Koijen, Tobias~J. Moskowitz, Lasse~Heje Pedersen, and Evert~B.
+  Vrugt.
+\newblock Carry.
+\newblock \emph{Journal of Financial Economics}, 127\penalty0 (2):\penalty0
+  197--225, 2018.
+
+\bibitem[Litterman and Scheinkman(1991)]{litterman1991common}
+Robert~B Litterman and Jos{\'e}~A Scheinkman.
+\newblock Common factors affecting bond returns.
+\newblock \emph{Journal of Fixed Income}, 1\penalty0 (1):\penalty0 54--61,
+  1991.
+
+\bibitem[Longstaff et~al.(2005)Longstaff, Mithal, and
+  Neis]{longstaff2005corporate}
+Francis~A Longstaff, Sanjay Mithal, and Eric Neis.
+\newblock Corporate yield spreads: Default risk or liquidity? new evidence from
+  the credit default swap market.
+\newblock \emph{The journal of finance}, 60\penalty0 (5):\penalty0 2213--2253,
+  2005.
+
+\bibitem[Ludvigson et~al.(2021)Ludvigson, Ma, and Ng]{ludvigson2021uncertainty}
+Sydney~C Ludvigson, Sai Ma, and Serena Ng.
+\newblock Uncertainty and business cycles: exogenous impulse or endogenous
+  response?
+\newblock \emph{American Economic Journal: Macroeconomics}, 13\penalty0
+  (4):\penalty0 369--410, 2021.
+
+\bibitem[Martin(2017)]{martin2017expected}
+Ian Martin.
+\newblock What is the expected return on the market?
+\newblock \emph{The Quarterly Journal of Economics}, 132\penalty0 (1):\penalty0
+  367--433, 2017.
+
+\bibitem[Meinshausen and B{\"u}hlmann(2010)]{meinshausen2010stability}
+Nicolai Meinshausen and Peter B{\"u}hlmann.
+\newblock Stability selection.
+\newblock \emph{Journal of the Royal Statistical Society Series B: Statistical
+  Methodology}, 72\penalty0 (4):\penalty0 417--473, 2010.
+
+\bibitem[Mitchell and Pulvino(2012)]{mitchell2012arbitrage}
+Mark Mitchell and Todd Pulvino.
+\newblock Arbitrage crashes and the speed of capital.
+\newblock \emph{Journal of Financial Economics}, 104\penalty0 (3):\penalty0
+  469--490, 2012.
+
+\bibitem[Mitchell et~al.(2007)Mitchell, Pedersen, and
+  Pulvino]{mitchell2007slow}
+Mark Mitchell, Lasse~Heje Pedersen, and Todd Pulvino.
+\newblock Slow moving capital.
+\newblock \emph{American Economic Review}, 97\penalty0 (2):\penalty0 215--220,
+  2007.
+
+\bibitem[Moreira and Muir(2017)]{moreira2017volatility}
+Alan Moreira and Tyler Muir.
+\newblock Volatility-managed portfolios.
+\newblock \emph{The Journal of Finance}, 72\penalty0 (4):\penalty0 1611--1644,
+  2017.
+
+\bibitem[Newey and West(1987)]{newey1987simple}
+Whitney~K Newey and Kenneth~D West.
+\newblock A simple positive semi-definite hetescedasticity and autocorrelation
+  consistent matrix estimation.
+\newblock \emph{Econometrica}, 55:\penalty0 703--708, 1987.
+
+\bibitem[Newey and West(1994)]{newey1994automatic}
+Whitney~K Newey and Kenneth~D West.
+\newblock Automatic lag selection in covariance matrix estimation.
+\newblock \emph{The review of economic studies}, 61\penalty0 (4):\penalty0
+  631--653, 1994.
+
+\bibitem[O'Kane(2008)]{o2008modelling}
+Dominic O'Kane.
+\newblock \emph{Modelling single-name and multi-name credit derivatives}.
+\newblock John Wiley \& Sons, 2008.
+
+\bibitem[P{\'a}stor and Stambaugh(2003)]{pastor2003liquidity}
+L'ubo{\v{s}} P{\'a}stor and Robert~F Stambaugh.
+\newblock Liquidity risk and expected stock returns.
+\newblock \emph{Journal of Political economy}, 111\penalty0 (3):\penalty0
+  642--685, 2003.
+
+\bibitem[Pelizzon et~al.(2016)Pelizzon, Subrahmanyam, Tomio, and
+  Uno]{pelizzon2016sovereign}
+Loriana Pelizzon, Marti~G. Subrahmanyam, Davide Tomio, and Jun Uno.
+\newblock Sovereign credit risk, liquidity, and {European} {Central} {Bank}
+  intervention: {Deus} ex machina?
+\newblock \emph{Journal of Financial Economics}, 122\penalty0 (1):\penalty0
+  86--115, 2016.
+\newblock \doi{10.1016/j.jfineco.2016.06.001}.
+
+\bibitem[Pesaran and Shin(1998)]{pesaran1998generalized}
+H~Hashem Pesaran and Yongcheol Shin.
+\newblock Generalized impulse response analysis in linear multivariate models.
+\newblock \emph{Economics letters}, 58\penalty0 (1):\penalty0 17--29, 1998.
+
+\bibitem[Politis and Romano(1994)]{politis1994stationary}
+Dimitris~N Politis and Joseph~P Romano.
+\newblock The stationary bootstrap.
+\newblock \emph{Journal of the American Statistical association}, 89\penalty0
+  (428):\penalty0 1303--1313, 1994.
+
+\bibitem[Rebonato and Ronzani(2021)]{rebonato2021convexity}
+Riccardo Rebonato and Riccardo Ronzani.
+\newblock Is convexity efficiently priced? evidence from international swap
+  markets.
+\newblock \emph{Journal of Empirical Finance}, 63:\penalty0 392--413, 2021.
+
+\bibitem[Siriwardane(2019)]{siriwardane2019capital}
+Emil~N Siriwardane.
+\newblock Limited investment capital and credit spreads.
+\newblock \emph{Journal of Finance}, 74\penalty0 (5):\penalty0 2303--2347,
+  2019.
+
+\bibitem[Vayanos and Vila(2021)]{vayanos2021preferred}
+Dimitri Vayanos and Jean-Luc Vila.
+\newblock A preferred-habitat model of the term structure of interest rates.
+\newblock \emph{Econometrica}, 89\penalty0 (1):\penalty0 77--112, 2021.
+
+\bibitem[Welch and Goyal(2008)]{welch2008comprehensive}
+Ivo Welch and Amit Goyal.
+\newblock A comprehensive look at the empirical performance of equity premium
+  prediction.
+\newblock \emph{The Review of Financial Studies}, 21\penalty0 (4):\penalty0
+  1455--1508, 2008.
+
+\bibitem[Zou and Zhang(2009)]{zou2009adaptive}
+Hui Zou and Hao~Helen Zhang.
+\newblock On the adaptive elastic-net with a diverging number of parameters.
+\newblock \emph{Annals of statistics}, 37\penalty0 (4):\penalty0 1733, 2009.
+
+\end{thebibliography}
