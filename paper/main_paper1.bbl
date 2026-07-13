@@ -1,0 +1,320 @@
+\begin{thebibliography}{66}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[Amihud and Mendelson(2015)]{amihud2015pricing}
+Amihud, Yakov, and Haim Mendelson, 2015, The pricing of illiquidity as a
+  characteristic and as risk, {\em Multinational Finance Journal\/} 19,
+  149--168.
+
+\bibitem[Asness et~al.(2019)Asness, Frazzini, and Pedersen]{asness2019quality}
+Asness, Clifford~S, Andrea Frazzini, and Lasse~Heje Pedersen, 2019, Quality
+  minus junk, {\em Review of Accounting Studies\/} 24, 34--112.
+
+\bibitem[Asness et~al.(2013)Asness, Moskowitz, and Pedersen]{asness2013value}
+Asness, Clifford~S, Tobias~J Moskowitz, and Lasse~Heje Pedersen, 2013, Value
+  and momentum everywhere, {\em The journal of finance\/} 68, 929--985.
+
+\bibitem[Asvanunt and Richardson(2017)]{asvanunt2017credit}
+Asvanunt, Attakrit, and Scott Richardson, 2017, The credit risk premium, {\em
+  Journal of Fixed Income\/} 26, 6--24.
+
+\bibitem[Bai and Collin-Dufresne(2019)]{bai2019cds}
+Bai, Jennie, and Pierre Collin-Dufresne, 2019, The cds-bond basis, {\em
+  Financial Management\/} 48, 417--439.
+
+\bibitem[Bai and Ng(2002)]{bai2002determining}
+Bai, Jushan, and Serena Ng, 2002, Determining the number of factors in
+  approximate factor models, {\em Econometrica\/} 70, 191--221.
+
+\bibitem[Bai and Ng(2006)]{bai2006confidence}
+Bai, Jushan, and Serena Ng, 2006, Confidence intervals for diffusion index
+  forecasts and inference for factor-augmented regressions, {\em
+  Econometrica\/} 74, 1133--1150.
+
+\bibitem[Barillas and Shanken(2018)]{barillas2018comparing}
+Barillas, Francisco, and Jay Shanken, 2018, Comparing asset pricing models,
+  {\em The Journal of Finance\/} 73, 715--754.
+
+\bibitem[Belloni et~al.(2014)Belloni, Chernozhukov, and
+  Hansen]{belloni2014inference}
+Belloni, Alexandre, Victor Chernozhukov, and Christian Hansen, 2014, Inference
+  on treatment effects after selection among high-dimensional controls, {\em
+  The Review of Economic Studies\/} 81, 608--650.
+
+\bibitem[Bertsimas et~al.(2016)Bertsimas, King, and
+  Mazumder]{bertsimas2016best}
+Bertsimas, Dimitris, Angela King, and Rahul Mazumder, 2016, Best subset
+  selection via a modern optimization lens, {\em The annals of statistics\/}
+  813--852.
+
+\bibitem[Bongaerts et~al.(2011)Bongaerts, De~Jong, and
+  Driessen]{bongaerts2011liquidity}
+Bongaerts, Dion, Frank De~Jong, and Joost Driessen, 2011, Derivative pricing
+  with liquidity risk: Theory and evidence from the credit default swap market,
+  {\em Journal of Finance\/} 66, 203--240.
+
+\bibitem[Boyarchenko et~al.(2016)Boyarchenko, Gupta, Steele, and
+  Yen]{boyarchenko2016trends}
+Boyarchenko, Nina, Pooja Gupta, Nick Steele, and Jacqueline Yen, 2016, Trends
+  in credit market arbitrage, Technical report, Staff Report.
+
+\bibitem[Brooks et~al.(2020)Brooks, Gould, and Richardson]{brooks2020active}
+Brooks, Jordan, Tony Gould, and Scott~A Richardson, 2020, Active fixed income
+  illusions, {\em Journal of Fixed Income\/} 29.
+
+\bibitem[Brunnermeier and Pedersen(2009)]{brunnermeier2009market}
+Brunnermeier, Markus~K, and Lasse~Heje Pedersen, 2009, Market liquidity and
+  funding liquidity, {\em The review of financial studies\/} 22, 2201--2238.
+
+\bibitem[Cand{\`e}s et~al.(2018)Cand{\`e}s, Fan, Janson, and
+  Lv]{candes2018panning}
+Cand{\`e}s, Emmanuel, Yingying Fan, Lucas Janson, and Jinchi Lv, 2018, Panning
+  for gold: `model-x' knockoffs for high dimensional controlled variable
+  selection, {\em Journal of the Royal Statistical Society: Series B\/} 80,
+  551--577.
+
+\bibitem[Carhart(1997)]{carhart1997persistence}
+Carhart, Mark~M, 1997, On persistence in mutual fund performance, {\em The
+  Journal of finance\/} 52, 57--82.
+
+\bibitem[Carr and Wu(2009)]{carr2009variance}
+Carr, Peter, and Liuren Wu, 2009, Variance risk premiums, {\em Review of
+  Financial Studies\/} 22, 1311--1341.
+
+\bibitem[Cederburg et~al.(2020)Cederburg, O’Doherty, Wang, and
+  Yan]{cederburg2020performance}
+Cederburg, Scott, Michael~S O’Doherty, Feifei Wang, and Xuemin~Sterling Yan,
+  2020, On the performance of volatility-managed portfolios, {\em Journal of
+  financial Economics\/} 138, 95--117.
+
+\bibitem[Christopherson et~al.(1998)Christopherson, Ferson, and
+  Glassman]{christopherson1998conditioning}
+Christopherson, Jon~A, Wayne~E Ferson, and Debra~A Glassman, 1998, Conditioning
+  manager alphas on economic information: Another look at the persistence of
+  performance, {\em The Review of Financial Studies\/} 11, 111--142.
+
+\bibitem[Connor and Korajczyk(1986)]{connor1986performance}
+Connor, Gregory, and Robert~A Korajczyk, 1986, Performance measurement with the
+  arbitrage pricing theory: A new framework for analysis, {\em Journal of
+  Financial Economics\/} 15, 373--394.
+
+\bibitem[Connor and Korajczyk(1988)]{connor1988risk}
+Connor, Gregory, and Robert~A Korajczyk, 1988, Risk and return in an
+  equilibrium apt: Application of a new test methodology, {\em Journal of
+  Financial Economics\/} 21, 255--289.
+
+\bibitem[Cremers et~al.(2021)Cremers, Fleckenstein, and
+  Gandhi]{cremers2021treasury}
+Cremers, Martijn, Matthias Fleckenstein, and Priyank Gandhi, 2021, Treasury
+  yield implied volatility and real activity, {\em Journal of Financial
+  Economics\/} 140, 412--435.
+
+\bibitem[Duarte et~al.(2007)Duarte, Longstaff, and Yu]{duarte2007risk}
+Duarte, Jefferson, Francis~A Longstaff, and Fan Yu, 2007, Risk and return in
+  fixed-income arbitrage: Nickels in front of a steamroller?, {\em The Review
+  of Financial Studies\/} 20, 769--811.
+
+\bibitem[Duffie(2010)]{duffie2010presidential}
+Duffie, Darrell, 2010, Presidential address: Asset price dynamics with
+  slow-moving capital, {\em The Journal of finance\/} 65, 1237--1267.
+
+\bibitem[Eraker and Wu(2017)]{eraker2017explaining}
+Eraker, Bj{\o}rn, and Yue Wu, 2017, Explaining the negative returns to
+  volatility claims: An equilibrium approach, {\em Journal of Financial
+  Economics\/} 125, 72--98.
+
+\bibitem[Fama and French(1993)]{fama1993common}
+Fama, Eugene~F, and Kenneth~R French, 1993, Common risk factors in the returns
+  on stocks and bonds, {\em Journal of financial economics\/} 33, 3--56.
+
+\bibitem[Fama and French(2017)]{fama2017international}
+Fama, Eugene~F, and Kenneth~R French, 2017, International tests of a
+  five-factor asset pricing model, {\em Journal of financial Economics\/} 123,
+  441--463.
+
+\bibitem[Fleckenstein et~al.(2014)Fleckenstein, Longstaff, and
+  Lustig]{fleckenstein2014tips}
+Fleckenstein, Matthias, Francis~A Longstaff, and Hanno Lustig, 2014, The
+  tips-treasury bond puzzle, {\em the Journal of Finance\/} 69, 2151--2197.
+
+\bibitem[Forbes and Rigobon(2002)]{forbes2002no}
+Forbes, Kristin~J, and Roberto Rigobon, 2002, No contagion, only
+  interdependence: measuring stock market comovements, {\em The journal of
+  Finance\/} 57, 2223--2261.
+
+\bibitem[Frazzini and Pedersen(2014)]{frazzini2014betting}
+Frazzini, Andrea, and Lasse~Heje Pedersen, 2014, Betting against beta, {\em
+  Journal of financial economics\/} 111, 1--25.
+
+\bibitem[Fung and Hsieh(2001)]{fung2001risk}
+Fung, William, and David~A Hsieh, 2001, The risk in hedge fund strategies:
+  Theory and evidence from trend followers, {\em The review of financial
+  studies\/} 14, 313--341.
+
+\bibitem[Fung and Hsieh(2004)]{fung2004hedge}
+Fung, William, and David~A Hsieh, 2004, Hedge fund benchmarks: A risk-based
+  approach, {\em Financial Analysts Journal\/} 60, 65--80.
+
+\bibitem[Giglio and Xiu(2021)]{giglio2021asset}
+Giglio, Stefano, and Dacheng Xiu, 2021, Asset pricing with omitted factors,
+  {\em Journal of Political Economy\/} 129, 1947--1990.
+
+\bibitem[Gl{\"u}ck et~al.(2021)Gl{\"u}ck, H{\"u}bel, and
+  Scholz]{gluck2021currency}
+Gl{\"u}ck, Maximilian, Benjamin H{\"u}bel, and Hendrik Scholz, 2021, Currency
+  conversion of fama--french factors: How and why, {\em Journal of portfolio
+  management\/} 47, 157--175.
+
+\bibitem[Goetzmann et~al.(2007)Goetzmann, Ingersoll, Spiegel, and
+  Welch]{goetzmann2007portfolio}
+Goetzmann, William, Jonathan Ingersoll, Matthew Spiegel, and Ivo Welch, 2007,
+  Portfolio performance manipulation and manipulation-proof performance
+  measures, {\em The Review of Financial Studies\/} 20, 1503--1546.
+
+\bibitem[Han et~al.(2017)Han, Subrahmanyam, and Zhou]{hansubrahmanyamzhou2017}
+Han, Bing, Avanidhar Subrahmanyam, and Yi~Zhou, 2017, The term structure of
+  credit spreads, firm fundamentals, and expected stock returns, {\em Journal
+  of Financial Economics\/} 124, 147--171.
+
+\bibitem[Han and Zhou(2015)]{hanzhou2015cds}
+Han, Bing, and Yi~Zhou, 2015, Understanding the term structure of credit
+  default swap spreads, {\em Journal of Empirical Finance\/} 31, 18--35.
+
+\bibitem[Harvey et~al.(2016)Harvey, Liu, and Zhu]{harvey2016and}
+Harvey, Campbell~R, Yan Liu, and Heqing Zhu, 2016, ... and the cross-section of
+  expected returns, {\em The Review of Financial Studies\/} 29, 5--68.
+
+\bibitem[Haubrich et~al.(2012)Haubrich, Pennacchi, and
+  Ritchken]{haubrich2012inflation}
+Haubrich, Joseph, George Pennacchi, and Peter Ritchken, 2012, Inflation
+  expectations, real rates, and risk premia: Evidence from inflation swaps,
+  {\em The Review of Financial Studies\/} 25, 1588--1629.
+
+\bibitem[He et~al.(2017)He, Kelly, and Manela]{he2017intermediary}
+He, Zhiguo, Bryan Kelly, and Asaf Manela, 2017, Intermediary asset pricing: New
+  evidence from many asset classes, {\em Journal of Financial Economics\/} 126,
+  1--35.
+
+\bibitem[Hull et~al.(2004)Hull, Predescu, and White]{hull2004relationship}
+Hull, John, Mirela Predescu, and Alan White, 2004, The relationship between
+  credit default swap spreads, bond yields, and credit rating announcements,
+  {\em Journal of banking \& finance\/} 28, 2789--2811.
+
+\bibitem[Ilmanen et~al.(2021)Ilmanen, Israel, Lee, Moskowitz, and
+  Thapar]{ilmanen2021factor}
+Ilmanen, Antti, Ronen Israel, Rachel Lee, Tobias~J. Moskowitz, and Ashwin
+  Thapar, 2021, How do factor premia vary over time? {A} century of evidence,
+  {\em Journal of Investment Management\/} 19.
+
+\bibitem[Junge and Trolle(2015)]{junge2015liquidity}
+Junge, Benjamin, and Anders~B Trolle, 2015, Liquidity risk in credit default
+  swap markets, Research Paper 13-65, Swiss Finance Institute.
+
+\bibitem[Kiefer and Vogelsang(2005)]{kiefer2005new}
+Kiefer, Nicholas~M, and Timothy~J Vogelsang, 2005, A new asymptotic theory for
+  heteroskedasticity-autocorrelation robust tests, {\em Econometric Theory\/}
+  21, 1130--1164.
+
+\bibitem[Klingler and Sundaresan(2019)]{klingler2019swap}
+Klingler, Sven, and Suresh Sundaresan, 2019, An explanation of negative swap
+  spreads: Demand for duration from underfunded pension plans, {\em The Journal
+  of Finance\/} 74, 675--710.
+
+\bibitem[Koijen et~al.(2018)Koijen, Moskowitz, Pedersen, and
+  Vrugt]{koijen2018carry}
+Koijen, Ralph S.~J., Tobias~J. Moskowitz, Lasse~Heje Pedersen, and Evert~B.
+  Vrugt, 2018, Carry, {\em Journal of Financial Economics\/} 127, 197--225.
+
+\bibitem[Lazarus et~al.(2018)Lazarus, Lewis, Stock, and Watson]{lazarus2018har}
+Lazarus, Eben, Daniel~J Lewis, James~H Stock, and Mark~W Watson, 2018, {HAR}
+  inference: Recommendations for practice, {\em Journal of Business \& Economic
+  Statistics\/} 36, 541--559.
+
+\bibitem[Litterman and Scheinkman(1991)]{litterman1991common}
+Litterman, Robert~B, and Jos{\'e}~A Scheinkman, 1991, Common factors affecting
+  bond returns, {\em Journal of Fixed Income\/} 1, 54--61.
+
+\bibitem[Longstaff et~al.(2005)Longstaff, Mithal, and
+  Neis]{longstaff2005corporate}
+Longstaff, Francis~A, Sanjay Mithal, and Eric Neis, 2005, Corporate yield
+  spreads: Default risk or liquidity? new evidence from the credit default swap
+  market, {\em The journal of finance\/} 60, 2213--2253.
+
+\bibitem[Martin(2017)]{martin2017expected}
+Martin, Ian, 2017, What is the expected return on the market?, {\em The
+  Quarterly Journal of Economics\/} 132, 367--433.
+
+\bibitem[Mitchell et~al.(2007)Mitchell, Pedersen, and
+  Pulvino]{mitchell2007slow}
+Mitchell, Mark, Lasse~Heje Pedersen, and Todd Pulvino, 2007, Slow moving
+  capital, {\em American Economic Review\/} 97, 215--220.
+
+\bibitem[Mitchell and Pulvino(2012)]{mitchell2012arbitrage}
+Mitchell, Mark, and Todd Pulvino, 2012, Arbitrage crashes and the speed of
+  capital, {\em Journal of Financial Economics\/} 104, 469--490.
+
+\bibitem[Moreira and Muir(2017)]{moreira2017volatility}
+Moreira, Alan, and Tyler Muir, 2017, Volatility-managed portfolios, {\em The
+  Journal of Finance\/} 72, 1611--1644.
+
+\bibitem[Newey and West(1987)]{newey1987simple}
+Newey, Whitney~K, and Kenneth~D West, 1987, A simple positive semi-definite
+  hetescedasticity and autocorrelation consistent matrix estimation, {\em
+  Econometrica\/} 55, 703--708.
+
+\bibitem[Newey and West(1994)]{newey1994automatic}
+Newey, Whitney~K, and Kenneth~D West, 1994, Automatic lag selection in
+  covariance matrix estimation, {\em The review of economic studies\/} 61,
+  631--653.
+
+\bibitem[O'Kane(2008)]{o2008modelling}
+O'Kane, Dominic, 2008, {\em Modelling single-name and multi-name credit
+  derivatives\/} (John Wiley \& Sons).
+
+\bibitem[P{\'a}stor and Stambaugh(2003)]{pastor2003liquidity}
+P{\'a}stor, L'ubo{\v{s}}, and Robert~F Stambaugh, 2003, Liquidity risk and
+  expected stock returns, {\em Journal of Political economy\/} 111, 642--685.
+
+\bibitem[Pelizzon et~al.(2016)Pelizzon, Subrahmanyam, Tomio, and
+  Uno]{pelizzon2016sovereign}
+Pelizzon, Loriana, Marti~G. Subrahmanyam, Davide Tomio, and Jun Uno, 2016,
+  Sovereign credit risk, liquidity, and {European} {Central} {Bank}
+  intervention: {Deus} ex machina?, {\em Journal of Financial Economics\/} 122,
+  86--115.
+
+\bibitem[Pesaran and Shin(1998)]{pesaran1998generalized}
+Pesaran, H~Hashem, and Yongcheol Shin, 1998, Generalized impulse response
+  analysis in linear multivariate models, {\em Economics letters\/} 58, 17--29.
+
+\bibitem[Politis and Romano(1994)]{politis1994stationary}
+Politis, Dimitris~N, and Joseph~P Romano, 1994, The stationary bootstrap, {\em
+  Journal of the American Statistical association\/} 89, 1303--1313.
+
+\bibitem[Rebonato and Ronzani(2021)]{rebonato2021convexity}
+Rebonato, Riccardo, and Riccardo Ronzani, 2021, Is convexity efficiently
+  priced? evidence from international swap markets, {\em Journal of Empirical
+  Finance\/} 63, 392--413.
+
+\bibitem[Siriwardane(2019)]{siriwardane2019capital}
+Siriwardane, Emil~N, 2019, Limited investment capital and credit spreads, {\em
+  Journal of Finance\/} 74, 2303--2347.
+
+\bibitem[Vayanos and Vila(2021)]{vayanos2021preferred}
+Vayanos, Dimitri, and Jean-Luc Vila, 2021, A preferred-habitat model of the
+  term structure of interest rates, {\em Econometrica\/} 89, 77--112.
+
+\bibitem[Welch and Goyal(2008)]{welch2008comprehensive}
+Welch, Ivo, and Amit Goyal, 2008, A comprehensive look at the empirical
+  performance of equity premium prediction, {\em The Review of Financial
+  Studies\/} 21, 1455--1508.
+
+\bibitem[Zhu et~al.(2020)Zhu, Wen, Zhu, Zhang, and Wang]{zhu2020polynomial}
+Zhu, Junxian, Canhong Wen, Jin Zhu, Heping Zhang, and Xueqin Wang, 2020, A
+  polynomial algorithm for best-subset selection problem, {\em Proceedings of
+  the National Academy of Sciences\/} 117, 33117--33123.
+
+\bibitem[Zou and Zhang(2009)]{zou2009adaptive}
+Zou, Hui, and Hao~Helen Zhang, 2009, On the adaptive elastic-net with a
+  diverging number of parameters, {\em Annals of statistics\/} 37, 1733.
+
+\end{thebibliography}
