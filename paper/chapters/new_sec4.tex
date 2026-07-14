@@ -1,0 +1,331 @@
+% =============================================================================
+% SECTION II — Benchmark Factor Models
+% =============================================================================
+
+
+% ── SEMAPHORE ──────────────────────────────────────────────────────────────────
+
+This section tests whether the alpha of the three strategies survives
+the canonical benchmark spanning regressions of the fixed-income
+arbitrage literature---\citet{duarte2007risk}, \citet{fung2004hedge},
+and \citet{brooks2020active}---and whether the residual alpha varies
+with intermediary funding stress, as the slow-moving capital framework
+of \citet{duffie2010presidential} predicts.
+Section~\ref{sec:bench_specs} describes the three specifications and
+the construction of their euro-denominated counterparts.
+Section~\ref{sec:bench_results} presents the regression results and
+three complementary evaluations: the alpha by stress regime, the
+conditional alpha model of \citet{christopherson1998conditioning}, and
+an out-of-sample re-estimation in which the benchmark hedge is formed
+from past-only loadings.
+
+
+% ── II.A BENCHMARK SPECIFICATIONS ─────────────────────────────────────────────
+
+\subsection{Benchmark Specifications}
+\label{sec:bench_specs}
+
+Three benchmark specifications are widely used in the empirical
+literature on fixed-income arbitrage and active fixed-income
+management, and they provide the natural reference points against
+which our strategies should be evaluated.
+
+\citet{duarte2007risk}, in the paper that motivates our research
+design, test whether fixed-income arbitrage excess returns are
+compensation for exposures to equity, banking-sector, and
+term-structure risk:
+\begin{equation}\label{eq:duarte}
+\begin{split}
+  r_{i,t} \;=\; \alpha_i
+  &+ \beta_1\,\textit{Mkt}_t + \beta_2\,\textit{SMB}_t
+   + \beta_3\,\textit{HML}_t + \beta_4\,\textit{UMD}_t + \beta_5\,\textit{RS}_t + \beta_6\,\textit{RI}_t\\
+  &+ \beta_7\,\textit{RB}_t + \beta_8\,\textit{R2}_t + \beta_9\,\textit{R5}_t
+   + \beta_{10}\,\textit{R10}_t + \varepsilon_{i,t},
+\end{split}
+\end{equation}
+where $\textit{Mkt}$, $\textit{SMB}$, $\textit{HML}$, and
+$\textit{UMD}$ are the Fama--French--Carhart equity factors (market,
+size, value, and momentum), $\textit{RS}$ is the S\&P bank stock index
+excess return, $\textit{RI}$ and $\textit{RB}$ are A/BAA-rated
+industrial and bank bond index excess returns, and $\textit{R2}$,
+$\textit{R5}$, $\textit{R10}$ are the CRSP Fama bond portfolios at
+two-, five-, and ten-year maturities.
+
+\citet{fung2004hedge} propose a seven-factor \emph{asset-based style}
+model that tests whether hedge fund returns are explained by equity,
+fixed-income, and trend-following exposures:
+\begin{equation}\label{eq:funghsieh}
+\begin{split}
+  r_{i,t} \;=\; \alpha_i
+  &+ \beta_1\,\textit{S\&P}_t + \beta_2\,\textit{SC\text{-}LC}_t
+   + \beta_3\,\textit{BdOpt}_t + \beta_4\,\textit{FXOpt}_t \\
+  &+ \beta_5\,\textit{ComOpt}_t
+   + \beta_6\,\textit{10Y}_t
+   + \beta_7\,\textit{CredSpr}_t + \varepsilon_{i,t},
+\end{split}
+\end{equation}
+where $\textit{S\&P}$ is the S\&P~500 excess return,
+$\textit{SC\text{-}LC}$ is the small-minus-large-cap total return,
+$\textit{BdOpt}$, $\textit{FXOpt}$, and $\textit{ComOpt}$ are the
+three trend-following factors constructed as lookback straddle returns
+on bond, currency, and commodity futures, $\textit{10Y}$ is the excess
+return on a 10-year government bond total-return index, and
+$\textit{CredSpr}$ is the return spread between BAA-rated corporate
+bonds and 10-year government bonds.
+
+\citet{brooks2020active} take a different angle, decomposing the
+returns of active fixed-income managers into eight \emph{traditional
+risk premia} organised along three channels of risk-taking---duration,
+credit, and volatility selling:
+\begin{equation}\label{eq:brooks}
+\begin{split}
+  r_{i,t} \;=\; \alpha_i
+  &+ \beta_1\,\textit{Term}_t + \beta_2\,\textit{GlTerm}_t
+   + \beta_3\,\textit{GlAgg}_t + \beta_4\,\textit{InflLink}_t 
+   + \beta_5\,\textit{CorpCred}_t \\
+  &+ \beta_6\,\textit{EmDebt}_t + \beta_7\,\textit{EmCurr}_t 
+  + \beta_8\,\textit{RatesVol}_t + \varepsilon_{i,t},
+\end{split}
+\end{equation}
+where $\textit{Term}$, $\textit{GlTerm}$, $\textit{GlAgg}$, and
+$\textit{InflLink}$ are the total returns on the Treasury, the
+currency-hedged global Treasury, global aggregate, and global
+inflation-linked bond indices, each in excess of cash,
+$\textit{CorpCred}$ is a high-yield corporate bond index in excess of
+cash, $\textit{EmDebt}$ is the excess return on a hard-currency
+emerging-market debt index, $\textit{EmCurr}$ is the return on an
+equal-weighted basket of emerging-market currencies, and
+$\textit{RatesVol}$ is the excess return on a one-month variance swap
+on the ten-year Bund futures.
+
+Two ingredients of the original specifications are replaced with
+tradable counterparts. In \citet{fung2004hedge}, the bond and credit
+factors are yield and spread \emph{changes}; a yield change is not the
+return on an investable position, so we use the corresponding
+total-return series (the $\textit{10Y}$ and $\textit{CredSpr}$
+definitions above). In \citet{brooks2020active},
+$\textit{CorpCred}$ blends high yield with leveraged loans; loan
+indices are quote-based and not investable at the monthly horizon, so
+we retain the high-yield leg only. With every regressor a realised
+excess return, the intercept in each specification keeps its
+interpretation as a Jensen alpha.
+
+Each benchmark is estimated in two parallel panels. The first uses the
+original U.S.-denominated factors as specified by the respective
+authors, which is the natural way to replicate each framework as it
+was first published. The second uses euro equivalents, since all three
+strategies trade European instruments and may therefore be better
+explained by European factor exposures. The euro panel is the primary
+specification and is reported in the main text; the US-factor
+estimates are reported in Appendix~\ref{app:benchmark_us}.
+
+For the euro panel, the Fama--French factors---used directly in
+\citet{duarte2007risk} and indirectly in \citet{fung2004hedge}---are
+sourced from the Kenneth French data library; because these are
+reported in USD, we convert them to EUR following
+\citet{gluck2021currency}. For long factors (market excess return):
+\begin{equation}\label{eq:gluck_long}
+  F_{t}^{\textsc{eur}}
+  \;=\; \frac{1 + F_{t}^{\textsc{usd}} + r_{f,t}^{\textsc{usd}}}
+             {1 + r_{t}^{\textsc{usd/eur}}}
+        \;-\; 1 \;-\; r_{f,t}^{\textsc{eur}},
+\end{equation}
+and for long-short factors (SMB, HML, UMD):
+\begin{equation}\label{eq:gluck_ls}
+  \mathit{LS}_{t}^{\textsc{eur}}
+  \;=\; \frac{\mathit{LS}_{t}^{\textsc{usd}}}
+             {1 + r_{t}^{\textsc{usd/eur}}},
+\end{equation}
+where $F_{t}^{\textsc{usd}}$ and $\mathit{LS}_{t}^{\textsc{usd}}$ are
+the original factors in US dollars, $r_{f,t}^{\textsc{usd}}$ and
+$r_{f,t}^{\textsc{eur}}$ are the US and euro risk-free rates
+(Fama--French T-bill rate and one-month German bill, respectively),
+and $r_{t}^{\textsc{usd/eur}}$ is the period return on the
+dollar-to-euro exchange rate. All remaining factors enter the euro
+panel with native European counterparts: European bank stocks,
+euro-area corporate bond indices, and German government bonds in the
+Duarte specification; euro-area term, credit, and inflation-linked
+premia in Brooks et al.; and the 10-year Bund total-return index and
+the BBB--Bund return spread in Fung and Hsieh. The Fung and Hsieh
+trend-following lookback straddle factors are currency-independent by
+construction (D.~Hsieh, private communication) and enter both panels
+identically. The complete factor list is reported in
+Appendix~\ref{app:factor_list}.
+
+All specifications are estimated by ordinary least squares with
+Newey--West HAC standard errors \citep{newey1987simple}, with the
+truncation lag set by the automatic rule of \citet{newey1994automatic},
+$\lfloor 4\,(T/100)^{2/9} \rfloor$, which equals four lags for every
+sample in this paper. Variance inflation factors for each
+specification are reported in Appendix~\ref{app:vif}. Two groups of
+regressors are highly collinear---the maturity-sorted bond portfolios
+$\textit{R2}$, $\textit{R5}$, $\textit{R10}$ in Duarte and the global
+bond benchmarks in Brooks et al.---which inflates the standard errors
+of those loadings but leaves inference on the intercept unaffected.
+
+
+% ── II.B RESULTS AND DISCUSSION ───────────────────────────────────────────────
+
+\subsection{Results and Discussion}
+\label{sec:bench_results}
+
+\paragraph{Factor Model Regressions.}
+
+Tables~\ref{tab:duarte}, \ref{tab:fung_hsieh}, and~\ref{tab:active_fi}
+report the full euro-panel regression results; the US-factor
+counterparts are Tables~\ref{tab:duarte_us}, \ref{tab:fung_hsieh_us},
+and~\ref{tab:active_fi_us} in Appendix~\ref{app:benchmark_us}. Across
+all three frameworks, all three strategies, and both currency
+denominations, the estimated intercept is positive and significant at
+the $1\%$ level. The annualised alphas are economically meaningful:
+$+4.0$ to $+4.2\%$ p.a.\ for the CDS--Bond basis, $+1.7$ to $+2.2\%$
+for the iTraxx skew, and $+1.6$ to $+2.1\%$ for BTP~Italia.
+
+The adjusted $R^2$ is low across all specifications, ranging from zero
+to $18\%$, so the standard factor sets leave most of the return
+variation unexplained---a question we take up in
+Section~\ref{sec:factor_selection}. The significant loadings that do
+emerge differ across strategies and are economically intuitive. The
+CDS--Bond basis loads on credit and rates returns: the A-rated
+industrial bond return is positive and significant in the Duarte
+specification, and the 10-year government bond and credit-spread
+returns are positive and significant in Fung--Hsieh, in both currency
+denominations---the natural exposures of a long-credit, cash-financed
+position. BTP~Italia and iTraxx Skew load instead on equity
+factors, with small negative coefficients: market and size for
+BTP~Italia, and size, value, and momentum for iTraxx Skew, in both
+the Duarte and the Fung--Hsieh specifications. The Brooks et al.\
+specification, which uses broad risk premia rather than individual
+asset returns, produces fewer significant loadings but delivers
+comparable alpha estimates, reinforcing that the intercepts are not an
+artefact of any single factor set.
+
+\paragraph{Cross-Model Comparison and Regime Analysis.}
+
+Table~\ref{tab:alpha_synthesis} consolidates the alpha estimates from
+the three frameworks. Panel~A reports the unconditional alphas side by
+side: for each strategy, all three frameworks deliver positive and
+significant alpha, and the estimates are consistent across
+specifications despite their different factor structures.
+
+The discrete regime decomposition---alpha estimated separately in the
+LOW, MEDIUM, and HIGH stress regimes on the iTraxx Europe Main 5-year
+spread, with the same 60 and 100 basis-point cutoffs that govern the
+transaction-cost tiers of Section~\ref{sec:index_construction}
+(Appendix~\ref{app:fees})---is reported for each framework in
+Appendix~\ref{app:subperiod}. In every cell of those tables, alpha
+rises monotonically from the LOW to the HIGH regime, and the
+HIGH-regime alpha is three to seven times the LOW-regime alpha across
+the nine strategy--framework combinations. The mechanism is the one
+\citet{duffie2010presidential} formalises: when intermediary capital
+is abundant, arbitrage forces close mispricings quickly and compress
+the residual premium; when it is scarce---as it is during episodes of
+widening credit spreads---arbitrageurs retreat or are forced to
+unwind, mispricings widen, and the premium for those who can still
+deploy capital rises. This regime dependence motivates the
+cross-strategy analysis of Section~\ref{sec:interdependencies}, where
+we test whether the same intermediary balance-sheet shocks drive
+co-movement of mispricings across the three strategies.
+
+\paragraph{Conditional Alpha.}
+
+Panel~B of Table~\ref{tab:alpha_synthesis} replaces the discrete
+regime split with the conditional performance evaluation framework of
+\citet{christopherson1998conditioning},
+in which the alpha varies continuously with a predetermined,
+publicly observable state variable. We estimate the full conditional
+model
+\begin{equation}\label{eq:cfg}
+  r_{i,t} \;=\; \alpha_0 \;+\; \alpha_1\, z_{t-1}
+  \;+\; \left(\boldsymbol{\beta} + \boldsymbol{\delta}\, z_{t-1}\right)'
+  \mathbf{X}_{t} \;+\; \varepsilon_{t},
+\end{equation}
+where $\mathbf{X}_t$ collects the factor returns of the chosen
+benchmark and $z_{t-1}$ is the one-month-lagged level of the iTraxx
+Europe Main 5-year spread, standardised to mean zero and unit variance
+over the estimation sample. Lagging the state variable keeps it in the
+investor's information set, as the conditional framework requires, and
+conditioning the loadings through $\boldsymbol{\delta}$ prevents
+time-varying betas from masquerading as conditional alpha. The
+intercept $\alpha_0$ is then the alpha at the average stress level,
+and $\alpha_1$ is the additional alpha per one-standard-deviation
+increase in funding stress. Because fixed-bandwidth HAC $t$-tests
+over-reject in conditional models at these sample sizes
+\citep{kiefer2005new, lazarus2018har}, significance of $\alpha_1$ is
+assessed by a moving-block residual bootstrap with the null imposed
+($B = 9{,}999$, block length nine months); HAC inference, reported as
+a robustness check, gives the same pattern.
+
+The estimates of $\alpha_1$ in Panel~B are positive in all nine
+strategy--framework cells, and the intercept $\alpha_0$ remains
+significant in every case, so a baseline alpha persists at the average
+stress level. For the two institutionally held strategies, $\alpha_1$
+is significant in every framework: a one-standard-deviation increase
+in the iTraxx Main spread adds $1.7$ to $3.2$ percentage points of
+annual alpha for the CDS--Bond basis and $0.9$ to $1.5$ for iTraxx
+Skew. For BTP~Italia, $\alpha_1$ is significant only under the
+Duarte specification---a weaker stress sensitivity consistent with the
+retail holder base that Section~\ref{sec:interdependencies} develops.
+Across the nine cells, the implied alpha at $z = +1\sigma$ is two to
+nine times the alpha at $z = -1\sigma$: the bulk of the unconditional
+alpha is earned when funding stress is elevated, the signature of the
+slow-moving capital mechanism.
+
+\paragraph{Out-of-Sample Alpha.}
+
+A residual concern, central to the recent literature on performance
+evaluation \citep{moreira2017volatility, cederburg2020performance}, is
+that the benchmark loadings in
+Tables~\ref{tab:duarte}--\ref{tab:active_fi} are estimated in sample,
+so the surviving alpha could reflect an in-sample-optimal combination
+of the factors rather than an abnormal return an investor could have
+earned in real time. Panel~C of Table~\ref{tab:alpha_synthesis}
+addresses this directly. For each strategy and each benchmark, we
+re-estimate the loadings on an expanding past-only window in the
+recursive out-of-sample design of \citet{welch2008comprehensive}, form
+the factor hedge from the lagged slopes, and define the out-of-sample
+alpha as the mean of the realised hedged return
+$e_{i,t} = r_{i,t} - \hat{\boldsymbol{\beta}}_{i,t-1}'\,\mathbf{f}_t$,
+tested with the \citet{newey1994automatic} HAC correction. The
+expanding window is initialised with a 60-month minimum, so that the
+first fit has at least five observations per parameter under the
+ten-factor \citet{duarte2007risk} specification, and windows with
+near-singular factor designs are skipped. The out-of-sample alpha
+remains positive and significant for all three strategies and all
+three frameworks. The point estimates are close to the in-sample
+alphas of Panel~A, with only modest attenuation, and the ranking
+across strategies is preserved, with the CDS--Bond basis the
+largest. The rolling-window counterpart, which additionally relaxes
+the assumption of constant loadings, is reported in
+Appendix~\ref{app:oos_rolling} and delivers the same conclusion.
+
+\paragraph{Rolling Alpha.}
+
+A natural concern with regime-based or conditional analyses is that
+the estimated relationship between alpha and stress may be driven by a
+single sub-period---the global financial crisis of 2008 to 2009, the
+European sovereign debt crisis of 2011 to 2012, or the COVID-19 shock
+of March 2020---rather than by a stable feature of the data.
+Figure~\ref{fig:rolling_alpha_composite} plots rolling 36-month alpha
+estimates for each strategy under each of the three benchmark
+specifications. The rolling alpha is positive across essentially the
+whole sample for all three strategies, so the estimates are not the
+product of a single favourable sub-period, and the three benchmark
+estimates move broadly together within each panel, reinforcing the
+cross-model robustness of Panel~A. Detailed sub-period splits for each
+framework are reported in Appendix~\ref{app:subperiod}.
+
+Taken together, the five sets of results in this section establish two
+findings that are central to the rest of the paper. First, the alpha
+is robust: it survives three widely used benchmark frameworks, in both
+currency denominations, in every sub-period we examine, and when each
+benchmark hedge is re-estimated out of sample. Second, the alpha is
+not constant: it rises systematically when intermediary capital is
+scarce, whether stress enters as a discrete regime or as a continuous
+predetermined state, and the high-stress alpha is a multiple of the
+calm-market alpha. The first finding says the observed excess returns
+are not explained by the systematic exposures the prior literature has
+identified; the second points to an economic mechanism but not yet to
+the specific risk factors behind the residual variation.
+Section~\ref{sec:factor_selection} takes up that question on a much
+larger candidate factor universe.
