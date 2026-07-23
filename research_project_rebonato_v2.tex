@@ -1,0 +1,233 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1.05in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{textcomp}
+\usepackage[hidelinks]{hyperref}
+\onehalfspacing
+\newcommand{\CE}{\mathrm{CE}}
+\newcommand{\VaR}{\mathrm{VaR}}
+\newcommand{\bps}{\,\text{bp}}
+
+\title{\textbf{The TIPS--Treasury Basis as a Limits-to-Arbitrage\\ Equilibrium Floor}\\[5pt]
+\large Research project on \emph{The Idea} --- framework, design, and first evidence}
+\author{Alessio Ottaviani\\ \small EDHEC Business School --- Supervisor: Prof.\ Riccardo Rebonato}
+\date{July 2026}
+
+\begin{document}
+\maketitle
+
+\section{Research question}
+
+Fleckenstein, Longstaff and Lustig (2014, \emph{JF}; henceforth FLL) documented that a TIPS combined with a zero-coupon inflation swap --- an exact, state-by-state replication of a nominal Treasury --- traded persistently cheap: 54.5 basis points on average over 2004--2009, above 200 at the crisis peak. They ruled out liquidity, credit and repo explanations, and attributed the time variation to slow-moving arbitrage capital. Fifteen years and the largest inflow of arbitrage capital in the trade's history later, the basis has \emph{not} gone to zero: it rests on a narrow, strictly positive band and widens violently, and briefly, in episodes of intermediary distress. The literature's default reading is that of a closing anomaly.
+
+This project asks a different question:
+
+\begin{quote}
+\textbf{Is the resting level of the TIPS--Treasury basis an equilibrium object --- the minimum rent at which a risk-averse, capital-constrained arbitrageur is willing to hold a position whose payoff is certain at maturity but whose \emph{path} can force liquidation before maturity?}
+\end{quote}
+
+If the answer is yes, then the cleanest law-of-one-price violation in fixed income stops being a residual anomaly and becomes a measurement instrument: the floor is the shadow price of balance-sheet capacity, observable daily, on a trade whose terminal payoff involves no default risk, no model risk, and no convergence assumption. The implications extend beyond TIPS. Every major basis --- covered interest parity, cash--futures, CDS--bond --- has settled on a small, positive, remarkably persistent number, and the profession has no structural account of \emph{why that number and not zero}. A framework that delivers the resting level from primitives, and that can be tested against the level, the term structure, the stress behaviour and the cross-section simultaneously, is portable to all of them.
+
+The delimited claim of the paper is that \emph{no existing work derives the equilibrium resting level of this basis from a structural model with endogenous forced unwinding and a capital-charge participation constraint, and confronts its quantitative predictions with the data.} Section~\ref{sec:lit} defends that claim against each adjacent literature.
+
+\section{The economics, and the falsifiable hypotheses}
+
+\subsection{The set-up and the arbitrage}
+
+Following the framework of the April note, consider zero-coupon instruments and denote nominal quantities in upper case ($P_0^T$, $Y_0^T$) and real quantities in lower case ($p_0^T$, $y_0^T$), with $f_0^T$ the breakeven inflation rate. A unit of TIPS pays $\exp[\int_0^T\pi(s)ds]$ at $T$; the inflation swap pays $\exp[f_0^T\cdot T]-\exp[\int_0^T\pi(s)ds]$; so the portfolio $\Pi_0^T$ of one TIPS plus one swap pays $\exp[f_0^T\cdot T]$ with certainty, in all states. Since entering the swap is costless, the law of one price requires that $\exp[-f_0^T\cdot T]$ units of the combination cost exactly the nominal bond:
+\begin{equation}
+\exp\!\left[-f_0^T\cdot T\right]\cdot p_0^T \;=\; P_0^T
+\qquad\Longrightarrow\qquad
+p_0^T \;=\; P_0^T\cdot\exp\!\left[+f_0^T\cdot T\right],
+\label{eq:loop}
+\end{equation}
+which is consistent with $P_0^T\equiv\exp[-(y_0^T+f_0^T)T]$ and $p_0^T=\exp[-y_0^T\,T]$.
+
+Empirically the portfolio trades \emph{below} the nominal bond, $\Pi_0^T<P_0^T$, i.e.\ at a higher yield $Y(\Pi_0^T)=Y_0^T+\lambda_0^T$ with $\lambda_0^T>0$. For the constant-maturity implementation used throughout, the object is
+\begin{equation}
+\lambda_t(\tau)\;=\;\big(y^{\text{real}}_t(\tau)+s_t(\tau)\big)-y^{\text{nom}}_t(\tau)\;=\;s_t(\tau)-b_t(\tau),
+\label{eq:basis}
+\end{equation}
+with $s_t$ the zero-coupon inflation swap rate and $b_t$ the breakeven: the yield pick-up of the synthetic over the actual nominal. Under the law of one price $\lambda=0$. The observed $\lambda>0$ is the object of the paper.
+
+\subsection{The strategy's mark-to-market, and why the arbitrage is not riskless}
+
+The strategy buys the cheap synthetic, sells the nominal, and invests the net cash at the nominal yield. Every leg is a transparent market price, so the position has zero value at inception. With $\tau\equiv T-t$, its time-$t$ value is
+\begin{equation}
+S(t)\;=\;e^{-Y_0^T\tau}\Big(1-e^{-\lambda_0^T\,T}\Big)\;-\;e^{-Y_t^T\tau}\Big(1-e^{-\lambda_t^T\tau}\Big),
+\label{eq:mtm}
+\end{equation}
+the difference between a deterministic accrual and a stochastic term in the nominal yield $Y_t^T$ and the spread $\lambda_t^T$. At maturity $S(T)=1-e^{-\lambda_0^T T}>0$ \emph{with certainty}: the trade is a genuine arbitrage --- \emph{if it can be held to maturity}. This proviso is the entire economics of the project. Before maturity, a widening spread or a fall in nominal yields drives $S(t)$ negative, and the two move adversely \emph{together} in flight-to-quality states, precisely when balance sheets are least able to absorb the loss. For empirical work the first-order approximation
+$S(t)\approx -D\,(\lambda_t-\lambda_0)$, with $D$ the trade's duration in basis points of notional, is used throughout.
+
+\subsection{Dynamics, the unwinding barrier, and the terminal law}
+
+Let the spread follow a mean-reverting process under the physical measure,
+\begin{equation}
+d\lambda_t \;=\; \kappa\,(\theta-\lambda_t)\,dt+\sigma\,dW_t ,
+\label{eq:ou}
+\end{equation}
+with the nominal yield a correlated second driver in the full specification. The arbitrageur does not choose to hold to maturity: she is unwound the first time the mark-to-market loss exceeds a multiple of the position's capital charge,
+\begin{equation}
+\tau_B \;=\; \inf\Big\{t:\; -S(t)\;\ge\; m\cdot\VaR_\alpha\Big\}
+\;\;\approx\;\; \inf\Big\{t:\; D\,(\lambda_t-\lambda_0)\;\ge\;B\Big\},
+\label{eq:barrier}
+\end{equation}
+where $B$ is the capital buffer expressed in P\&L terms and $(m,\alpha)$ are the regulatory multiplier and confidence level. Terminal wealth is therefore a \emph{mixture}:
+\begin{equation}
+X_T \;=\;
+\underbrace{\Big(1-e^{-\lambda_0 T}\Big)}_{\text{certain carry}}\cdot\mathbf{1}\{\tau_B>T\}
+\;+\;\underbrace{\Big(\text{carry accrued to }\tau_B-B\Big)}_{\text{stopped, discounted}}\cdot\mathbf{1}\{\tau_B\le T\},
+\label{eq:mixture}
+\end{equation}
+a mass point at the certain payoff with weight equal to the first-passage survival probability $\Pr(\tau_B>T)$, plus a continuous distribution of stopped outcomes. For the Ornstein--Uhlenbeck specification the survival law is available semi-analytically (Alili, Patie and Pedersen, 2005; Linetsky, 2004); Monte Carlo on \eqref{eq:mtm} is the workhorse.
+
+\subsection{The entry condition and the equilibrium floor}
+
+A risk-averse arbitrageur will not pay the expected value of \eqref{eq:mixture}: she will pay its certainty equivalent, and she enters only if that exceeds the wealth the position commits --- identified with the capital charge:
+\begin{equation}
+\CE\Big[\,W_0+X_T\big(\lambda_0;\,\kappa,\theta,\sigma,D,B,T\big)\Big]\;\ge\;W_0,
+\qquad W_0=m\cdot\VaR_\alpha .
+\label{eq:entry}
+\end{equation}
+With exponential utility this is $-\tfrac{1}{\gamma}\log\mathbb{E}\big[e^{-\gamma X_T}\big]\ge 0$, and free entry drives the basis down until \eqref{eq:entry} binds, defining the \textbf{equilibrium floor}
+\begin{equation}
+\lambda^\ast \;=\; \inf\Big\{\lambda_0:\ \CE\big[W_0+X_T(\lambda_0)\big]\ \ge\ W_0\Big\}.
+\label{eq:floor}
+\end{equation}
+Below $\lambda^\ast$ no capital enters, and the basis cannot compress further. Two features of \eqref{eq:floor} deserve emphasis. First, it is an \emph{equilibrium} object, not an accounting identity: it is the price at which the marginal arbitrageur is indifferent, and it moves with her constraint. Second, $W_0$ need not be assumed --- given estimated dynamics, $m\cdot\VaR_\alpha$ under a stated regulatory rule \emph{delivers} a number, which makes counterfactuals on $(m,\alpha)$ immediate.
+
+\subsection{Comparative statics and testable predictions}
+
+Differentiating \eqref{eq:floor} yields the signs that discipline the empirical work: $\partial\lambda^\ast/\partial\sigma>0$ (more path risk, more rent required), $\partial\lambda^\ast/\partial B<0$ (a larger buffer survives more paths), $\partial\lambda^\ast/\partial\kappa<0$ (faster convergence, safer trade), $\partial\lambda^\ast/\partial D>0$ (more duration, larger mark-to-market swings), and $\partial\lambda^\ast/\partial\gamma>0$ (more risk aversion, more compensation). As $\sigma\to0$ the floor collapses to a pure margin/funding bound of the Gârleanu--Pedersen (2011) type: the \emph{volatility} loading is therefore the data's handle for discriminating the path-risk mechanism from the funding-cost alternative. Five hypotheses follow, each falsifiable:
+
+\begin{description}
+\item[H1 (Existence).] Post-compression, $\lambda$ is stationary and mean-reverting around a strictly positive $\theta$. \emph{Falsified by} a unit root, or by mean reversion toward zero.
+\item[H2 (Term structure).] $\lambda^\ast(\tau)$ rises with maturity over the range where path risk per unit of carry rises, subject to maturity-specific frictions (haircuts, term-repo scarcity) that can flatten or locally invert it. \emph{Falsified by} a flat or monotonically declining floor once measurement artefacts are removed.
+\item[H3 (State dependence).] Linearising \eqref{eq:entry} around the constraint gives $\theta_t=\theta_0+\xi H_t$ with $H_t$ intermediary-capital scarcity and $\xi>0$: shocks move the basis \emph{when the constraint binds}, and barely otherwise. Note the sharp implication --- large conditional responses coexisting with a near-zero \emph{unconditional linear} loading is the model's signature, not its failure. \emph{Falsified by} a stable linear loading, or by state-dependence with the opposite sign.
+\item[H4 (Regime shifts).] Discrete changes in the capital regime shift the resting level in steps rather than trends. \emph{Falsified by} smooth decay with no datable breaks, or by breaks unrelated to the regulatory calendar.
+\item[H5 (Dispersion).] With buffers heterogeneous across arbitrageurs, $B\sim F$, aggregate unwinding after a shock $s$ is $\Pi^{\text{unw}}(s)=\int\Pr(\tau_{B(b)}\le T\mid s)\,dF(b)$: the most constrained holders of the most balance-sheet-expensive bonds are stopped first, so the \emph{cross-section} of bond-level bases fans out before the median moves. \emph{Falsified by} proportional widening across the cross-section --- which is what a representative-agent or common-factor account predicts.
+\end{description}
+
+H5 is the discriminating prediction: no representative-agent model, and no pure funding-cost bound, generates a dispersion event without a median event.
+
+\section{Related literature and contribution}\label{sec:lit}
+
+Four literatures border this project, and the contribution sits in the gap between them. \emph{The anomaly itself:} FLL (2014) document the mispricing and its slow-moving-capital variation; d'Amico, Kim and Wei (2018) and Christensen and Gillan (2022) price TIPS liquidity; He, Nagel and Song (2022) dissect the March 2020 Treasury dislocation. None of these models the resting level --- they explain deviations \emph{from} a benchmark of zero rather than asking what the benchmark should be. \emph{Frictional bounds:} Tuckman and Vila (1992) and Gârleanu and Pedersen (2011) bound mispricings by holding and margin costs, delivering a static no-trade band; the present framework nests these as the $\sigma\to0$ limit and adds the dynamic, path-dependent risk that the static bound omits. \emph{Limits to arbitrage:} Shleifer and Vishny (1997), Liu and Longstaff (2004), Kondor (2009) and Gromb and Vayanos (2010) supply exactly the forced-unwinding mechanism, but as theory confronted with stylised facts rather than with a specific, structurally estimated basis. \emph{Intermediary asset pricing:} He, Kelly and Manela (2017) and Duffie (2010) supply the state variables and the slow-capital dynamics that H3 and H4 require.
+
+The contribution is to close the loop: take the limits-to-arbitrage mechanism seriously enough to \emph{solve} for the equilibrium rent it implies, and confront that solution --- level, term structure, state dependence, regime shifts, and cross-sectional dispersion --- with the cleanest deterministic-payoff arbitrage available. A secondary contribution is measurement: the paper delivers a validated twenty-two-year construction of the basis at both curve and bond level, and the first replication and extension of FLL's own figure beyond their sample.
+
+\section{Data}
+
+Bloomberg daily panels, 2004--2026, for all legs (zero-coupon inflation swaps \texttt{USSWIT}, TIPS real generics \texttt{USGGT}, exact nominal constant maturities) at $\{2,5,10,20,30\}$ years, plus breakevens for cross-validation and the standard stress proxies (MOVE, VIX, LIBOR--OIS, SOFR/repo, dealer CDS). A 107-CUSIP bond-level mispricing panel with per-issue amounts outstanding supplies the cross-section required by H5 and the notional weights required to replicate FLL's construction. Constraint variables: the He--Kelly--Manela intermediary capital ratio (monthly), FR\,2004 primary-dealer TIPS net positions spliced across all six reporting-structure breaks (weekly, 1998--2026), CFTC leveraged-fund Treasury futures positioning, and OFR Form-PF repo and relative-value NAV aggregates (quarterly). CPI-U NSA for the indexation seasonal; Gürkaynak--Sack--Wright fitted curves as public cross-checks.
+
+Two gaps are identified and flagged rather than hidden: security-level TIPS repo specialness and bond-level bid--ask are not obtainable, and they gate any claim about the brief negative excursions of 2021 and about the width of the no-trade band.
+
+\section{Empirical strategy}
+
+\textbf{(i) Construction and validation.} The basis is built from \eqref{eq:basis} on exact constant-maturity legs and validated three ways: against the Bloomberg breakeven route, against the bond-level panel, and against an independent parallel reconstruction. Measurement risk must be closed before any structural claim is made.
+
+\textbf{(ii) Level dynamics (H1).} Augmented Dickey--Fuller tests and the discrete analogue of \eqref{eq:ou}, $\lambda_t=a+b\lambda_{t-1}+\varepsilon_t$, whence $\kappa=-\ln b/\Delta t$, $\theta=a/(1-b)$ and half-life $\ln 2/\kappa$, with block-bootstrap bands. Month-of-year dummies isolate the CPI indexation seasonal, which contaminates the short end.
+
+\textbf{(iii) Regime shifts (H4).} Mean-shift break dates by sequential SSR minimisation with 10\% trimming, sup-$F$ inference, and a second break on the longer segment: the object of interest is a \emph{staircase}, not a single step. The dates are then confronted with the regulatory capital calendar.
+
+\textbf{(iv) State dependence (H3).} Because the event studies document multi-month lags between shock and peak, contemporaneous specifications are uninformative by construction and are not run. The design conditions on the \emph{lagged constraint state}:
+\begin{equation}
+y_t \;=\; \alpha+\beta_{\text{calm}}\,\Delta S_t\cdot\mathbf{1}\{H_{t-1}>\theta_H\}
+\;+\;\beta_{\text{stress}}\,\Delta S_t\cdot\mathbf{1}\{H_{t-1}\le\theta_H\}\;+\;\varepsilon_t ,
+\label{eq:threshold}
+\end{equation}
+with $y_t$ the lagged-aware change in the bond-level median, $\Delta S_t$ the shock, $H_{t-1}$ the constraint state, and $\theta_H$ estimated over a grid (sup-$F$, wild and block-wild bootstrap) as well as fixed at the model-implied quantile. The model predicts $\beta_{\text{stress}}\gg\beta_{\text{calm}}\approx0$.
+
+\textbf{(v) Dispersion (H5).} Cross-sectional interquartile range and upper percentiles of the bond-level panel by episode, with within-maturity-bucket decompositions to separate holder heterogeneity from the maturity axis.
+
+\textbf{(vi) Structural estimation.} Stage one estimates \eqref{eq:ou} by maximum likelihood per regime. Stage two estimates the friction parameters $\psi=(B,\gamma,m,\alpha)$ by minimum distance,
+\begin{equation}
+\hat\psi=\arg\min_{\psi}\;\big(\hat{\mathbf{m}}-\mathbf{m}(\psi)\big)'\,\mathbf{W}\,\big(\hat{\mathbf{m}}-\mathbf{m}(\psi)\big),
+\label{eq:smm}
+\end{equation}
+where the moment vector $\hat{\mathbf{m}}$ is deliberately over-identifying: the empirical stop-out frequency by entry vintage and capital buffer (a dense surface, obtained by replaying the trade from every monthly entry date with daily barrier monitoring), together with the calm/stress loading pair from \eqref{eq:threshold}. The weighting matrix uses a block-bootstrap moment covariance so that the over-identification test is correctly sized under serial dependence.
+
+\section{First evidence}
+
+To establish feasibility I have built the measurement apparatus and run a first empirical pass. The construction is validated: at ten years the direct route agrees with the Bloomberg breakeven route to $-0.55\bps$ with a correlation of 0.996 over 5{,}718 daily observations; the curve construction tracks the 107-CUSIP bond-level median with a level correlation of 0.926 and common peaks; and an independent parallel reconstruction agrees to rounding. Measurement risk is closed; what follows are facts about the market rather than about the data pipeline.
+
+\begin{center}
+\includegraphics[width=0.97\textwidth]{fll_fig2_extended.png}\\[2pt]
+{\small \textbf{Figure 1.} The bond-level average mispricing, notional-weighted, in FLL's own construction and drawn in their format, extended to 2026. Everything to the right of the dashed line is the out-of-sample period of their paper --- and the object of this one.}
+\end{center}
+
+\textbf{The floor exists (H1).} Post-2013 the basis averages 16--24$\bps$ across maturities with Newey--West $t$-statistics up to 24. The ten-year series is stationary (ADF $p=0.008$) with an Ornstein--Uhlenbeck half-life of 3.7--4.6 months around $\theta\approx17\bps$: mean reversion \emph{around a strictly positive level}, not decay toward zero. On FLL's exact window my construction averages $46.8\bps$ against their bond-level 54.5 --- the same object at the same order of magnitude, on independently assembled data.
+
+\begin{center}\small
+\begin{tabular}{lcccc}
+\toprule
+Monthly mean [NW $t$] & 2Y & 5Y & 10Y & 30Y \\
+\midrule
+FLL window 2004/07--2009/11 & 44.0\,[2.9] & 34.6\,[9.2] & \textbf{46.8\,[7.5]} & 51.0\,[8.5] \\
+Post-2013 & 23.3\,[7.6] & 15.7\,[10.9] & \textbf{23.4\,[22.4]} & 24.0\,[13.3] \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Two end-of-curve artefacts are quantified rather than assumed away: the two-year elevation is a measured CPI indexation seasonal of $52\bps$ amplitude (removing it flips the two-year ADF from $p=0.65$ to $p=0.000$), and the twenty-year depression is the cheap-sector effect of the 2020 reintroduction of that maturity.
+
+\textbf{Compression is a staircase, not a decay (H4).} Formal break tests date the ten-year compression at \textbf{December 2010} (sup-$F=160$) and \textbf{December 2017}, taking the mean from $46$ to $29$ to $21\bps$ --- discrete steps rather than a trend, as H4 requires. The tests also identify a fact absent from the literature: since October 2024 the two-year basis has been statistically indistinguishable from zero. Aligning these dates with the regulatory capital calendar is the natural next step in the plan.
+
+\textbf{Stress behaves as the barrier predicts (H3).} Every distress episode moves the basis three- to seven-fold (GFC to 144--154$\bps$; March 2020 at two years from $-1$ to $68$; the 2022 hiking cycle to 68; SVB to 60), with peaks lagging the initiating shock by weeks to months --- the slow-moving-capital lag, visible in the SVB episode as a March shock with July--August peaks. Against this, the \emph{unconditional linear} loadings on volatility are empty: local projections of the basis on MOVE shocks are insignificant at every horizon, and the rolling resting level on rolling MOVE gives $\beta=-0.014$ $[t=-0.4]$. This coexistence is exactly H3's signature: a linear regression averages a flat normal-times relation with a violent constraint-binding one and recovers nothing.
+
+\textbf{A first, model-consistent sorting of the episodes.} As a first look at the state-dependence channel, I placed each episode's onset on the distribution of the He--Kelly--Manela intermediary capital ratio:
+
+\begin{center}\small
+\begin{tabular}{lccc}
+\toprule
+Episode onset & HKM capital ratio & Percentile (2004+) & Bottom quintile \\
+\midrule
+GFC (Oct-2008) & 3.57\% & \textbf{3\%} & yes \\
+COVID (Mar-2020) & 4.27\% & \textbf{8\%} & yes \\
+2022 (Jun-2022) & 5.41\% & 32\% & no \\
+SVB (Mar-2023) & 5.62\% & 37\% & no \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The two \emph{capital-impairment} onsets are exactly the two system-wide blow-outs; the two onsets with unimpaired intermediary capital produced the smaller, short-end-concentrated moves. Consistently with H5, in March 2020 the bond-level cross-section fanned out \emph{before} the median moved, with the interquartile range peaking on the dash-for-cash apex itself (16 March) while the median's own maximum arrived only in late June. These patterns are what the mechanism predicts, and they motivate the formal programme below.
+
+\section{Research plan and anticipated results}
+
+\textbf{Phase 1 --- State-dependent constraint tests.} Estimate \eqref{eq:threshold} on the constraint variables (HKM capital ratio; FR\,2004 dealer positions; CFTC positioning), with the lag structure the event studies dictate and bootstrap inference at both estimated and pre-specified thresholds. \emph{Anticipated:} a large, significant stress-state loading against a calm-state loading near zero, with the binding constraint identified as capital rather than inventory. \emph{Known risk, stated upfront:} with two capital-impairment clusters in the U.S. sample, statistical power against a linear alternative is the binding constraint --- which is why Phase 3 matters.
+
+\textbf{Phase 2 --- The structural floor.} Estimate the dynamics, compute the first-passage survival law, and solve \eqref{eq:floor} for $\lambda^\ast$ --- with the capital charge \emph{derived} from $m\cdot\VaR_\alpha$ under the estimated dynamics rather than assumed, so that regulatory counterfactuals on $(m,\alpha)$ follow at no extra cost. \emph{Anticipated:} a floor of the observed order of magnitude at a regulatorily plausible charge and standard risk aversion; the informative outcome is the mapping between the two, not a point estimate. Two modelling choices here would benefit from your judgment (Section~\ref{sec:disc}).
+
+\textbf{Phase 3 --- The international cross-section.} The identification problem of Phase 1 is a shortage of impairment episodes, and the remedy is to add markets that supply episodes the U.S. sample does not contain. Two are candidates, and they identify different things. The \emph{euro} linker bases (Bund\texteuro i, OAT\texteuro i against HICPxT swaps) supply the 2011--12 sovereign-dealer crisis; because that episode confounds intermediary impairment with sovereign and redenomination risk, the design must be a Bund-versus-OAT \emph{differential} with quanto-CDS controls, which holds the sovereign channel fixed at some cost in power. The \emph{UK} index-linked gilt basis supplies the October 2022 LDI dislocation --- dated, isolated, and orthogonal to both U.S. clusters, being neither a GFC nor a COVID event and carrying no sovereign confound. Two features of the UK market deserve statement rather than assumption: index-linked gilts carry no deflation floor on principal, so they serve as a natural control for the floor-option wedge that TIPS and euro linkers share; and the LDI episode is primarily a forced unwind of \emph{end investors} under collateral calls rather than an impairment of dealer capital, so it tests the barrier mechanism and H5 more directly than it tests the H3 capital channel --- a separation between the two that the U.S. sample cannot deliver. \emph{Anticipated:} the state-dependence of Phase 1 replicating out of sample and out of currency, with materially more power against the linear alternative.
+
+\textbf{Phase 4 --- Structural estimation.} Estimate \eqref{eq:smm} on the survival surface and the state-dependent loadings jointly, with block-bootstrap moment covariance. \emph{Anticipated:} friction parameters that reconcile the surface and the loadings, and an over-identification test that is informative about which margin of the model is misspecified.
+
+Every branch of this tree terminates in a publishable statement. If the floor is structural, the paper delivers a new equilibrium object and a measurement instrument. If the structural model is rejected on the survival surface, the paper delivers the anatomy of \emph{why} --- which frictions the data demand --- on the cleanest arbitrage available.
+
+\section{Implementation problems and risks}
+
+\emph{Power.} The central inferential risk is that the U.S. sample contains only two intermediary-capital impairment clusters in twenty-two years. Formal separation of a threshold model from a steep linear one is therefore hard, and I expect to report it as such rather than to overclaim. Phase 3 is the designed remedy.
+
+\emph{Measurement at the short end.} The two-year basis carries a $52\bps$ indexation seasonal, and the March 2020 dislocation contaminated the swap leg itself, so the benchmark-maturity curve construction understates that episode. Both require the bond-level construction --- which is built, but whose pair-matching at short maturities differs from FLL's and needs a dedicated engine to reconcile.
+
+\emph{Unobservable frictions.} Security-level repo specialness and bond-level bid--ask are unavailable. This gates the interpretation of the brief negative excursions of 2021 and leaves the transaction-cost band assumed rather than measured: conservative for the existence claim, but it leaves the no-trade-band reading of a $20\bps$ floor unresolved.
+
+\emph{Coupon bonds versus zero-coupon theory.} The theory is written on zero-coupon instruments while the panel contains coupon bonds with duration drift and heterogeneous deflation-floor moneyness. The cross-sectional median damps these wedges but does not eliminate them, and the bond-level engine is where they must be resolved.
+
+\emph{Scope.} Each additional market is a full construction --- real legs, exact nominal legs, inflation swaps, and market-specific indexation-lag conventions (UK linkers carry a three-month lag on new-style issues and eight months on the old) --- so the extension is deliberately capped at two markets beyond the United States. Japanese linkers are excluded: the market is thin and the yield-curve-control regime distorts precisely the years of interest. Past that cap the paper drifts from a structural model tested with added identification into a survey of linker bases.
+
+\emph{Multiple testing.} The programme runs many specifications. The pre-specified objects --- the frozen lag structure, the model-implied threshold quantile --- carry the inferential weight precisely because they are fixed ex ante; everything else is labelled exploratory.
+
+\section{Points for discussion}\label{sec:disc}
+
+\begin{enumerate}
+\item \textbf{The international extension.} Two candidate markets, and I would value your view on the ordering. Is the Bund\texteuro i-versus-OAT\texteuro i differential, with quanto-CDS controls, the identification you would trust for pooling the 2011--12 episode --- and would you place the UK index-linked gilt basis, with the October 2022 LDI dislocation, ahead of it or alongside it?
+\item \textbf{Modelling the capital charge.} Two choices in Phase 2 on which I would value your view before implementing: standalone versus \emph{marginal} VaR (the question your note closes on), and the normalisation of risk aversion in \eqref{eq:entry} --- curvature over committed capital versus over total firm wealth.
+\item \textbf{Ambition.} On the strength of the first evidence I would target the top field tier, with the general-interest route conditional on Phases 2--3 landing. I would value your read --- and your preference on how we work on this together.
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,250 @@
+% =============================================================================
+% slides_rebonato_tips_v3.tex — Meeting deck, Paper 2 (TIPS–Treasury Floor)
+% PREAMBLE: copiato VERBATIM da slides/presentation.tex (CambridgeUS, 16:9,
+% divisori di sezione rossi via \AtBeginSection). Contenuto: versione light.
+% =============================================================================
+\documentclass[aspectratio=169]{beamer}
+
+\mode<presentation> {
+	\usetheme{CambridgeUS}
+}
+
+\AtBeginSection[]{
+  \begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}\textcolor{red}\insertsectionhead\par%
+  \end{beamercolorbox}
+  \vfill
+  \end{frame}
+}
+
+\IfFileExists{transparent.sty}{\usepackage{transparent}}{}
+\IfFileExists{dsfont.sty}{\usepackage{dsfont}}{}
+% \usepackage{stackengine}   % riattivare in locale (qui manca la dipendenza listofitems)
+% \newcommand\barbelow[1]{\stackunder[1.4pt]{$#1$}{\rule{.8ex}{.075ex}}}   % non usato in questo deck
+\setbeamertemplate{navigation symbols}{}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\IfFileExists{kotex.sty}{\usepackage{kotex}}{}
+\usepackage{amsmath, amsthm, amssymb, caption, bm}
+\newtheorem{prop}{Proposition}
+
+\newcommand{\bps}{\,bp}
+\newcommand{\VaR}{\mathrm{VaR}}
+\newcommand{\CE}{\mathrm{CE}}
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title[]{The TIPS--Treasury Basis as a\\ Limits-to-Arbitrage Equilibrium Floor}
+\author{Alessio Ottaviani}
+\institute[EDHEC Business School]{EDHEC Business School\\ \smallskip Supervisor: Prof.\ Riccardo Rebonato}
+\date{July 2026}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%
+\begin{frame}
+    \titlepage
+\end{frame}
+%%%%%%%%%%%%%%%
+
+\begin{frame}{Agenda}
+    \tableofcontents
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+\section{The Idea}
+%----------------------------------------------------------------------------------------
+\begin{frame}{\emph{The Idea}, restated}
+\begin{itemize}\setlength\itemsep{0.5em}
+  \item TIPS $+$ zero-coupon inflation swap replicates a nominal Treasury; the synthetic
+        trades \emph{cheap} by $\lambda_t$: a textbook LOOP violation.
+  \item The convergence trade has \textbf{certain} terminal payoff
+        $S(T)=1-e^{-\lambda_0 T}>0$ --- \emph{if it can be held}.
+  \item Before $T$, mark-to-market losses can breach the risk limit:
+        $\tau_B=\inf\{t:\ D(\lambda_t-\lambda_0)\ge B\}$, $B=m\times\VaR_\alpha$
+        --- forced unwinding at the worst moment.
+  \item Entry iff $\CE\!\left[W_0+X_T\right]\ge W_0$, with $W_0=$ capital charge;
+        free entry pins the \textbf{equilibrium floor} $\lambda^*$.
+\end{itemize}
+\vspace{0.3em}
+\begin{block}{Claim}
+The post-compression basis is not a dying anomaly --- it is $\lambda^*$, observed.
+This deck: the question, first evidence, and the plan.
+\end{block}
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+\section{First Evidence}
+%----------------------------------------------------------------------------------------
+\begin{frame}{Twenty years of the mispricing, on FLL's own construction}
+\begin{center}
+\includegraphics[width=0.82\textwidth]{fll_fig2_extended.png}
+\end{center}
+\vspace{-0.4em}
+{\small Bond-level, 107 CUSIP pairs, notional-weighted (their Figure 2, replicated).
+\textbf{Everything to the right of the dashed line is the out-of-sample of
+Fleckenstein--Longstaff--Lustig (2014, JF)} --- and the object of this paper.}
+\end{frame}
+
+\begin{frame}{The floor exists: 16--24\bps, fifteen years after FLL}
+\begin{center}\small
+\begin{tabular}{lcccc}
+\toprule
+Monthly mean [NW $t$] & 2Y & 5Y & 10Y & 30Y \\
+\midrule
+FLL window 04/07--09/11 & 44.0\,[2.9] & 34.6\,[9.2] & \textbf{46.8\,[7.5]} & 51.0\,[8.5] \\
+Post-2013 & 23.3\,[7.6] & 15.7\,[10.9] & \textbf{23.4\,[22.4]} & 24.0\,[13.3] \\
+\bottomrule
+\end{tabular}
+\end{center}
+\vspace{0.4em}
+\begin{itemize}
+  \item Construction validated three ways: breakeven cross-check (corr.\ 0.996 at 10Y),
+        bond-level median (0.926), independent parallel reconstruction.
+  \item Post-2013: \emph{stationary} (ADF $p=0.008$), OU half-life 3.7--4.6 months around
+        $\theta\approx17\bps$ --- mean reversion \emph{around a positive level}.
+  \item End effects quantified: 2Y carries a 52\bps\ CPI seasonal; 20Y (from 2020) is the
+        sector-reintroduction cheap effect.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Compression is a staircase, not a decay}
+\begin{center}
+\includegraphics[width=0.66\textwidth]{fig7_breaks10y.png}
+\end{center}
+\vspace{-0.3em}
+{\small Ten-year: dominant break \textbf{December 2010} (sup-$F=160$), second break
+\textbf{December 2017} ($46\to29\to21\bps$). Since October 2024 the 2Y basis is
+statistically zero: the short-end arbitrage has closed. Next step in the plan:
+line these dates up against the regulatory capital calendar (H4).}
+\end{frame}
+
+\begin{frame}{The barrier signature: violent conditionally, empty linearly}
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\textbf{Unconditional linear: nothing}
+\begin{itemize}
+  \item Local projections on MOVE shocks: $|t|\le1.2$ at every horizon.
+  \item Rolling resting level on rolling MOVE: $\beta=-0.014$ $[t=-0.4]$.
+\end{itemize}
+\end{column}
+\begin{column}{0.48\textwidth}
+\textbf{Conditional: 3--7$\times$ moves, with lags}
+\begin{itemize}
+  \item GFC 144--154\bps; Mar-2020 (2Y) $-1\to68$; 2022 $\to68$; SVB $\to60$.
+  \item Peaks \emph{lag} the shock by weeks--months (SVB: March shock, July--August peaks).
+\end{itemize}
+\end{column}
+\end{columns}
+\vspace{0.7em}
+\begin{alertblock}{Reading}
+A linear regression averages a flat normal-times relation with a violent
+constraint-binding one --- and recovers nothing. The signature of a constraint that
+binds occasionally.
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{A first, model-consistent sorting of the episodes}
+\begin{center}\small
+\begin{tabular}{lccc}
+\toprule
+Episode onset & HKM capital ratio & Percentile (2004+) & Bottom quintile \\
+\midrule
+GFC (Oct-2008) & 3.57\% & \textbf{3\%} & yes \\
+COVID (Mar-2020) & 4.27\% & \textbf{8\%} & yes \\
+2022 (Jun-2022) & 5.41\% & 32\% & no \\
+SVB (Mar-2023) & 5.62\% & 37\% & no \\
+\bottomrule
+\end{tabular}
+\end{center}
+\vspace{0.5em}
+\begin{itemize}
+  \item The two \emph{capital-impairment} onsets are exactly the two system-wide blow-outs;
+        the unimpaired onsets produced the smaller, short-end moves.
+  \item In March 2020 the bond-level \emph{cross-section fans out before the median moves}
+        (IQR peaks on the dash-for-cash apex, 16 March) --- the heterogeneous-threshold
+        prediction.
+\end{itemize}
+\vspace{0.2em}
+{\small These patterns motivate the formal program on the next slide.}
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+\section{Research Plan}
+%----------------------------------------------------------------------------------------
+\begin{frame}{Research plan}
+\begin{enumerate}\setlength\itemsep{0.3em}
+  \item \textbf{State-dependent constraint tests}: threshold responses conditioned on the
+        \emph{lagged constraint state} (HKM; FR\,2004 dealer positions; CFTC), lag structure
+        from the event studies, bootstrap inference. Known risk, stated upfront: two U.S.
+        impairment clusters $\Rightarrow$ power --- hence (3).
+  \item \textbf{The structural floor}: estimate the dynamics, compute the first-passage
+        survival law, solve the CE entry condition for $\lambda^*$ --- with the capital
+        charge \emph{derived} from $m\times\VaR$ under the estimated dynamics
+        (regulatory counterfactuals on $(m,\alpha)$ for free).
+  \item \textbf{The international cross-section}: add markets supplying episodes the U.S.\
+        sample lacks. \emph{Euro} (Bund\texteuro i-vs-OAT\texteuro i differential, quanto-CDS
+        controls): the 2011--12 crisis, sovereign risk held fixed. \emph{UK} index-linked
+        gilts: the Oct-2022 LDI dislocation --- orthogonal to both U.S.\ clusters, no
+        sovereign confound, no deflation floor.
+  \item \textbf{Structural estimation (SMM)}: survival surface by vintage $\times$ buffer
+        $+$ state-dependent loadings as over-identifying moments; block-bootstrap moment
+        covariance.
+\end{enumerate}
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+\section{Discussion}
+%----------------------------------------------------------------------------------------
+\begin{frame}{Three points where I need your judgment}
+\begin{enumerate}\setlength\itemsep{0.8em}
+  \item \textbf{The international extension}: is the Bund\texteuro i-vs-OAT\texteuro i
+        differential, with quanto-CDS controls, the identification you would trust for
+        2011--12 --- and would you place the UK gilt basis (Oct-2022 LDI) ahead of it,
+        or alongside?
+  \item \textbf{Modelling the capital charge} (Phase 2): standalone versus \emph{marginal}
+        VaR --- the question your note closes on --- and the normalisation of risk aversion
+        in the CE condition (curvature over committed capital vs total wealth).
+  \item \textbf{Ambition}: top field tier on the strength of the first evidence, with the
+        general-interest route conditional on Phases 2--3 --- and how you would like us to
+        work on this together.
+\end{enumerate}
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+\appendix
+\section*{Backup}
+%----------------------------------------------------------------------------------------
+\begin{frame}{Backup --- Construction validation}
+\begin{center}\small
+\begin{tabular}{lcccc}
+\toprule
+Maturity & Mean diff vs BE (bp) & SD & Corr. & $n$ \\
+\midrule
+2Y & $-3.97$ & 9.78 & 0.974 & 5648 \\
+5Y & $-5.88$ & 9.76 & 0.839 & 5718 \\
+10Y & $-0.55$ & 1.55 & \textbf{0.996} & 5718 \\
+30Y & $+0.60$ & 4.70 & 0.969 & 5718 \\
+\bottomrule
+\end{tabular}
+\end{center}
+{\small Direct construction vs Bloomberg-breakeven route, daily. Bond-level median:
+correlation 0.926, common regimes, common peaks; the cross-sectional average replicates
+FLL's Figure 2 on their window.}
+\end{frame}
+
+\begin{frame}{Backup --- March 2020 at bond level}
+\begin{center}
+\includegraphics[width=0.62\textwidth]{fig10_mar2020_bondlevel.png}
+\end{center}
+{\small The median doubles (16 March) while the IQR triples, peaking on the dash-for-cash
+apex; the median's own maximum lags to late June. The cross-section moves first ---
+heterogeneous thresholds at work.}
+\end{frame}
+
+\end{document}
