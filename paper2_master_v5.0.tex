@@ -1,0 +1,832 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1.03in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{setspace}\usepackage{textcomp}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\graphicspath{{../results/tips/figures/}{./}}
+\usepackage{array}\usepackage{multirow}
+\usepackage[hidelinks]{hyperref}
+\usepackage{natbib}
+\setstretch{1.12}
+\newtheorem{hypothesis}{H}
+\newcommand{\CE}{\mathrm{CE}}
+\newcommand{\VaR}{\mathrm{VaR}}
+
+\title{\textbf{The TIPS--Treasury Basis as a Limits-to-Arbitrage Equilibrium Floor}\\[5pt] \large Theory, Data, Methodology, and First Results\\ \normalsize Second Dissertation Paper --- Comprehensive Working Document\\[3pt] \small Version 5.0 --- 5 August 2026 (v4.1 executed the registered pooled test and returned a null; v5.0 adds the two \emph{over-identifying} tests of the structural model --- the international floor cross-section, which it passes descriptively, and the maturity structure of the floor, which it fails --- and revises the verdict accordingly)}
+\author{Alessio Ottaviani\\ EDHEC Business School, PhD in Finance\\[4pt] \small Supervisor: Prof.\ Riccardo Rebonato}
+\date{August 5, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent This document consolidates, in one place, the theoretical framework, the data, the full empirical methodology, and every result obtained to date for the second dissertation paper. The paper models the post-compression TIPS--Treasury basis not as a dying anomaly but as an \emph{equilibrium floor}: the minimum rent at which a risk-averse, capital-constrained arbitrageur is indifferent between entering a trade whose payoff is certain at maturity and holding the capital that the trade's forced-unwind risk consumes. The theory section formalises the supervisor's framework --- mark-to-market dynamics, a Value-at-Risk unwinding barrier, a first-passage mixture for terminal wealth, a certainty-equivalent entry condition, and the comparative statics it delivers --- including a heterogeneous-threshold extension whose distinctive prediction is cross-sectional \emph{dispersion} in stress. The empirical sections report: a construction validated three independent ways and now certified pair-by-pair against Fleckenstein--Longstaff--Lustig's own Table~III on a matched-pair engine with true per-ISIN legs (notional-weighted mean 59.6\,bp against their 54.2; exact-maturity twins within 1.1\,bp); a post-2013 floor of 16--24\,bp with Newey--West $t$-statistics up to 24 and 46.8\,bp on the exact FLL window against their 54.5; a \emph{staircase} compression (breaks December 2010, sup-$F=160$, and December 2017) with a 2024 closure of the short-end basis; Ornstein--Uhlenbeck dynamics with a 3.7--4.6-month half-life; a 52\,bp CPI seasonal at two years; three-to-seven-fold conditional stress moves with multi-month lags and zero unconditional linear volatility loading --- the barrier signature; March 2020 identified as a cross-sectional dispersion event; an executed constraint test in which a volatility shock loads with coefficient 7.15 [$t=4.1$] when the He--Kelly--Manela capital ratio is in its bottom quintile and is small and at best marginal otherwise, with the episode-sorting table (GFC at the 3rd HKM percentile, COVID at the 8th, versus 32nd/37th for 2022/SVB) as the discriminating exhibit --- the formal threshold tests being honestly underpowered (sup-$F$ $p\approx0.25$; pre-specified-quintile Chow $p=0.11$/$0.13$) --- and a leave-one-episode-out check disclosing that the interaction is substantially GFC-driven: the disclosed reason the international extension is decisive, and the reason its two-market design is pre-registered in Section~\ref{sec:intl} before any non-U.S. series is inspected; a vintage-by-buffer forced-unwind surface; a corrected structural pass --- daily barrier monitoring aligned with the replay, the note's hold-to-maturity mixture restored, the stopped branch discounted, and the certainty-equivalent entry condition implemented --- under which, at the $\approx$2\% capital charge that the Basel $m\times\VaR$ rule itself \emph{derives} from the estimated dynamics (2.26\%/1.91\%), the observed floor of 17.7--23.3\,bp corresponds to relative risk aversion between one and two; a matched-pair engine on true per-ISIN legs that closes the replication (the legacy panel's short-pair gap is identified as a vendor re-pairing artifact) and certifies the floor at pair level --- the daily cross-sectional median never breaches zero in 2021 (minimum $+2.6$\,bp) and the 2024 short-end closure is re-scoped as an \emph{on-the-run} phenomenon (seasoned 1--2.5-year pairs rest at 16.1\,bp); first international evidence built on a single unified pipeline --- the French ten-year basis moves from $3$ to $54$\,bp into 15 November 2011, Italy to $170$ with its sovereign load, Germany peaks in July 2012, the Bund--OAT differential moves $100$\,bp, and the UK ten-year basis peaks at $62.3$\,bp on 13 October 2022, inside the LDI week --- and a calibrated power analysis of the registered pooled test: $62.6\%$ on U.S. data alone, $87.4$--$90.6\%$ with the euro arm. The registered test, executed, returns a null ($c=1.28$, $t=0.86$, $p=0.455$) whose diagnosis is a \emph{timing} rejection of pooled homogeneity --- the euro bases widen within the shock month and revert inside the three-month window the U.S.-calibrated specification measures --- reported without post-hoc reparametrization. Version~5.0 then submits the structural model itself to two over-identifying restrictions: it reproduces the international cross-section of resting levels with a single risk-aversion parameter ($R^{2}=0.97$ on three independent countries, exact permutation $p=0.167$), and it \emph{fails} the maturity structure of the floor within the United States ($R^{2}=-62$, robust to both horizon conventions, to deseasonalisation, and to free re-calibration) --- from which it follows that the forced-unwind barrier cannot be the mechanism that sets the floor, since it implies a duration dependence the data do not display. The equilibrium-floor interpretation survives; the structural model as specified does not. Two appendices complete the record: a reconciliation with the June 2026 Detailed Project Description, and a register of every test executed to date with its script and headline output.
+\end{abstract}
+
+\tableofcontents
+
+\paragraph{What is new in v5.0 (5 August 2026), and why it changes the verdict.}
+The structural core of this paper --- the certainty-equivalent floor at a derived capital charge ---
+was, through v4.1, calibrated on \emph{one} market. A single-market calibration cannot be
+rejected: with one observed floor and one free risk-aversion parameter, the parameter absorbs
+whatever level the data show. v5.0 therefore submits the model to two \emph{over-identifying}
+restrictions, each of which it could fail.
+
+\emph{(i) The international floor cross-section} (Section~\ref{sec:floorxs}). The same machinery,
+with $(\kappa,\sigma)$ estimated separately in each market and duration set by the trade's tenor,
+must reproduce the observed resting levels of several markets with a \emph{single} risk-aversion
+parameter. It does so, and closely: at $\mathrm{RRA}=1$ the model predicts $31.0$ against $31.6$
+observed for the United Kingdom, $15.9$ against $18.3$ for the United States, and $2.0$ against
+$4.0$ for France, with $R^{2}=0.97$ and a perfect rank ordering generated from the estimated
+dynamics alone. The caveats are material and are stated where they belong: the panel is
+\emph{three independent countries}, so the exact permutation $p$-value of the perfect ordering is
+$0.167$ --- descriptively strong, statistically not probative on its own; Germany is excluded on
+declared measurement grounds; and Italy, the sovereign-loaded arm, is over-predicted ($52.1$
+against $32.0$).
+
+\emph{(ii) The maturity structure of the floor} (Section~\ref{sec:floorterm}). The same parameter
+must also reproduce the floor across maturities within the United States, where the observed
+structure is \emph{non-monotonic} ($23.3/15.7/23.4/24.0$\,bp at 2/5/10/30 years) and therefore a
+harder target. \textbf{The model fails this test decisively}: it predicts $\approx 0.5$\,bp at
+two, five and ten years and $65$\,bp at thirty, giving $R^{2}=-62$. The failure is robust to both
+horizon conventions of Section~\ref{sec:struct} (hold-to-maturity and fixed 24 months), to raw
+and deseasonalised series, and to free re-calibration of risk aversion (the best free value is
+zero, and still fails). The diagnosis is economic and specific: mark-to-market loss is duration
+times deviation, so at two years a 200\,bp barrier is never reached --- implied stop-out
+probability $0.0\%$ --- and the model concludes that short-maturity arbitrage is nearly riskless
+and should command no floor; the market pays it $23$\,bp regardless.
+
+\emph{The verdict this forces.} The forced-unwind barrier cannot be the mechanism that sets the
+floor, because it implies a duration dependence the data do not display. This is the independent
+confirmation of the weak joint already visible in Section~\ref{sec:struct}, where the model
+predicts a $43\%$ stop-out frequency against $2.5\%$ observed. The equilibrium-floor
+\emph{interpretation} survives --- the basis does rest at a positive level, and that level does
+track each market's convergence speed and volatility --- but the \emph{structural model as
+specified} does not, and the document now says so rather than resting on the single-market
+calibration that cannot fail.
+
+\paragraph{Vintage note (5 August 2026).} On the current data vintage (bases through end-July
+2026) the registered pooled test returns $c=2.90/1.61/1.15$ across the three configurations
+against $3.07/1.75/1.28$ in v4.1, and the calibrated power returns $61.6/84.2/88.2\%$ against
+$62.6/87.4/90.6\%$. These are data-vintage movements under an unchanged frozen specification, not
+respecifications; the null and its diagnosis are unaffected.
+
+\paragraph{What is new in v4.0 (30 July 2026).} (i) A matched-pair engine on true per-ISIN legs (107 TIPS, 153 nominals, 117 pair segments, 99.7\% life coverage) certifies the FLL Table~III replication and resolves the legacy panel's short-pair defect. (ii) The floor is certified at pair level: no 2021 breach; the 2024 closure re-scoped as on-the-run. (iii) The GSW-versus-twin test closes the bracket-download question. (iv) International bases for FR/IT/UK/DE on one unified pipeline, with the euro 2011--12 episode, the German July-2012 peak, the Bund--OAT differential, and the UK LDI event now measured. (v) A calibrated power analysis of the registered pooled test (62.6\% U.S.-only; 87.4--90.6\% pooled). (vi) The Section~\ref{sec:intl} redenomination control amended for data availability (no French EUR-denominated CDS). Vintage refresh throughout (sample to July 2026).
+
+\paragraph{What is new in v4.1 (1 August 2026).} The registered pooled test is \emph{executed} (Section~\ref{sec:pooledexec}): pooled $c=1.28$, $t=0.86$, block-wild one-sided $p=0.455$ --- an honest null at 87--91\% nominal power, with the diagnosis that the euro arms load \emph{negatively} at the frozen three-month timing (contemporaneous widening, within-window reversion). The document's status changes accordingly: this is the project's \emph{closing record}. The companion convexity paper becomes Paper~2 of the dissertation; the structural core confirmed here (the certainty-equivalent floor at the derived capital charge) and the pair-level certifications stand as this record's durable results.
+
+\section{Introduction and the Delimited Claim}
+
+A Treasury Inflation-Protected Security combined with a zero-coupon inflation swap of matching maturity replicates, state by state, the payoff of a nominal Treasury; for coupon-bearing issues the same replication is exact once a zero-coupon swap is struck on each cash-flow date and long or short STRIPS positions on those dates true up the residual coupon mismatch. \citet{fll2014} documented that between 2004 and 2009 the synthetic traded persistently cheap --- an average mispricing of 54.5 basis points, above 200 basis points for some pairs --- and traced its variation to Treasury supply, to liquidity disruptions measured by primary-dealer repo fails, and to the stock of hedge-fund capital --- direct support for the slow-moving-capital hypothesis. Since then the basis has compressed to a narrow band, and the literature's default reading is that of a closing anomaly. This paper defends a different reading: the basis has converged not to zero but to a small, stable, strictly positive \emph{resting level} that widens violently --- and briefly --- in episodes of intermediary distress, and this resting level is an economic object in its own right: the equilibrium rent of the marginal, capital-constrained arbitrageur.
+
+The delimited claim, defended against each adjacent literature in Section~\ref{sec:lit}, is that \emph{no existing paper derives the equilibrium resting level of the TIPS--Treasury basis from a structural model with endogenous forced unwinding and a capital-charge participation constraint, and confronts its level, term-structure, stress, dispersion, and survival-surface predictions with the data}. The empirical work summarised here shows the claim is not only unoccupied but, on first confrontation, quantitatively promising: with dynamics estimated from the data and the capital charge derived from the regulatory rule rather than assumed, the observed floor corresponds to relative risk aversion between one and two. The design's power play --- a two-market extension to euro-area and UK linkers, supplying the impairment episodes the U.S. sample lacks --- is pre-registered in Section~\ref{sec:intl}, before any non-U.S. data are inspected.
+
+\section{Theory}\label{sec:theory}
+
+\subsection{The no-arbitrage identity and the basis}
+
+Following the supervisor's note, denote nominal quantities in upper case ($P_0^T$, $Y_0^T$) and real quantities in lower case ($p_0^T$, $y_0^T$), with $f_0^T$ the fixed rate on the zero-coupon inflation swap and $\pi(t)$ instantaneous inflation. A unit of TIPS pays $\exp[\int_0^T\pi(s)ds]$ at maturity and the inflation swap pays $\exp[f_0^T\,T]-\exp[\int_0^T\pi(s)ds]$, so the portfolio $\Pi_0^T$ of one TIPS plus one swap pays $\exp[f_0^T\,T]$ with certainty in every state of the world. Since entering the swap is costless, the law of one price requires that $\exp[-f_0^T T]$ units of the combination cost exactly the nominal zero-coupon bond:
+\begin{equation}
+\exp\!\left[-f_0^T\,T\right]\cdot p_0^T \;=\; P_0^T
+\qquad\Longrightarrow\qquad
+p_0^T \;=\; P_0^T\cdot\exp\!\left[+f_0^T\,T\right],
+\label{eq:loop}
+\end{equation}
+consistently with $P_0^T\equiv\exp[-(y_0^T+f_0^T)T]$ and $p_0^T=\exp[-y_0^T\,T]$. When the portfolio instead trades \emph{below} the nominal bond it does so at a higher yield, $Y(\Pi_0^T)=Y_0^T+\lambda_0^T$ with $\lambda_0^T>0$: the object of the paper. For the constant-maturity implementation used throughout, let $y^{\text{nom}}_t(\tau)$, $y^{\text{real}}_t(\tau)$ and $s_t(\tau)$ denote the nominal yield, the TIPS real yield, and the zero-coupon inflation-swap fixed rate at tenor $\tau$; holding the TIPS and paying fixed on the swap converts the real payoff into a certain nominal one, the synthetic nominal yield is $y^{\text{real}}_t+s_t$, and the basis
+\begin{equation}
+\lambda_t(\tau) \;=\; \big(y^{\text{real}}_t(\tau)+s_t(\tau)\big)-y^{\text{nom}}_t(\tau) \;=\; s_t(\tau)-b_t(\tau),
+\label{eq:basis}
+\end{equation}
+with $b_t$ the breakeven rate, is the yield pick-up of the synthetic over the actual nominal. Under the law of one price $\lambda=0$; the observed $\lambda>0$ is the object of the paper. Equation~\eqref{eq:basis} is also the operational construction: it requires only three curve points per maturity, is computable daily, and --- as Section~\ref{sec:valid} documents --- tracks the exact bond-level construction closely at the benchmark maturities.
+
+\subsection{The strategy's mark-to-market}
+
+Following the supervisor's note, the arbitrage buys the cheap synthetic, sells the nominal, and invests the net cash at the nominal yield. Every leg is a transparent market price, so the strategy has zero value at inception; with $\tau\equiv T-t$ its time-$t$ value is
+\begin{equation}
+S(t) \;=\; e^{-Y_0^T\tau}\big(1-e^{-\lambda_0^T T}\big)\;-\;e^{-Y_t^T\tau}\big(1-e^{-\lambda_t^T\tau}\big),
+\label{eq:mtm}
+\end{equation}
+the difference between a deterministic accrual and a stochastic term in the nominal yield $Y_t^T$ and the spread $\lambda_t^T$. At maturity $S(T)=1-e^{-\lambda_0^T T}>0$ with certainty: the trade is an arbitrage \emph{if it can be held}. Before maturity a widening spread or falling yields push $S(t)$ negative --- and the two move adversely together in flight-to-quality states. For empirical work the first-order approximation $S(t)\approx -D\,(\lambda_t-\lambda_0)$ in basis points of notional, with $D$ the trade's duration, is used throughout and is the object the forced-unwind replay tracks.
+
+\subsection{Dynamics, the barrier, and the terminal mixture}
+
+The spread is modelled as a mean-reverting Ornstein--Uhlenbeck process under the physical measure --- this paper's parametric choice, mean reversion being the empirical signature of the post-2013 basis, with the fat-tailed refinement scheduled:
+\begin{equation}
+d\lambda_t \;=\; \kappa\,(\theta_t-\lambda_t)\,dt+\sigma_t\,dW_t,
+\label{eq:ou}
+\end{equation}
+consistent with the strong mean reversion the data display (Section~\ref{sec:dyn}), with the yield factor correlated Gaussian in the full model. The arbitrageur faces a risk-management constraint: the position is unwound the first time the mark-to-market loss exceeds a multiple of its capital charge,
+\begin{equation}
+\tau_B \;=\; \inf\{t:\ -S(t)\ \ge\ m\cdot\VaR_\alpha\}\;\approx\;\inf\{t:\ D(\lambda_t-\lambda_0)\ \ge\ B\},
+\end{equation}
+with $B$ the capital buffer in P\&L terms. Terminal wealth is therefore a \emph{mixture}: a mass point at the certain carry, with weight equal to the first-passage survival probability $\Pr(\tau_B>T)$, plus a continuous distribution of stopped outcomes $\{\text{carry to }\tau_B - B\}$. Two conventions are fixed here and used consistently by both the engine and the empirical replay: the barrier is monitored on the spread leg alone, $D(\lambda_t-\lambda_0)$ --- the object risk desks mark --- rather than on the full $S(t)$ of \eqref{eq:mtm}, whose deterministic accrual would cushion the trigger; and, correspondingly, the stopped outcome retains the carry accrued to $\tau_B$. The two choices travel together --- pairing the spread-only barrier with a no-carry stopped value would misprice the stopped branch by the full accrual --- and both wedges relative to the exact $S(t)$ are second order at $\lambda_0\approx20$\,bp against $B=100$--$200$\,bp. For the OU specification survival probabilities are available semi-analytically \citep{alili2005,linetsky2004}; the Monte Carlo implementation is the workhorse and, in Section~\ref{sec:struct}, the estimation engine.
+
+\subsection{The entry condition and the equilibrium floor}\label{sec:entry}
+
+An arbitrageur with utility $u$ (exponential in the baseline) enters iff the certainty equivalent of terminal wealth exceeds committed wealth, identified with the capital charge:
+\begin{equation}
+\CE\big[\,W_0+X_T(\lambda_0;\kappa,\theta,\sigma,D,B,T)\,\big]\ \ge\ W_0,\qquad W_0=\text{capital charge}.
+\label{eq:entry}
+\end{equation}
+Free entry drives the basis down until \eqref{eq:entry} binds, defining the floor $\lambda^*=\inf\{\lambda_0:\CE\ge W_0\}$: below $\lambda^*$ no capital enters and the basis cannot compress further. Two implementation points, both surfaced by the external defect review and both now implemented, matter to first order. \emph{Horizon.} The note's terminal mixture --- a mass point at the certain carry plus a stopped branch --- exists only when the position is held to bond maturity $T$; at a shorter risk horizon $H$ the surviving branch carries the mark-to-market law of $\lambda_H$, not a certainty, and at $H=24$ months with a ten-year trade, that law has a standard deviation of the same order as several years of carry. Section~\ref{sec:struct} therefore runs both variants: the maturity engine, which restores the note's mixture structure --- the mass point plus the stopped branch --- and the $H$-horizon engine with the MTM law for survivors. \emph{Risk aversion.} Because the surviving branch is riskless only at maturity, the CARA adjustment is first-order in the $H$-horizon variant --- the mean--variance penalty $\tfrac{\gamma}{2}\mathrm{Var}[X]$ with $\gamma=\text{RRA}/W_0$ consumes 34--137\% of $\mathbb{E}[X]$ at the estimated terminal law --- so the certainty equivalent is computed exactly on the simulated terminal distribution and the floor is reported as a function of risk aversion, with the risk-neutral participation floor and a 10\%-hurdle version retained as reference points. The normalisation $\gamma=\text{RRA}/W_0$ (curvature over committed capital) is a stated choice; curvature over total firm wealth would shrink the penalty, and the floor-versus-RRA curve makes the mapping transparent either way. Finally, the capital charge $W_0$ itself is not asserted: Section~\ref{sec:struct} \emph{derives} it from the note's $m\times\VaR_\alpha$ under the estimated dynamics. One positioning sentence completes the set-up: the model is a \emph{participation bound}, not a full equilibrium of the $\lambda$ process --- the dynamics \eqref{eq:ou} are taken as given while free entry prices the level, whereas in a complete model arbitrage activity would feed back into $(\kappa,\sigma)$ \citep{kondor2009}. The bound is the object the data can discipline, and it is the sense in which $\lambda^*$ is ``the'' floor throughout.
+
+\subsection{Heterogeneous thresholds and the dispersion prediction}
+
+Real-world arbitrage capital is not a representative agent: desks differ in buffers, funding terms and mandates. Let the buffer be distributed as $B\sim F$ across arbitrageurs, with holdings matched assortatively to bonds by balance-sheet cost. The aggregate unwind mass after a shock of size $s$ is then
+\begin{equation}
+\Pi^{\text{unwind}}(s) \;=\; \int \Pr\!\big(\tau_{B(b)}\le T \mid s\big)\, dF(b),
+\label{eq:mixture}
+\end{equation}
+and the model's distinctive cross-sectional prediction follows: a common shock stops the most constrained holders of the most balance-sheet-expensive bonds \emph{first}, so the cross-section of bond-level bases \emph{fans out before the median moves}. Dispersion --- the interquartile range of the CUSIP-level basis --- is therefore a first-class model object, its stress behaviour a signature unavailable to representative-agent alternatives, and Section~\ref{sec:disp} shows March 2020 delivering it on cue. The mixture also supplies the policy-counterfactual apparatus carried over from the June project description: shifting $F$ (a leverage-ratio recalibration; a change in haircut regimes) moves both the floor and the dispersion response in computable ways, and the counterfactual section of the final paper will report the implied floor under alternative regulatory calibrations of $(m,\alpha)$ and $F$.
+
+\subsection{Comparative statics and testable predictions}\label{sec:hyps}
+
+\begin{hypothesis}\textbf{Existence.} Post-compression, $\lambda$ is stationary and mean-reverting around a strictly positive $\theta$: the floor exists.\end{hypothesis}
+\begin{hypothesis}\textbf{Term structure.} $\lambda^*(\tau)$ rises with maturity over the segment where path risk per unit of carry rises; maturity-dependent frictions (haircuts, term-repo scarcity) can flatten or locally invert it.\end{hypothesis}
+\begin{hypothesis}\textbf{State dependence.} The floor loads on the \emph{constraint}: linearising \eqref{eq:entry}, $\theta_t=\theta_0+\xi H_t$ with $H_t$ intermediary-capital scarcity and $\xi>0$; shocks move the basis \emph{when the constraint binds} and barely otherwise --- large conditional responses with a near-zero unconditional linear loading is the model's signature, not its failure.\end{hypothesis}
+\begin{hypothesis}\textbf{Regime shifts.} Discrete changes in the capital regime (Basel phase-ins, leverage-ratio recalibrations, the growth of arbitrage capital) shift the resting level in steps.\end{hypothesis}
+\begin{hypothesis}\textbf{Survival surface.} The model's first-passage probability maps one-for-one into the empirical stop-out frequency by entry vintage and buffer --- a dense, over-identifying set of calibration moments.\end{hypothesis}
+\begin{hypothesis}\textbf{Dispersion.} Per \eqref{eq:mixture}: the cross-section fans out in stress; dispersion is priced by the heterogeneity of $F$, not by the representative buffer.\end{hypothesis}
+
+Two remarks sharpen the set. \emph{The front end as an out-of-sample target (H2).} With the capital charge re-derived at each tenor from the same $m\times\VaR$ rule, the ratio of the trade's duration to the carry annuity $A(\tau)=(1-e^{-Y_0\tau})/Y_0$ is close to one and nearly flat over the two-to-ten-year segment, so the model term structure $\lambda^*(\tau)$ is governed by the tenor's own dynamics $(\kappa_\tau,\sigma_\tau)$: the model is \emph{asked} to deliver a small two-year floor from the estimated short-tenor half-life and deseasonalised volatility, not permitted to assume one. Under that reading the October-2024 two-year closure (Section~\ref{sec:dyn}) is H2's sharpest observable implication rather than the floor's failure --- and the pair-level certification of Section~\ref{sec:pairfloor} now sharpens it further: the closure is an \emph{on-the-run} phenomenon (seasoned 1--2.5-year pairs rest at 16.1\,bp over the same window), turning H2 into a cross-sectional floor-moneyness prediction; the per-maturity engine that turns this into a line-by-line confrontation is scheduled in the roadmap. \emph{The corridor (H1).} The participation constraint is one-sided by construction: capital enters the convergence trade only at $\lambda\ge\lambda^*$, while the mirror trade --- short the synthetic, long the nominal --- carries its own charge and its own certainty-equivalent condition, so the model's full implication is a \emph{no-participation corridor} $[-\lambda^*_{\text{rev}},\lambda^*]$ rather than a floor alone. At pair level the 2021 excursions never breach zero (daily cross-sectional median minimum $+2.6$\,bp; Section~\ref{sec:pairfloor}): the corridor's lower half is visited only by the on-the-run short curve, seasonal included, while seasoned pairs never leave the floor's side; the signed estimation is held in reserve pending the specialness data that gates it. A seventh, pooled-market hypothesis is stated with the international design in Section~\ref{sec:intl}.
+
+\subsection{Implementation choices and their signed effects}
+
+Five further choices, each flagged in the defect review, are recorded with the sign of their effect. \emph{Marginal versus standalone VaR} (raised in the note's closing line): the engine charges standalone VaR; in a multi-strategy book the marginal charge is smaller, so the true floor is \emph{lower} --- standalone flatters the fit from above, and a stylised two-strategy appendix will bound the wedge. \emph{The omitted yield leg}: the note's $S(t)$ has two stochastic terms with adverse comovement in flight-to-quality; the current engine works in $\lambda$ alone. The review's recomputation on the exact $S(t)$ ($\sigma_Y=23.9$\,bp/m, $\rho=-0.135$ post-2013, $-0.315$ in 2008--09) puts the omission at $+3.5$pp on the 1\%-buffer stop-out ($+5.6$pp at crisis correlation) --- adopted provisionally here, to be verified in the bivariate engine of the SMM merge. \emph{Discounting}: the stopped branch is now discounted at $Y_0$ (a 3--4\% effect, previously omitted). \emph{Linearisation}: empirical objects use $S\approx-D\Delta\lambda$; a robustness line evaluating the exact eq.~\eqref{eq:mtm} at the 150--320\,bp GFC moves is scheduled. \emph{Zero-coupon theory versus coupon CUSIPs}: the panel's bonds carry coupons, duration drift, and floor moneyness heterogeneity that the zero-coupon algebra abstracts from; the cross-sectional median damps but does not eliminate these wedges, and the bond-level engine of the FLL replication is where they are resolved.
+
+As $\sigma\to0$ the floor collapses to a margin/funding-cost bound of the \citet{gp2011} type; the volatility and state-dependence loadings of H3 are the data's handle for discriminating the path-risk mechanism from the pure funding-cost alternative.
+
+\subsection{Relation to the literature}\label{sec:lit}
+
+\citet{fll2014} document the mispricing and its slow-moving-capital variation; \citet{dkw2018} and \citet{cg2022} price TIPS liquidity; \citet{hns2022} dissect March 2020 --- none models the resting level. \citet{gp2011} and \citet{tuckmanvila1992} bound mispricings by funding costs without path risk; \citet{shleifervishny1997}, \citet{liulongstaff2004}, \citet{kondor2009} and \citet{gromb2010} supply the forced-unwind mechanism without confronting a specific basis quantitatively; \citet{hkm2017} and \citet{duffie2010} supply the state variables; \citet{mp2012} the arbitrage-crash phenomenology; \citet{fl2024} document the opposite-signed ``Treasury richness'' episodes that motivate the signed extension held in reserve. The contribution sits at the intersection: the structural floor, estimated and tested on the cleanest deterministic-payoff arbitrage in existence.
+
+\section{Data}\label{sec:data}
+
+\begin{table}[h!]
+\centering\small
+\begin{tabular}{p{4.1cm}p{6.6cm}p{3.6cm}}
+\toprule
+Block & Content & Coverage \\
+\midrule
+Basis inputs (Bloomberg) & USSWIT1--30; USGGT02/05/10/20/30Y; exact nominals USGG2/5/10/30YR + 20YR & daily; swaps 2004-07+, TIPS 1998+ \\
+Cross-checks & USGGBE02--30 breakevens; 107-CUSIP bond-level basis panel with per-issue Amount Issued (notional weights) & daily; 2004-08 -- 2026-05 \\
+FLL benchmark & Table III of \citet{fll2014}: the 29 pairs with per-pair mean/SD/min/max/$N$ (extracted; \texttt{fll\_pairs\_tableIII.csv}) & Jul-2004 -- Nov-2009 \\
+Stress proxies & MOVE, VIX; LIBOR--OIS, SOFR/BGCR/TGCR; 8 dealer CDS; CDX/iTraxx & daily; 1998/2001+ \\
+Constraint variables & HKM capital ratio (monthly, vintage 2025-06); FR\,2004 dealer TIPS net positions (weekly, spliced over six reporting breaks); CFTC TFF leveraged-funds Treasury DV01; OFR Form-PF repo and RV-NAV (quarterly) & 1970+/1998+/2013+ \\
+Seasonality & CPURNSA (CPI-U NSA) & monthly, 1990+ \\
+Public curves & GSW nominal and TIPS (Fed Board) & daily, 1961/1999+ \\
+Euro-area extension (\S\ref{sec:intl}) & HICPxT zero-coupon inflation swaps; Bund\texteuro i and OAT\texteuro i real yields (generics, or bootstrapped from bond-level quotes); FR/DE sovereign CDS in EUR and USD (quanto spread) & to be onboarded; design pre-registered \\
+UK extension (\S\ref{sec:intl}) & BoE fitted nominal and real gilt curves; RPI zero-coupon swaps; new-style (3-month lag) index-linked gilts, DMO daily closes & to be onboarded; design pre-registered \\
+\bottomrule
+\end{tabular}
+\caption{Data inventory. Flagged as unavailable: security-level TIPS repo specialness and bond-level bid--ask, which gate the transaction-cost band and the identification of the 2021 negative episode; the one public partial proxy --- the Fed's SOMA securities-lending operations, per-CUSIP quantities and fees --- is queued for assessment.}
+\end{table}
+
+\section{Basis Construction and Triple Validation}\label{sec:valid}
+
+The basis is computed from \eqref{eq:basis} at $\tau\in\{2,5,10,20,30\}$ with \emph{exact} constant-maturity legs (2/5/10/30 from 2004-07; 20 from May 2020, the sector's reintroduction). Validation is threefold, and the full breakeven cross-check is reported by maturity:
+
+\begin{table}[h!]
+\centering\small
+\begin{tabular}{lcccc}
+\toprule
+Maturity & Mean diff, direct vs BE (bp) & SD (bp) & Correlation & $n$ (daily) \\
+\midrule
+2Y  & $-3.97$ & 9.78 & 0.974 & 5648 \\
+5Y  & $-5.88$ & 9.76 & 0.839 & 5718 \\
+10Y & $\mathbf{-0.55}$ & \textbf{1.55} & \textbf{0.996} & 5718 \\
+20Y & $-1.80$ & 6.50 & 0.686 & 1587 \\
+30Y & $+0.60$ & 4.70 & 0.969 & 5718 \\
+\bottomrule
+\end{tabular}
+\caption{Construction cross-check: direct \eqref{eq:basis} versus the Bloomberg-breakeven route $\lambda^{BE}=(s-\text{BE})\times100$. Certified at the benchmark maturities; the 4--6\,bp short-end divergence is the first quantitative signal that the short end requires bond-level treatment (Section~\ref{sec:fllrep}).}
+\end{table}
+
+Second, against the 107-CUSIP bond-level median: daily level correlation \textbf{0.926}, monthly-change correlation 0.591, regime means aligned within the $\sim$5\,bp curve-versus-bond wedge, GFC peaks 153.4 versus 150.6\,bp (Figure~\ref{fig:cusip}). Third, an independently run parallel reconstruction on the same legs matches to rounding. Measurement risk is closed: the floor and the blow-outs are facts about the market, and Section~\ref{sec:fllrep} pushes the certification to the individual-pair level against FLL's own published statistics.
+
+\begin{figure}[h!]\centering
+\includegraphics[width=0.9\textwidth]{fig9_cusip_vs_curve.png}
+\caption{Bond-level median (107 CUSIPs) against the exact-leg curve construction: correlation 0.926, common regimes, common peaks.}\label{fig:cusip}
+\end{figure}
+
+\section{Empirical Methodology}\label{sec:method}
+
+\textbf{(i) Level dynamics.} ADF tests and the discrete OU $\lambda_t=a+b\lambda_{t-1}+\varepsilon_t$, whence $\kappa=-\ln b/\Delta t$, $\theta=a/(1-b)$, half-life $\ln2/\kappa$; block-bootstrap bands. \textbf{(ii) Breaks.} Single mean-shift by SSR grid (10\% trimming) with sup-$F$, second break on the longer segment; the staircase is the object, not a maintained single step. \textbf{(iii) Seasonality.} Month-of-year dummies (post-2010), joint HAC $F$, amplitude, ADF on the deseasonalised series; joint seasonal-and-break estimation flagged where level shifts contaminate the dummy fit. \textbf{(iv) Events.} Pre-level $\to$ peak $\to$ half-reversion, per maturity, with the swap-leg dislocation caveat for March 2020 at ten years. \textbf{(v) Dispersion.} Cross-sectional IQR and upper percentiles of the 107-CUSIP panel per episode. \textbf{(vi) The frozen constraint design.} $y_t=\text{med}_{t+3}-\text{med}_{t-1}$ on shock $\Delta S_t$, split by the \emph{lagged constraint state}; $\theta$ by grid; sup-$F$ with wild and block-wild bootstrap; contemporaneous designs are dead on arrival (the documented multi-month lag) and are not run. \textbf{(vii) Forced-unwind replay.} Monthly entry vintages, 24-month horizon, $D=8$, stop at $D(\lambda_t-\lambda_0)>B$; stop-out frequency by vintage $\times$ buffer. \textbf{(viii) Structural estimation.} Stage one: \eqref{eq:ou} by ML per regime. Stage two: friction parameters by minimum distance on the survival surface (vii) \emph{plus} the calm/stress loading pair from (vi), with block-bootstrap moment covariance in the \citet{gkr2014} spirit for correctly sized over-identification tests; the CE refinement layered on the hurdle version, and the full SMM engine inherited from the June codebase (\texttt{tips\_treasury\_arb/}) as the implementation vehicle. The identification assignment is stated ex ante: the survival surface identifies the buffer and the regime split of $\sigma$; the Spec-B calm/stress loading pair identifies $(\xi,\text{threshold})$ of H3; the dispersion moment identifies the spread of $F$; and the level of the floor, given the derived $W_0$, identifies the risk aversion. \textbf{(ix) FLL replication.} Notional-weighted cross-sectional average per their Figure~2, with Table~III as a 29-row per-pair validation suite.
+
+\section{First Results}\label{sec:results}
+
+\subsection{The floor, and the FLL benchmark}
+
+\begin{table}[h!]
+\centering\small
+\begin{tabular}{lccccc}
+\toprule
+Period & 2Y & 5Y & 10Y & 20Y & 30Y \\
+\midrule
+FLL window 2004/07--2009/11 & 44.0\,[2.9] & 34.6\,[9.2] & \textbf{46.8\,[7.5]} & --- & 51.0\,[8.5] \\
+2010--2012 & 22.1\,[6.0] & 15.4\,[5.3] & 33.7\,[15.0] & --- & 37.9\,[31.1] \\
+2013--2019 & 30.1\,[9.5] & 17.9\,[12.8] & 26.3\,[24.2] & --- & 29.6\,[12.0] \\
+2020--2026 & 15.9\,[3.6] & 13.3\,[5.5] & 20.3\,[15.6] & 12.7\,[8.9] & 17.9\,[21.6] \\
+Post-2013 (all) & 23.3\,[7.6] & 15.7\,[10.9] & \textbf{23.4\,[22.4]} & 12.7\,[8.9] & 24.0\,[13.3] \\
+\bottomrule
+\end{tabular}
+\caption{Monthly means of $\lambda$ (bp), Newey--West $t$ in brackets. The ten-year proxy averages 46.8\,bp on the exact FLL sample against their bond-level 54.5. Fifteen years and the largest capital inflow in the trade's history later, the basis rests at 16--24\,bp, not zero.}
+\end{table}
+
+The term structure on exact legs reads 23.3 / 15.7 / 23.4 / 24.0 at 2/5/10/30 post-2013: a rising and highly significant 5$\to$10 segment, a flat top, and two quantified end-artefacts --- the 2-year elevation is the CPI seasonal (52\,bp amplitude, Section~\ref{sec:dyn}); the 20-year depression is the cheap-sector effect of the 2020 reintroduction. H2 reads as supported on the clean segment, with the friction-profile refinement live.
+
+\begin{figure}[h!]\centering
+\includegraphics[width=0.94\textwidth]{fig_basis_exact.png}
+\caption{The basis on exact legs, 2004--2026: the FLL plateau, the GFC spike, the staircase, the 2024--25 short-end closure.}
+\end{figure}
+
+\subsection{The staircase}
+
+The compression is dated, not assumed. The dominant ten-year break falls in December 2010 --- not 2013, where a taper-centred narrative would put it --- with a sup-$F$ an order of magnitude above conventional thresholds, followed by a second, smaller step in December 2017; the same grid at two and five years adds October 2024, after which the short-end mean is statistically indistinguishable from zero. The path $46\to29\to21$\,bp is a staircase, not a decay: level shifts concentrated at dates in the capital-regime calendar, the raw material for H4, with the regulatory-calendar confrontation scheduled in the roadmap and the 2024 closure carried as provisional (Section~\ref{sec:dyn}).
+
+\begin{table}[h!]
+\centering\small
+\begin{tabular}{lcccc}
+\toprule
+Maturity & Break 1 & Means (bp) & Break 2 & Means (bp) \\
+\midrule
+2Y & 2009-10 & $44.4\to23.2$ (16.4) & 2024-10 & $25.9\to0.3$ (27.0) \\
+5Y & 2009-11 & $34.8\to15.6$ (108.3) & 2024-10 & $16.7\to6.1$ (20.0) \\
+10Y & \textbf{2010-12} & $\mathbf{45.8\to24.4}$ (\textbf{159.6}) & \textbf{2017-12} & $\mathbf{29.0\to20.7}$ (132.6) \\
+30Y & 2014-12 & $46.0\to20.7$ (237.7) & 2019-09 & $24.7\to18.0$ (117.0) \\
+\bottomrule
+\end{tabular}
+\caption{Break adjudication (sup-$F$ in parentheses). The dominant ten-year break is December 2010, not 2013; the compression is a staircase $46\to29\to21$\,bp. New fact: after October 2024 the two-year basis mean is statistically zero --- the short-end arbitrage has closed.}
+\end{table}
+
+\begin{figure}[h!]\centering
+\includegraphics[width=0.9\textwidth]{fig7_breaks10y.png}
+\caption{The ten-year basis with estimated regime means: the staircase, H4's raw material.}
+\end{figure}
+
+\subsection{Dynamics and seasonality}\label{sec:dyn}
+
+Post-2013, the ten-year basis is stationary (ADF $p=0.008$) with an OU half-life of 4.6 months on the curve construction and 3.7 on the bond-level median ($\kappa=0.187$/m, $\theta=16.6$\,bp, $\sigma=5.8$\,bp/m); the two- and five-year proxies fail the ADF \emph{until} the month-dummy seasonal is removed --- month dummies fitted on the post-2010 monthly sample, jointly significant everywhere, amplitude \textbf{52.2\,bp} at two years (against a 23\,bp mean), 22.9 at five, 5.5 at ten --- after which the two-year monthly ADF flips to $p=0.000$ (post-2013 window). The 30-year non-stationarity is the 2014/2019 breaks sitting inside the window; within-regime it mean-reverts. One documented anomaly: dummy deseasonalisation over a window containing level shifts absorbs trend at ten years; the joint seasonal-and-break estimator is the designated fix, and the raw ten-year result stands meanwhile.
+
+\subsection{Stress: events, lags, and the linear emptiness}
+
+\begin{table}[h!]
+\centering\small
+\begin{tabular}{llccc}
+\toprule
+Episode & Series & Pre $\to$ Peak (bp) & Peak date & Half-reversion \\
+\midrule
+GFC & 5Y / 10Y / 30Y & $\to$ 144 / 151 / 154 & 2008-11 -- 2009-01 & --- \\
+March 2020 & 2Y & $-1.3\to68.2$ & \textbf{2020-03-19} & 2020-03-27 \\
+March 2020 & 10Y & $19.4\to30.6$ & 2020-03-06 & (swap leg dislocated) \\
+2022 hiking & 2Y / 5Y / 10Y & $\to$ 67.9 / 37.0 / 32.1 & 2022-06/09 & weeks \\
+2023 (SVB) & 2Y / 10Y / 30Y & $\to$ 60.4 / 33.7 / 25.2 & \textbf{2023-07/08} & weeks \\
+\bottomrule
+\end{tabular}
+\caption{Stress events on exact legs. Three-to-seven-fold moves in every episode; peaks lag the initiating shock by weeks to months (SVB: shock in March, peaks in July--August) --- the slow-moving-capital lag. At ten years the March-2020 spike is muted because the swap leg dislocated with the TIPS leg: that episode requires the bond-level construction at benchmark maturities.}
+\end{table}
+
+Against this, the \emph{unconditional linear} volatility loadings are empty: post-2013 local projections of the ten-year basis on MOVE shocks are insignificant at every horizon ($|t|\le1.2$), and the rolling resting level regressed on rolling MOVE gives $\beta=-0.014$ [$t=-0.4$]. Large conditional moves with zero linear loading is H3's signature: a linear regression averages a flat normal-times relation with a violent constraint-binding one and recovers nothing. The design consequence --- state-conditional specifications only --- is implemented in Section~\ref{sec:constraint}.
+
+\subsection{March 2020 as a dispersion event}\label{sec:disp}
+
+The heterogeneous-threshold mixture \eqref{eq:mixture} predicts that a funding shock is read first in the \emph{cross-section}: the most constrained holders of the most balance-sheet-expensive bonds are stopped out before the centre of the distribution moves. March 2020 delivers this signature with unusual cleanliness, and the episode table below reports it under a uniform, stated convention for the pre-event level --- the 60-trading-day trailing mean of the cross-sectional IQR, ending five business days before the episode onset (onsets: 2008-09-15, 2020-02-20, 2022-03-16, 2023-03-09); the earlier single-day snapshots are retired. The restated numbers sharpen rather than weaken the pattern: the corrected 2022 pre-level (16.2 against the stale 23.3) makes the 2022 dispersion move \emph{larger}, and the SVB episode is confirmed as a non-event on this margin. The precise March-2020 statement is proportional and temporal, not absolute: from 14 February to the 16 March apex the median \emph{doubles} ($17.8\to34.6$\,bp, $+17.4$) while the IQR \emph{triples} ($5.3\to18.4$), and the timing separates them --- the IQR peaks on the dash-for-cash apex itself, the median's maximum (36.2) arrives only in late June. Finally, the review's maturity-confound objection is met with the within-bucket decomposition: \emph{inside} the under-five-year bucket the IQR explodes from $\sim$5.3 to \textbf{43.8}\,bp (peak 19 March), against $1.3\to4.4$ within the over-five-year bucket --- the fanning is holder- and security-level heterogeneity \emph{within} maturity class, not a maturity-axis artefact, with assortative matching of constrained holders to expensive bonds stated as the identifying assumption.
+
+\begin{table}[h!]
+\centering\small
+\begin{tabular}{lccc}
+\toprule
+Episode & IQR pre $\to$ peak (bp) & Peak date & Median \\
+\midrule
+GFC & $19.0\to117.2$ & 2008-11-24 & blows out (153) \\
+March 2020 & $5.6\to18.4$ & \textbf{2020-03-16} & doubles (34.6 on 03-16; max 36.2 late June) \\
+2022 & $16.2\to35.2$ & 2022-08-26 & moderate \\
+2023 (SVB) & $10.1\to14.1$ & 2023-03-06 & no dispersion event \\
+\bottomrule
+\end{tabular}
+\caption{Cross-sectional dispersion (107 CUSIPs); pre-event levels under the uniform 60-day trailing rule stated in the text. The 90th percentile of the cross-section reaches 73.3\,bp in March 2020. Maturity split confirms short-end concentration (COVID maxima: 49.1\,bp under five years vs 31.6 over; GFC: 210 vs 162). Monthly $\Delta$IQR regressions on MOVE, linear and threshold, are weak ($|t|\le0.8$): dispersion, like the level, is event-concentrated.}
+\end{table}
+
+\begin{figure}[h!]\centering
+\includegraphics[width=0.86\textwidth]{fig_mar2020_bondlevel.png}
+\caption{March 2020 at bond level: the median, the interquartile band, and the swap proxy.}
+\end{figure}
+
+\subsection{The constraint test}\label{sec:constraint}
+
+The design was frozen on 15 July 2026 (Pilot Report v3, \S4.3) --- lag structure, threshold grid, bootstrap scheme --- \emph{before} any constraint series had been inspected; a full specification curve over lag, grid and shock definitions is scheduled as robustness. \emph{The market-proxy passes, recorded for completeness.} Two preliminary passes preceded the constraint test proper, both on the frozen lag-aware dependent variable. The \emph{contemporaneous} design ($\Delta\text{med}_t$ on $\Delta S_t$) found nothing on any market proxy (all bootstrap $p>0.14$, perverse signs) and is retired. The \emph{lag-aware} design on market-price proxies produced: dealer CDS $b_{\text{calm}}=0.488$ [3.0] / $b_{\text{stress}}=-0.122$ [$-0.9$], sup-$F$ 38.2, $p=0.023$ but with the \emph{perverse} pattern (loading dies above the threshold, the 2008--09/2011--12 European-names artefact); LIBOR--OIS 0.143 [3.3] / 0.517 [3.4], $p=0.21$; MOVE 0.055 [1.2] / 0.549 [2.9], $p=0.36$. Lesson: market-price proxies are \emph{shocks}, not constraints --- they peak and revert before the basis does --- which motivated the move to the constraint variables below.
+
+\begin{table}[h!]
+\centering\small
+\begin{tabular}{llccccc}
+\toprule
+Spec & Shock $\mid$ state (stress side) & $\hat\theta$ & $b_{\text{calm}}$ [$t$] & $b_{\text{stress}}$ [$t$] & sup-$F$ & boot $p$ \\
+\midrule
+A & $\Delta$HKM $\mid$ HKM low & 4.57\% & $-3.91$ [$-2.5$] & $\mathbf{-24.51}$ [$-2.6$] & 6.8 & 0.24--0.26 \\
+B & $\Delta$MOVE/10 $\mid$ HKM low & 4.81\% & 0.63 [1.7] & $\mathbf{7.15}$ \textbf{[4.1]} & 21.8 & 0.25--0.26 \\
+C & $\Delta$PD $\mid$ PD-z high & 1.90 & $-0.30$ [$-0.8$] & 1.02 [1.4] & 0.9 & 0.67 \\
+C2 & $\Delta$MOVE/10 $\mid$ PD-z high & 1.16 & 4.93 [2.5] & $-1.55$ [$-0.8$] & 17.2 & 0.10 \\
+D & $\Delta$TFF $\mid$ TFF-z low & $-1.46$ & $-0.08$ [$-2.0$] & 0.01 [0.3] & 1.9 & 0.23 \\
+\bottomrule
+\end{tabular}
+\caption{The frozen lag-aware design on the constraint variables (2004-08--2026, monthly; bootstrap $p$ ranges across iid- and block-wild schemes, which agree). A volatility shock moves the basis eleven times harder when intermediary capital is in its bottom quintile; capital shocks six times harder. Inventories (C) and futures positioning (D) carry no threshold information: the binding constraint is capital. The sup-$F$ does not formally reject linearity ($p\approx0.25$) --- a power constraint with $\sim$50 stress months, stated as a referee would. Quarterly Form-PF interactions (hedge-fund repo $\times$ RV-NAV state) are uninformative at $n=52$, as anticipated. Three qualifications from the defect review are adopted. The ``eleven-fold/six-fold'' ratios are descriptive, not inferential --- their denominators are the calm loadings, small and at best marginally significant --- so the claim is stated as \emph{a significant stress-state loading against a calm loading near zero}. The near-significant perverse Spec C2 ($p=0.10$, sign flip) has a ready reading: high dealer TIPS inventories mark QE-absorption states, not stress, so the conditioning variable is inverted --- an interpretation, flagged as such. And because the objects are event-concentrated, permutation/placebo-window inference is scheduled alongside the bootstrap.}
+\end{table}
+
+Because the sup-$F$ prices the search over the threshold, and the bottom quintile was \emph{pre-specified} by the model (H3), the review's suggestion of a Chow test at the known quintile is implemented: Spec A returns $F=5.5$, block-wild $p=0.114$; Spec B returns $F=21.8$, $p=0.127$ --- an improvement on the sup-$F$'s 0.25, marginal for A, still short of conventional levels for B. Two disclosures complete the honest record. The stress-state \emph{composition}: the bottom-quintile months are 2008--2013 (42 months: the GFC aftermath and the euro crisis) plus 2020 (8 months) --- two macro impairment clusters in twenty-two years. And the \emph{leave-one-episode-out} check: excluding the COVID year leaves the stress loading intact (7.27 [$t=4.1$]); excluding the GFC window collapses it (2.45 [$t=1.8$]). The interaction is identified substantially off the GFC cluster --- which is precisely why the euro cross-section, supplying a third impairment episode, is the decisive addition rather than a nicety.
+
+\begin{table}[h!]
+\centering\small
+\begin{tabular}{lccc}
+\toprule
+Episode onset & HKM level & Percentile (2004+) & Bottom quintile \\
+\midrule
+GFC (Oct-2008) & 3.57\% & \textbf{3\%} & yes \\
+COVID (Mar-2020) & 4.27\% & \textbf{8\%} & yes \\
+2022 (Jun-2022) & 5.41\% & 32\% & no \\
+SVB (Mar-2023) & 5.62\% & 37\% & no \\
+\bottomrule
+\end{tabular}
+\caption{The episode-sorting exhibit. The two capital-impairment onsets are exactly the two system-wide blow-outs; the two unimpaired onsets produced the smaller, short-end-concentrated moves. The constraint state at onset sorts the episode cross-section as the model predicts.}
+\end{table}
+
+\begin{figure}[h!]\centering
+\includegraphics[width=0.92\textwidth]{fig_basis_hkm.png}
+\caption{Basis versus the HKM capital ratio; dashed: the estimated Spec-B threshold (bottom quintile). The two great widenings are the two excursions below the line.}
+\end{figure}
+
+\begin{figure}[h!]\centering
+\includegraphics[width=0.78\textwidth]{fig12_constraint_test.png}
+\caption{Calm versus stress loadings across specifications ($t$-statistics above bars).}
+\end{figure}
+
+\subsection{The forced-unwind surface}\label{sec:unwind}
+
+The replay design, stated in full: entry on the first day of every month from 2004-08; the convergence trade is tracked on the \emph{daily} bond-level median with duration $D=8$ over a 24-month horizon; the position is stopped the first day the mark-to-market loss $D(\lambda_t-\lambda_0)$ exceeds the capital buffer $B$ (equivalently, the first crossing of the barrier $B/D$ above the entry spread); the surface reports the stop-out frequency by entry-year vintage and buffer. Daily monitoring is the empirical convention throughout, and Section~\ref{sec:struct} aligns the model to it.
+
+\begin{table}[h!]
+\centering\small
+\begin{tabular}{lcccccccccc}
+\toprule
+Vintage & 2005 & 2007 & 2008 & 2011 & 2013 & 2016 & 2019 & 2021 & 2023 & 2025 \\
+\midrule
+Stop-out, 1\% & 100 & 100 & 100 & 67 & 92 & 8 & 100 & 83 & 0 & 0 \\
+Stop-out, 2\% & 17 & 100 & 100 & 25 & 25 & 0 & 0 & 8 & 0 & 0 \\
+\bottomrule
+\end{tabular}
+\caption{Stop-out frequency (\%) by entry vintage and capital buffer ($D=8$, 24-month horizon), bond-level median. The 2007--08 vintages are stopped out always, at both buffers; post-2013 the 2\% row is nearly empty --- the buffer is the binding economics, and the full surface is the structural model's calibration target.}
+\end{table}
+
+\subsection{The structural pass, corrected}\label{sec:struct}
+
+Estimating \eqref{eq:ou} on the post-2013 median gives $\kappa=0.187$/month (half-life 3.7m), $\theta=16.6$\,bp, $\sigma=5.78$\,bp/m. The floor is solved at the stationary entry $\lambda_0=\theta$ --- deviations from entry are then $\lambda_0$-free, and the convention is the self-consistent one for an equilibrium \emph{resting} level --- so $(\kappa,\sigma)$ drive the first passage and the estimated $\theta$ enters through the identification of entry with rest; the model column below accordingly prices entries at the mean, while the empirical vintages enter away from it, one of the candidate wedges listed under the stop-out table. The engine is rebuilt per the defect review: \emph{daily} barrier monitoring, aligned with the replay's convention; both horizons of Section~\ref{sec:entry} (the 24-month risk horizon with the MTM law for survivors, and bond maturity, which restores the note's mixture structure); the stopped branch discounted at $Y_0=4\%$; and the certainty-equivalent condition computed exactly on the simulated terminal distribution. Carry is priced as a running annuity, $\lambda_0 A(\tau)$ with $A(\tau)=(1-e^{-Y_0\tau})/Y_0$ --- the convention closest to the coupon-bearing panel --- rather than as the note's zero-coupon lump $e^{-Y_0T}(1-e^{-\lambda_0T})$; the two certain-branch factors are 8.24 versus 6.70 at ten years (ratio 1.23), and re-solving the derived-charge rows of the floors table below under the lump convention moves the maturity floors to [RN 12.2; RRA$=1$ 18.7; RRA$=2$ 30.2]\,bp: the observed floor still sits between RRA one and two, so the reading below is convention-robust.
+
+\emph{The capital charge, derived (the note's $m\times\VaR$).} With $D\sigma=46$\,bp of monthly P\&L volatility (47 with the yield leg), the Basel ten-day 99\% VaR with the regulatory multiplier $m=3$ gives a charge of \textbf{2.26\%} of notional; the FRTB-style 97.5\% quantile gives \textbf{1.91\%}. The 2\% buffer that the replay identifies empirically is thus not a calibration: it is what the capital rule delivers under the estimated dynamics --- a free structural result that also makes the regulatory counterfactuals on $(m,\alpha)$ directly executable. Gaussian quantiles understate the charge given the daily-change kurtosis of 23.4; the fat-tail refinement raises it, in the direction favourable to the floor.
+
+\begin{table}[h!]
+\centering\small
+\begin{tabular}{lcc}
+\toprule
+ & Model, daily monitoring & Empirical replay (daily) \\
+\midrule
+$\Pr(\text{stop}\le24\text{m})$, 1\% buffer & 68.8\% & 43.0\% \\
+$\Pr(\text{stop}\le24\text{m})$, 2\% buffer & 8.8\% & 2.5\% \\
+\bottomrule
+\end{tabular}
+\caption{Stop-out probabilities under the aligned (daily) convention; the 3-July table's monthly-monitoring values (58.9\%/6.5\%) are retained in the register for reference. The model over-predicts stop-outs at both buffers; the candidate explanations --- regime-dependent $\sigma$ (the post-2013 estimate averages calm and stress months), vintages entering below $\theta$, Gaussian versus fat-tailed shocks, and the omitted yield leg --- are competing, not adjudicated, and are exactly the targets of the SMM merge.}
+\end{table}
+
+\begin{table}[h!]
+\centering\small
+\begin{tabular}{llccccc}
+\toprule
+Horizon & Buffer & RN ($\mathbb{E}[X]\ge0$) & CE, RRA$=1$ & RRA$=2$ & RRA$=5$ & Hurdle 10\% \\
+\midrule
+$H=24$m & 1\% & 50.6 & 99.6 & $>$120 & $>$120 & 68.3 \\
+$H=24$m & 2\% & 6.8 & 18.0 & 32.9 & $>$120 & 28.4 \\
+$T=10$y & 1\% & 57.6 & 100.6 & $>$120 & $>$120 & 119.4 \\
+$T=10$y & 2\% & 10.2 & \textbf{15.9} & \textbf{27.0} & $>$120 & 40.5 \\
+\bottomrule
+\end{tabular}
+\caption{Model-implied floors $\lambda^*$ (bp/yr) under the note-faithful entry condition $\CE\ge W_0$ by risk aversion, with the risk-neutral participation floor and the 10\%-hurdle version as reference columns. Observed floor: 17.7 (median) -- 23.3 (10Y).}
+\end{table}
+
+The reading, in the review's own corrected terms. At the \emph{derived} $\approx$2\% charge and under the note's maturity mixture, the risk-neutral participation floor is 10\,bp and the CE floors at RRA $=1$ and $2$ are 15.9 and 27.0\,bp: \textbf{the observed floor of 17.7--23.3\,bp corresponds to relative risk aversion between one and two} --- squarely inside the standard range --- and the risk-aversion channel, not the expected-loss channel, is what generates most of it, exactly the note's one-sentence mechanism. The earlier ``brackets the observed floor'' phrasing is retired: on the aligned convention the observed median sits just below the RRA$=1$ value at the 24-month horizon and between the RRA$=1$ and RRA$=2$ values at maturity, and the sentence above is the precise statement. The 1\%-buffer rows, where risk aversion is first-order and the floors explode, are shown for completeness and are in any case excluded by the derived charge itself.
+
+\begin{figure}[h!]\centering
+\includegraphics[width=0.56\textwidth]{fig13_structural_pass.png}
+\caption{Stop-out probabilities, model versus data --- \emph{monthly-monitoring version of 3 July}, retained for comparability; the aligned daily figures are in the table above.}
+\end{figure}
+
+\subsection{Replicating FLL Figure 2, and the per-pair diagnostic}\label{sec:fllrep}
+
+The paper's construction is now confronted with FLL's own published object on its own terms: a \emph{matched-pair engine} built from true per-ISIN legs. The pair set follows FLL's rule --- one nominal Treasury per TIPS, the closest maturity, fixed --- extended for full-life coverage with bracket patches on five long-dated issues and one startup segment: 117 pair segments over 107 TIPS and 105 distinct nominals, covering 99.7\% of the 9{,}942 TIPS-months in sample (minimum per-issue coverage 92\%); the maturity mismatch is 31 days at the median, with 92\% of segments inside FLL's own 31-day screen (maximum 425 days, flagged, in the sparse early long end). Legs are daily per-ISIN mid yields (107 TIPS and 153 nominal series, 2004--2026); the basis is computed in yield space, $\lambda = y^{\text{TIPS}} + s(\tau) - y^{\text{twin}}$, with the twin slid to the TIPS maturity along the GSW par curve.
+
+Against Table~III, 28 of their 29 pairs are reconstructed on their exact window. The notional-weighted average is \textbf{59.6\,bp against their 54.2} (their paper headline: 54.5); per-pair sample sizes match theirs almost exactly (median ratio 1.03). The mismatch gradient is the diagnostic: exact-maturity twins replicate within \textbf{$-1.1$\,bp}; fifteen-day pairs within $+1.3$; the $+8.2$ residual on the 31-day pairs is concentrated in the twelve legacy high-coupon (8--11\%) twins and does not respond to the fitted-curve slope adjustment --- a yield-space-versus-price-space convention wedge, not a pairing error, to be closed definitively by the scheduled price-space variant. Pair-by-pair correlation with their reported means is 0.673.
+
+\begin{table}[h!]\centering\small
+\begin{tabular}{lccc}
+\toprule
+Mismatch bucket & Pairs & Mean diff.\ (ours $-$ FLL, bp) & Reading \\
+\midrule
+0 days & 7 & $-1.1$ & exact twins: replication closed \\
+15 days & 9 & $+1.3$ & inside convention noise \\
+31 days & 12 & $+8.2$ & legacy high-coupon wedge (price-space item) \\
+\midrule
+\multicolumn{4}{l}{Notional-weighted window mean: \textbf{59.6} vs FLL \textbf{54.2} (54.5 headline); median $n$-ratio 1.03.} \\
+\bottomrule
+\end{tabular}
+\caption{Table-III certification on the matched-pair engine (window 23-Jul-2004 -- 19-Nov-2009).}
+\label{tab:t3cert}
+\end{table}
+
+This resolves the legacy diagnostic of the previous version. The 40.4\,bp weighted mean and the $-23/-29$\,bp gaps on the short pairs reported there are now identified as artifacts of the pre-computed vendor panel, which silently re-paired issues outside the twins' common life; on true pairs the gap closes. The historical exhibit is retained below with this reading.
+
+A final by-product settles a data question. Comparing the twin-based basis with a fitted-curve alternative (nominal leg from the GSW par curve at the exact TIPS maturity) over 204{,}574 pair-days: mean difference $+4.2$\,bp, standard deviation 9.4, and a median correlation of monthly changes of \textbf{0.947} per issue (10th percentile 0.617). The fitted-curve leg therefore substitutes for the twin in the residual coverage holes, and the incremental bracket downloads contemplated in the data plan are not required --- a decision closed empirically rather than by assumption.
+
+\begin{figure}[h!]\centering
+\includegraphics[width=0.94\textwidth]{fll_fig2_extended.png}
+\caption{The legacy Figure-2 replication on the pre-computed panel (window mean 40.4 weighted), retained as the historical exhibit: its short-pair gap is now resolved by the matched-pair engine of this section.}
+\label{fig:fllext}
+\end{figure}
+
+\subsection{The floor at pair level: 2021 and the 2024 closure, certified}\label{sec:pairfloor}
+
+Two claims that previous versions carried as provisional are settled by the pair panel. First, \emph{the floor never broke at pair level}. Over 2021 --- the year the curve-level short end dips below zero for eighty days at two years, seasonal included --- the daily cross-sectional median of the 107 true pairs has \textbf{zero} negative days; its minimum is $+2.6$\,bp, on 3--4 March 2021 (Figure~\ref{fig:pairfloor}). The corridor's lower half is therefore visited only by the on-the-run short curve; the seasoned universe never leaves the floor's side, in twenty-two years. Second, \emph{the 2024 closure is an on-the-run phenomenon}. Restricting to seasoned pairs with residual maturity between one and 2.5 years (sub-annual pairs excluded for swap-grid support), the post-October-2024 median is \textbf{16.1\,bp} over 447 days --- against the on-the-run two-year curve at 0.3 raw and 2.8 deseasonalised. The short end of the \emph{curve} closes because the newest issues carry near-the-money deflation floors; the seasoned cross-section still pays its rent. This re-scopes the closure from a potential falsification of H1 into direct evidence for the floor-moneyness wedge of H2/H7, and it upgrades the paper's central claim: no pair-level breach, anywhere, ever, in sample.
+
+\begin{figure}[h!]\centering
+\includegraphics[width=0.94\textwidth]{fig16_pair_floor.png}
+\caption{The floor at pair level: daily median of the true-pair panel and of the seasoned short bucket ($\tau\in[1,2.5)$). The median never breaches zero; the seasoned short end rests at 16.1\,bp after October 2024 while the on-the-run curve closes.}
+\label{fig:pairfloor}
+\end{figure}
+
+\section{Established versus Open}\label{sec:open}
+
+\emph{Established:} the floor's existence, level, and dynamics on a triple-validated construction, now certified pair-by-pair against FLL's Table~III on true per-ISIN legs (Section~\ref{sec:fllrep}); the floor certified at pair level --- no 2021 breach, the 2024 closure re-scoped as on-the-run (Section~\ref{sec:pairfloor}); the staircase with dated breaks; the certainty-equivalent floor at the derived capital charge, convention-robust under the lump carry; the seasonal decomposition of the short end; the event phenomenology with lags; the dispersion signature of March 2020; the state-dependent constraint interaction ($t=4.1$) with the episode sorting; the survival surface; a first structural pass landing on the observed floor; constant-maturity linker bases for FR/IT/UK/DE on one unified pipeline, with the euro 2011--12 episode, the German July-2012 peak, the Bund--OAT differential, and the UK LDI event measured (Section~\ref{sec:intlev}); and a calibrated power analysis of the registered pooled test (Section~\ref{sec:power}). \emph{Open, stated plainly:} the formal threshold-versus-linear separation remains short of conventional significance on U.S. data alone (sup-$F$ $p\approx0.25$; pre-specified Chow $p=0.11$/$0.13$) and the leave-one-episode-out check shows the interaction is substantially GFC-driven --- the pooled test, powered at 87--91\% by design, has now been executed and returns a null with a timing diagnosis (Section~\ref{sec:pooledexec}); the international evidence of Section~\ref{sec:intlev} remains descriptive by discipline; the price-space variant of the matched-pair engine (ISIN-level prices, index ratios) remains the referee-proofing step for the legacy high-coupon pairs; the signed, on-the-run 2021 story remains gated by the specialness data; the transaction-cost band is assumed (zero), conservative for existence but leaving the no-trade-band interpretation of 20\,bp unresolved; the full SMM (June engine, GKR covariance, CE and correlated-yield refinements, dispersion moment) and the policy counterfactuals are designed but not yet run in the unified pipeline.
+
+\section{The International Cross-Section: A Pre-Registered Design}\label{sec:intl}
+
+The leave-one-episode-out disclosure of Section~\ref{sec:constraint} fixes what the extension must supply: not more months but more \emph{impairment episodes} --- the interaction is identified off two U.S. clusters in twenty-two years, and no amount of additional U.S. data changes that count. The extension is therefore designed around episodes, and its specification is frozen here, before any non-U.S. series has been inspected, on the same discipline that carried the constraint test: the pre-specified objects carry the inferential weight precisely because they were fixed ex ante.
+
+\begin{hypothesis}\textbf{Pooled state dependence.} In market $m\in\{$US, EA, UK$\}$ with basis $\lambda^m_t$ and the common intermediary-capital state (HKM, bottom quintile as in H3), the frozen design $y^m_t=\text{med}^m_{t+3}-\text{med}^m_{t-1}$ on a common rates-volatility shock loads positively in the stress state, pooled with market fixed effects: $b_{\text{stress}}>0$ with $b_{\text{calm}}\approx0$. Sovereign and redenomination risk and LDI mandates load on the \emph{levels} $a_m$; the linker deflation floor does \emph{not} --- the floor is an option whose value rises exactly in the stress state (falling breakevens, rising inflation volatility), richening the floored linker and \emph{attenuating} its measured widening --- so its contamination of the interaction is signed and conservative for H7 in the floored markets, and the UK contrast identifies it: $b_{\text{stress}}^{\text{UK}}\ge b_{\text{stress}}^{\text{US/EA}}$ on this channel, with the gap bounding the floor-option wedge.\end{hypothesis}
+
+The two markets divide the labour. The \emph{euro} episode (2011--12) is the third dealer-capital impairment and therefore the H3/H7 test proper; it is also the confounded one, and the sovereign control is built into the object itself: the primary specification is the \emph{differential} basis --- Bund\texteuro i versus OAT\texteuro i, each leg $y^{\text{real}}+s^{\text{HICPxT}}-y^{\text{nom}}$ on the common tenor of widest overlap --- with the redenomination state proxied by the German and Italian quanto-CDS spreads (the EUR-versus-USD CDS basis; a French EUR-denominated contract is not quoted) and the FR--DE sovereign differential from the USD legs as the pre-specified controls, and the pooled claim made only conditional on them. One feasibility risk is declared with its fallback: the Bund\texteuro i curve is thin before 2013 (the programme dates from 2006, with few lines), and if the differential is too sparse at the frozen tenor the registered fallback is the OAT\texteuro i basis alone, same quanto-CDS control, sovereign qualification carried explicitly. The \emph{UK} episode (October 2022) is deliberately \emph{not} an H3 observation: the LDI dislocation was a forced unwind of end investors under collateral calls, dealer capital largely unimpaired, so it enters on the \emph{barrier} margins --- the dispersion response of the bond-level index-linked cross-section (DMO daily closes) and the forced-unwind replay under the same $D(\lambda_t-\lambda_0)>B$ rule --- as the out-of-sample test of H6 and of the first-passage mechanism itself. It also supplies, for free, what the U.S. and euro markets cannot: index-linked gilts carry no deflation floor on principal, and because the floor is a state-dependent wedge with a known sign --- it richens floored linkers precisely in stress, attenuating their measured widening --- the UK is not merely a level control but the \emph{identifying contrast} for it, the auxiliary prediction stated in H7.
+
+\begin{table}[h!]
+\centering\small
+\begin{tabular}{llcccl}
+\toprule
+Episode & Market & Impaired agent & Sovereign confound & Deflation floor & Tests \\
+\midrule
+GFC 2008--09 & US & dealer capital & no & yes & H3, H5, H6 \\
+COVID 2020 & US & dealer capital & no & yes & H3, H6 \\
+Euro crisis 2011--12 & EA & dealer capital & yes (controlled) & yes & \textbf{H3/H7: third episode} \\
+LDI Oct-2022 & UK & end-investor collateral & no & \textbf{no} & H6, barrier; floor-option control \\
+\bottomrule
+\end{tabular}
+\caption{The episode map: what each episode identifies and which confound it carries. The pooled H7 claim rests on the three capital-impairment rows; the LDI row tests the mechanism, not the capital channel.}
+\end{table}
+
+The frozen choices, mirroring Section~\ref{sec:method}(vi) verbatim wherever a choice exists: monthly frequency; dependent variable $y^m_t=\text{med}^m_{t+3}-\text{med}^m_{t-1}$, on the bond-level median where a panel is available and the benchmark-tenor curve basis otherwise; shock $\Delta$MOVE/10, for comparability with Spec B, with EUR and GBP swaption-implied volatility analogues as pre-specified robustness; state $=$ lagged HKM bottom quintile, common across markets (the HKM intermediaries are the global primary dealers, several of them the marginal balance sheets in all three markets), with market-local dealer-CDS states as pre-specified robustness, not primary --- and the divergence rule registered now: the pooled headline is stated on the common HKM state, the local-state estimates are reported alongside, and if a local state flips the sign of, or extinguishes, $b_{\text{stress}}$ in its market, the pooled claim is withdrawn for that market and the divergence reported as evidence on which balance sheet is marginal; UK construction on new-style (three-month lag) gilts only, with the RPI-reform announcement (November 2020) as a registered break control; euro construction as above. One panel rule follows from the episode map itself: the pre-specified LDI window (September--October 2022 and its reversion quarter) is \emph{excluded} from the H7 pooled panel --- under the common state those months are ``calm'' while the UK basis is moving for barrier reasons, which would contaminate the calm cell --- and is analysed on its own margins as registered above. Inference: the Chow at the pre-specified quintile, pooled with market fixed effects and market-clustered block-wild bootstrap; the sup-$F$ grid retained as the descriptive companion. And the power question is answered before the data arrive: a simulated power calculation --- the U.S.-estimated calm/stress loadings and residual law as the data-generating process, power of the pooled pre-specified-quintile Chow as a function of the number of impairment episodes --- is a registered deliverable alongside the results, so that ``the third episode is decisive'' is a computation, not an assertion.
+
+Scope is capped at the two markets (Japanese linkers excluded as thin and yield-curve-control distorted), and the falsification content is stated: a pooled $b_{\text{stress}}$ indistinguishable from $b_{\text{calm}}$, with three impairment episodes and adequate simulated power, would leave the state-dependence channel unsupported, and the paper's claim would retrench to the floor's existence, level, and mechanism --- which stand on the U.S. evidence alone.
+
+\section{First International Evidence}\label{sec:intlev}
+
+The constant-maturity bases of the pre-registered design are now built, for all four markets, on a single pipeline: the real leg is interpolated per date from the per-ISIN linker yields (20 French, 8 German, 28 Italian, 47 UK new-style issues), the swap leg is the country's zero-coupon inflation-swap grid (EUSWI; BPSWIT for RPI), and the nominal leg the constant-maturity government curve (GFRN, GDBR, GBTPGR, GUKG) --- one interpolator, one seasonal convention, one code path, so cross-country differences are economics, not construction.\footnote{One engineering note is recorded for reproducibility: the market-data workbook stores the international block on its own date axis; the loader detects and aligns each block's axis independently. A misread of this layout in a first pass produced implausible levels and was caught by spot-validation against known history (the Italian ten-year nominal at 7.068 on 15 November 2011); all series below validate against such anchors.} Tenors: ten years for France, Italy and the UK; five for Germany (the Bund\texteuro i curve is short), with the French five-year built alongside for the differential. Resting levels are of the U.S. order of magnitude and economically ordered: median 5.3\,bp for France, 29.5 for Italy, 30.8 for the UK, 25.7 for Germany, on samples of 3{,}900--5{,}800 days ending July 2026.
+
+\begin{table}[h!]\centering\small
+\begin{tabular}{lcccc}
+\toprule
+ & pre (Mar--May 2011) & monthly peak & 15-Nov-2011 & \\
+\midrule
+France 10Y & $+3.3$ & \textbf{42.2} (Nov-11) & 54.4 & clean \texteuro i market \\
+Italy 10Y & $+13.7$ & \textbf{143.2} (Nov-11) & 169.5 & sovereign-loaded arm \\
+Germany 5Y & $-7.3$ & \textbf{126.8} (Jul-\textbf{2012}) & 32.1 & delayed to the convertibility peak \\
+France 5Y & $-7.6$ & 58.1 (Dec-11) & 64.1 & \\
+Bund--OAT 5Y diff. & $-2.4$ & \textbf{$+100.2$} & --- & the sovereign control moves \\
+\bottomrule
+\end{tabular}
+\caption{The euro episode: the third dealer-capital impairment exists in the constructed data, with the right timing and cross-country ordering.}
+\label{tab:euroep}
+\end{table}
+
+The reading is direct. The French basis --- the clean \texteuro i market --- moves from essentially zero to 42--54\,bp into the crisis apex: the third impairment episode the U.S. record lacks is present, constructible, and correctly timed. Italy widens an order of magnitude with its sovereign load, exactly the contrast the design assigns it. Germany contributes a new fact: its basis peaks in \emph{July 2012}, the convertibility-fear apex --- even the core linker market impairs, with a year's delay on the periphery. The Bund--OAT differential, the sovereign-controlled object, itself moves 100\,bp. The UK LDI event lands to the day: 39.8\,bp pre-August 2022, a daily peak of \textbf{62.3 on 13 October 2022} --- inside the Bank of England intervention week --- and back to 26.9 by December (Figure~\ref{fig:ukldi}). And a first, deliberately informal mechanism check behaves as H7 requires: the correlation of monthly basis changes with changes in the European dealer-CDS composite rises inside the stress window (France $+0.15$ full-sample to $+0.37$ in 2010--13; Italy $+0.20$ to $+0.30$). All of this is descriptive: the registered pooled specification, with its quanto-CDS and seasonal controls, is the next executable, and nothing here pre-empts it.
+
+\begin{figure}[h!]\centering
+\includegraphics[width=0.96\textwidth]{fig14_intl_bases.png}
+\caption{Constant-maturity linker bases on the unified pipeline, 2004--2026 (shaded: GFC, euro crisis, COVID, 2022 hiking/LDI).}
+\label{fig:intl}
+\end{figure}
+
+\begin{figure}[h!]\centering
+\includegraphics[width=0.96\textwidth]{fig15_euro_zoom.png}
+\caption{The euro episode, 2010--2013. France from zero to 54\,bp; Italy to 170 with the sovereign load; Germany delayed to July 2012; the Bund--OAT differential (dashed) moving 100\,bp.}
+\label{fig:eurozoom}
+\end{figure}
+
+\begin{figure}[h!]\centering
+\includegraphics[width=0.62\textwidth]{fig17_uk_ldi.png}
+\caption{The UK ten-year basis through the LDI event: peak 62.3\,bp on 13 October 2022, inside the intervention week.}
+\label{fig:ukldi}
+\end{figure}
+
+\section{Statistical Power of the Registered Test}\label{sec:power}
+
+With the euro bases in hand, the power of the registered pooled test is computed by calibration rather than assumption. The design is semi-parametric: the state histories are the \emph{observed} ones (the U.S. volatility shock; the European dealer-CDS composite for France and Italy), so the number and placement of stress clusters --- the binding constraint identified in Section~\ref{sec:constraint} --- are real, not simulated; the effect size is the U.S. calm/stress loading pair re-estimated on the standardized scale ($0.63 \to 5.03$); the noise is each country's own residual series, resampled in blocks (MBB, block four); the statistic is the one-sided $t$ on the stress interaction at the pre-specified quintile, with the critical value taken from the 95th percentile of the H0 simulation under the identical design --- so size is exact by construction (5.0\% in all runs).
+
+\begin{table}[h!]\centering\small
+\begin{tabular}{lccc}
+\toprule
+Configuration & Power & $cv_{95}$ (H0) & Size check \\
+\midrule
+U.S. only & 62.6\% & 1.74 & 5.0\% \\
+U.S. $+$ France & \textbf{87.4\%} & 1.98 & 5.0\% \\
+U.S. $+$ France $+$ Italy & \textbf{90.6\%} & 1.85 & 5.0\% \\
+\bottomrule
+\end{tabular}
+\caption{Power of the registered pooled test, calibrated on measured euro noise and observed state histories ($R=500+500$ per configuration).}
+\label{tab:power}
+\end{table}
+
+Two honest qualifications and one robust conclusion. The power is computed at the estimated effect; if the true effect is smaller (winner's curse), levels fall, and the homogeneous-effect assumption is H7's own maintained hypothesis, tested, not presumed, by the pooled run. But the \emph{gain} --- 25--28 percentage points from the euro arm --- is driven by the design (a third, independently timed stress cluster of $\sim$50 months), and survives effect-size shrinkage in proportion. The 62.6\% U.S.-only figure also rationalises the observed record: with that power, a $p$ of 0.11--0.13 at a true effect is a four-in-ten event, which is exactly what the U.S. sample delivered.
+
+\subsection*{The registered test, executed}\label{sec:pooledexec}
+Run on 31 July 2026 (\texttt{15\_pooled\_h7.py}), exactly as frozen: $y=\mathrm{med}_{t+3}-\mathrm{med}_{t-1}$; states $\Delta$MOVE$/10$ (U.S.) and $\Delta$dealer-CDS-EU (FR/IT), standardized per country; stress at the Q80 quintile; country and month fixed effects; quanto-CDS controls on the euro rows; one-sided block-wild inference (blocks of six months within country, $B=499$). Results: U.S.\ only $c=3.07$ [$t=1.58$, $p=0.365$]; U.S.$+$FR $c=1.75$ [$1.05$, $0.455$]; U.S.$+$FR$+$IT $c=1.28$ [$0.86$, $0.455$]. The diagnosis is sharp: the quanto controls are innocuous ($c=1.33$ without them), the seasonal controls matter ($c=3.71$, $t=2.22$ without month effects), and the per-country coefficients are \emph{negative} for the euro arms (FR $-4.02$, IT $-2.45$): at the registered three-month-forward timing, calibrated on the U.S.\ lead--lag, the specification measures the euro episode's \emph{reversion}, not its widening --- the bases move within the shock month (Section~\ref{sec:intlev}) and mean-revert inside the window. Pooled homogeneity is rejected in \emph{timing}. Per the freeze, no reparametrized variant is promoted to a claim; the episode evidence of Section~\ref{sec:intlev} remains labelled descriptive. The null is reported as the registered design's answer, and --- at 87--91\% nominal power --- it is informative: the state-dependent channel, in this functional form, does not carry the paper.
+
+
+\section{Over-Identifying the Structural Model I: The International Floor Cross-Section}\label{sec:floorxs}
+
+\paragraph{Why the single-market calibration cannot be a test.} Section~\ref{sec:struct} solves the
+certainty-equivalent floor for the United States and finds that the observed $17.7$--$23.3\bp$
+corresponds to relative risk aversion between one and two at the derived capital charge. That is a
+calibration, not a test: one floor, one free parameter, so the parameter adjusts to whatever level
+is observed and no data configuration could reject the model. The international bases of
+Section~\ref{sec:intlev} make a genuine test available. With $(\kappa,\sigma)$ estimated separately
+in each market, one risk-aversion parameter must reproduce the whole cross-section of resting
+levels. The model becomes over-identified, and can fail.
+
+\paragraph{Design.} The machinery is that of Section~\ref{sec:struct}, unchanged: daily barrier
+monitoring, the terminal mixture, the stopped branch discounted, the exact certainty-equivalent
+entry condition, buffer $200\bp$ (the $2\%$ haircut standard on government collateral in every
+market). Three market-specific inputs vary, and must: $(\kappa,\sigma)$ from each market's own
+basis over the same post-2013 window used for the United States; duration set by the trade's tenor
+($8.0$ at ten years, anchored on Section~\ref{sec:struct}; $4.5$ at five); and the carry horizon
+equal to the tenor. Duration is the channel through which the model generates \emph{different}
+floors across markets, since it converts a deviation of the basis into mark-to-market and hence
+determines how soon the barrier is reached.
+
+\paragraph{Estimated dynamics.} Over the common window the markets differ by a factor of five in
+convergence speed: $\kappa=0.432$ per month in France (half-life $1.6$ months), $0.186$ in the
+United States ($3.7$), $0.159$ in Italy ($4.4$), $0.086$ in the United Kingdom ($8.0$). These are
+new estimates: the international series had been constructed and described, never fitted.
+
+\paragraph{Two declared exclusions.} \emph{Germany} is excluded on measurement grounds:
+$\sigma=70.3\bp$ per month against $5$--$10$ elsewhere, giving $D\sigma=316\bp$ against $42$--$65$
+and an implied stop-out probability of $100\%$. With eight Bund\euro i issues the five-year
+interpolation is dominated by construction noise; including it would empty the test of content.
+\emph{Italy} is reported but read separately: its basis carries sovereign risk and is not a clean
+no-arbitrage violation --- the classification this document already applies in
+Section~\ref{sec:intl}, where the registered design places quanto-CDS controls on the euro rows for
+exactly this reason.
+
+\paragraph{Result.} With a single risk-aversion parameter equal to one --- logarithmic utility ---
+the model reproduces the clean markets closely.
+
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+ & observed & predicted & error \\
+\midrule
+United Kingdom, 10Y & $31.6$ & $31.0$ & $-0.5$ \\
+United States       & $18.3$ & $15.9$ & $-2.4$ \\
+France, 10Y         & $4.0$  & $2.0$  & $-2.1$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent RMSE $1.9\bp$, $R^{2}=0.973$, rank ordering perfect. The mechanism is legible in the
+table: the United Kingdom has the slowest convergence and takes the highest floor, France the
+fastest and the lowest, and the ordering is generated from the estimated dynamics alone rather than
+from a per-country parameter. Robustness: against full-sample rather than post-2013 medians,
+$R^{2}=0.92$ at the same risk aversion; under leave-one-out, with risk aversion re-calibrated on
+the remaining markets, the excluded market is still predicted within $3.6\bp$. The three
+comparative statics of Section~\ref{sec:hyps} carry the right signs (halving $\kappa$ raises
+$\lambda^{\ast}$ by $19.3\bp$; raising $\sigma$ by half, by $55.5$; lengthening duration by a
+quarter, by $15.8$).
+
+\paragraph{The caveat that governs how this is read.} The panel is \emph{three independent
+countries}. France enters the pipeline at two tenors, but the two series are the same market and
+the same issues; including both raises the nominal count without adding information. The fit itself
+is unaffected ($R^{2}$ moves from $0.976$ on four series to $0.973$ on three countries), but the
+significance is not: the exact one-sided permutation $p$-value of a perfect ordering falls from
+$0.042$ to $\mathbf{0.167}$, because three items admit only six orderings. \textbf{The number to
+report is $0.167$.} The model predicts the levels well; three countries cannot make that
+statistically probative on their own. Italy, when included, is over-predicted ($52.1$ against
+$32.0$) and the pooled $R^{2}$ falls to $0.24$ --- a direction worth stating plainly, since a
+sovereign load would if anything make the observed basis \emph{wider} than a pure-arbitrage model
+predicts, not narrower.
+
+\paragraph{Why the cross-section cannot be widened.} A screen of the developed-market linker
+universe establishes that no further country supports a clean constant-maturity construction: Spain
+has five live issues, Germany eight, and the Japanese CPI-linked programme, though large in issue
+count, places only two bonds in the eight-to-twelve-year window a ten-year construction requires.
+The four-country ceiling --- three, once Italy is set aside --- is a property of the data, not of
+effort, and no download relaxes it. This is precisely why a second, independent restriction is
+needed.
+
+\section{Over-Identifying the Structural Model II: The Maturity Structure of the Floor}\label{sec:floorterm}
+
+\paragraph{Why this restriction is the harder one.} Maturities within one market supply a second
+restriction that does not depend on adding countries. It must be reported \emph{alongside} the
+cross-section and never pooled with it: maturities of the same basis are correlated, so four tenors
+in three countries do not constitute twelve independent observations, and a rank statistic computed
+on the stacked set would be inflated. The restriction is nonetheless more demanding than the
+cross-country one, because the observed structure is \emph{not monotone}: post-2013 the floor rests
+at $23.3/15.7/23.4/24.0\bp$ at two, five, ten and thirty years. A model asserting only ``more risk,
+higher floor'' fails immediately. And the binding constraint is that the \emph{same} risk aversion
+calibrated on countries must work here too --- one parameter, two independent restrictions.
+
+\paragraph{Result: the model fails.} At $\mathrm{RRA}=1$ the model predicts $0.5\bp$ at two, five
+and ten years and $65.1\bp$ at thirty, against $23.3/15.7/23.4/24.0$ observed: RMSE $27.2\bp$,
+$R^{2}=-62$. The failure survives every reasonable defence. It holds under both horizon conventions
+of Section~\ref{sec:struct} --- hold-to-maturity ($R^{2}=-62$) and the fixed twenty-four-month
+horizon ($R^{2}=-63$). It holds on raw series and on series deseasonalised with monthly dummies,
+which matters because Section~\ref{sec:dyn} measures a $52.2\bp$ seasonal at two years that would
+otherwise inflate $\sigma$ at the short end. And it holds under free re-calibration: the
+best-fitting risk aversion on maturities is \emph{zero} --- risk neutrality --- and still returns
+$R^{2}=-30$. The two dimensions therefore do not merely fit imperfectly; they do not admit a common
+parameter.
+
+\paragraph{Diagnosis, and what it implies for the mechanism.} The failure is mechanical and
+transparent. Mark-to-market loss is duration times deviation. At two years duration is $1.9$, so a
+$200\bp$ barrier is never reached --- implied stop-out probability $0.0\%$ --- and the model
+concludes that short-maturity arbitrage is effectively riskless and should command no rent. At
+thirty years duration is $17$ and the barrier is reached with probability $99.5\%$, so the required
+floor explodes. The observed structure is flat: the market pays roughly the same at every maturity.
+
+It follows that \textbf{the forced-unwind barrier cannot be the mechanism that sets the floor}. If
+the floor were the price of forced-unwinding risk, the two-year basis --- where the barrier is
+unreachable --- would trade near zero, and it does not. This is an independent confirmation of the
+weak joint already visible in Section~\ref{sec:struct}, where the model implies a $43\%$ stop-out
+frequency against $2.5\%$ in the empirical replay of Section~\ref{sec:unwind}: the barrier was
+already carrying more weight than the data support, and the maturity structure demonstrates it on a
+second axis.
+
+\paragraph{What survives, and what does not.} What survives is the equilibrium-floor
+\emph{interpretation}: the basis does rest at a positive level rather than converging to zero; that
+level does vary across markets with convergence speed and volatility in the direction the framework
+predicts; and the cross-sectional fit of Section~\ref{sec:floorxs} is close. What does not survive
+is the structural model \emph{as specified}. A correct model of this floor must derive the rent
+from something other than --- or in addition to --- the probability of hitting a duration-scaled
+loss barrier. The natural candidates are the balance-sheet charge itself, which is levied whether
+or not the barrier is approached, and the clientele structure that determines who can hold the
+position at all. Formulating that model is the principal open item of Section~\ref{sec:open2}.
+
+\section{Where the Record Now Stands}\label{sec:open2}
+
+\paragraph{Settled.} The measurement is certified three independent ways and, at pair level,
+against Fleckenstein--Longstaff--Lustig's own Table~III. The floor is established, dated and traced
+through its staircase; the post-2013 resting level is $16$--$24\bp$ with Newey--West $t$-statistics
+up to $24$. The dynamics, the two-year indexation seasonal, the dispersion signature of March 2020
+and the event structure are documented. The international bases are built on one unified pipeline
+for four markets, with the euro 2011--12 episode, the German July-2012 peak and the UK LDI event of
+13 October 2022 measured to the day.
+
+\paragraph{Executed and null.} The pre-registered pooled state-dependence test returns a null at
+$87$--$91\%$ nominal power, with the diagnosis that pooled homogeneity is rejected in \emph{timing}:
+the euro bases widen within the shock month and revert inside the three-month window the
+U.S.-calibrated specification measures. No reparametrized variant is promoted to a claim.
+
+\paragraph{Tested and partly rejected.} The structural model reproduces the international
+cross-section of resting levels with a single risk-aversion parameter and close fit, on three
+independent countries and therefore without statistical decisiveness ($p=0.167$ exact). It fails
+the maturity structure of the floor within the United States, robustly and for a specific reason:
+the forced-unwind barrier implies a duration dependence the data do not display. The
+equilibrium-floor \emph{interpretation} survives; the barrier as the \emph{mechanism} does not.
+
+\paragraph{Open, in order of importance.} \emph{(i)} A model that derives the floor from the
+balance-sheet charge --- which is levied whether or not the barrier is approached --- and from the
+clientele structure that determines who may hold the position, rather than from the probability of
+hitting a duration-scaled loss threshold. This is the principal theoretical gap and the natural
+subject of supervision. \emph{(ii)} The per-maturity engine re-solved with each tenor's own charge
+and duration, which the present test approximates. \emph{(iii)} The price-space completion of the
+matched-pair engine for the legacy high-coupon pairs and March 2020. \emph{(iv)} The
+regulatory-calendar test of the 2010/2017 staircase and the policy counterfactuals. \emph{(v)}
+Robustness per the original roadmap: dual construction switches, specification curves, placebos on
+macro fundamentals, costs stressed.
+
+\paragraph{A constraint that is a property of the data.} The international cross-section cannot be
+widened. A screen of the developed-market linker universe establishes that no further country
+supports a clean constant-maturity construction at the required tenor: Spain has five live issues,
+Germany eight, and the Japanese CPI-linked programme places only two bonds in the eight-to-twelve
+year window. The four-country ceiling --- three once the sovereign-loaded arm is set aside --- is
+not a matter of effort, and no additional download relaxes it.
+
+\section{Road to Completion and Publication Strategy}
+
+The remaining programme, in execution order: (i) merge the June \texttt{tips\_treasury\_arb} SMM engine with the July moment set --- the survival surface plus the Spec-B loading pair, GKR block-bootstrap moment covariance, CE and correlated-yield refinements, the dispersion moment from \eqref{eq:mixture} (no new data) --- under the identification assignment of Section~\ref{sec:method}(viii); (ii) the per-maturity engine: the floor re-solved at each tenor with the tenor's own $(\kappa_\tau,\sigma_\tau)$, duration, and re-derived charge, delivering the model term structure $\lambda^*(\tau)$ against the observed 23.3/15.7/23.4/24.0 and, at the front end, the quantitative confrontation of the two-year closure (the H2 remark of Section~\ref{sec:hyps}); (iii) the price-space completion of the matched-pair engine --- now built and certifying in yield space (Section~\ref{sec:fllrep}) --- for the legacy high-coupon pairs and March 2020 (ISIN-level prices for the Table-III bonds, index ratios, bid--ask), with the indexation-schedule seasonal and the coupon-mismatch legs discounted on the fitted Treasury curve (STRIPS-quoted pricing as robustness, avoiding their idiosyncratic rich/cheap); (iv) the regulatory-calendar test of the 2010/2017 staircase and the policy counterfactuals on $(m,\alpha,F)$; (v) the international linker cross-section --- the power play for the threshold test and the single addition with the highest expected effect on the paper's tier --- executed exactly as pre-registered in Section~\ref{sec:intl}, whose constructions, first descriptive evidence, and calibrated power are now in hand (Sections~\ref{sec:intlev}--\ref{sec:power}) whose registered pooled specification has been executed with the null recorded in Section~\ref{sec:pooledexec}; (vi) robustness per the original roadmap (dual construction switches, specification curves, placebos on macro fundamentals, costs stressed). Targets: \emph{Review of Finance}/\emph{JFQA} if (i)+(iv) land, with \emph{JEF}/\emph{JBF} as the secured field tier on material in hand; a practitioner distillation for the \emph{Journal of Fixed Income} only after the main submission.
+
+\appendix
+
+\section{Reconciliation with the June 2026 Detailed Project Description}
+
+The 15-page \emph{Detailed Project Description and Preliminary Results} (17--19 June 2026), produced with the \texttt{tips\_treasury\_arb/} codebase, is this document's direct ancestor. The reconciliation, item by item:
+
+\begin{table}[h!]
+\centering\small
+\setlength{\tabcolsep}{3.5pt}\begin{tabular}{p{5.3cm}p{3.1cm}p{5.5cm}}
+\toprule
+June result & Status & July verdict \\
+\midrule
+Floor: post-2013 median 17.7\,bp (pre 37.6; peak 153.4, Nov-2008) & \textbf{Confirmed} & Identical on exact legs and bond level \\
+Break at 2010, not 2013 (2010-09, sup-$F$ 2533, median constr.) & \textbf{Confirmed, refined} & 2010-12 (sup-$F$ 160, monthly exact legs) + \emph{second} break 2017-12 + 2024-10 short-end closure: a staircase \\
+OU: $\theta=17.2$, half-life 1.9\,m & Confirmed / \emph{corrected} & $\theta=16.6$; HL 3.7--4.6\,m on the longer exact samples (window convention) \\
+HKM: insignificant unconditionally, $-26.2$ ($p<0.05$) in top-quintile-vol months & \textbf{Confirmed, redesigned} & Spec A: $-24.5$ [$-2.6$] in the HKM-low state --- near-identical magnitude from an independent design; plus Spec B (7.15 [4.1]) and the episode-sorting table \\
+Bidirectionality: 76 negative days 2021--22, min $-7.5$ (27-05-2021), symmetric-model RQ & \emph{Downgraded / parked} & Largely the 52\,bp two-year seasonal; residual unidentifiable without security-level specialness; signed model held in reserve \\
+March 2020 only $\sim$2$\sigma$ at the median (identification caveat) & \emph{Resolved as a discovery} & A \emph{dispersion} event: IQR peak 2020-03-16, 90th pct 73\,bp --- prediction \eqref{eq:mixture} \\
+Episode detection: only GFC and June-2013 taper clear 3$\sigma$ & Superseded & Replaced by the episode-HKM sorting (a constraint-based, not amplitude-based, classification) \\
+Daily-change kurtosis 23.4 (jump risk present) & Retained & Feeds the fat-tail robustness of the first-passage engine \\
+Full SMM (McFadden/Duffie--Singleton) in \texttt{tips\_treasury\_arb} & \textbf{To merge} & Run with the July moments (surface + loading pair) and GKR covariance --- next step (i) \\
+Policy counterfactuals (RQ5) & Pending & Scheduled with step (iii) \\
+GIRF (Pesaran--Shin) and quantile (Koenker--Bassett) batteries & Robustness queue & Partially superseded by the threshold design; retained as robustness \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Register of Every Test Executed to Date}
+
+All tests on the TIPS project, in execution order, with script and headline output. (The regime-consistent-resampling pilots are archived separately in \emph{Pilot Report v4}.) Script names are the historical record: they have since been consolidated into the numbered pipeline \texttt{src/tips\_treasury/01--09} --- the repository README maps stages to sections --- and the register preserves the original names deliberately.
+
+\begin{table}[h!]
+\centering\footnotesize
+\setlength{\tabcolsep}{3.5pt}\begin{tabular}{p{0.8cm}p{5.4cm}p{3.2cm}p{4.5cm}}
+\toprule
+ID & Test & Script & Headline output \\
+\midrule
+T1--T2 & Subperiod means, NW $t$; term structure (proxy legs) & \texttt{tips\_pilot.py} & Post-2013 floor 12.7--23.8\,bp, $t$ 7.6--13.2; proxy inversion (later resolved) \\
+T3 & Single-break SSR grid, per maturity & \texttt{tips\_pilot.py} & First-pass 2019--21 ``wave'' (later exposed as truncation artefact) \\
+T4 & ADF; OU half-life, bootstrap CI & \texttt{tips\_pilot.py} & 10/20Y stationary, HL 1.9\,m (2020s window) \\
+T5--T6 & Stress correlations, events, resting-vs-MOVE & \texttt{tips\_pilot.py} & Event 5--7$\times$ moves; lag discovered; linear $\approx$ 0 \\
+--- & Coverage diagnostics (series start dates) & inline & USGG20YR from 2020-05; 7YR from 2009 $\Rightarrow$ four-ticker fix \\
+D1--D3 & Exact-leg means; FLL-window benchmark & \texttt{tips\_pilot2.py} & 46.8 vs 54.5\,bp; floor 16--24, $t$ to 24.2 \\
+D2 & Breakeven cross-check, 5 maturities & \texttt{tips\_pilot2.py} & 10Y: $-0.55$\,bp, corr 0.996 \\
+D5 & Break adjudication, 1st + 2nd breaks & \texttt{tips\_pilot2.py} & 2010-12 (supF 160); 2017-12; 2024-10 closure \\
+D6 & ADF/OU + month-dummy seasonality & \texttt{tips\_pilot2.py} & 52.2\,bp amplitude at 2Y; ADF flip 0.65$\to$0.000 \\
+D7 & Events on exact legs & \texttt{tips\_pilot2.py} & GFC 144--154; SVB peaks Jul--Aug (lag) \\
+D8--D9 & Lead-lag correlogram; local projections; rolling floor & \texttt{tips\_pilot2.py} & All linear $|t|\le1.2$; $\beta=-0.014$ [$-0.4$] \\
+--- & Mar-2020/GFC addendum, 2Y (exact legs) & inline & 2Y $-1.3\to68.2$ (peak 19-03), half-rev 8 days; GFC 2Y 321.9 \\
+B1--B2 & CUSIP panel coverage; validation vs curve & \texttt{cusip\_analysis.py} & corr 0.926 level, 0.591 $\Delta$monthly \\
+B3--B4 & Mar-2020 bond level; maturity split & \texttt{cusip\_analysis.py} & IQR 5.3$\to$18.4 (peak 16-03); 90th pct 73.3 \\
+B5 & Threshold, contemporaneous, market proxies & \texttt{cusip\_analysis.py} & All $p>0.14$, perverse signs: retired \\
+B6 & Forced-unwind replay, vintage $\times$ buffer & \texttt{cusip\_analysis.py} & 2007--08: 100\%/100\%; post-13 at 2\%: $\approx$0 \\
+Add.1 & Threshold, lag-aware, market proxies & inline & CDS perverse ($p=0.023$); LOIS/MOVE $t\approx3$, $p=0.21/0.36$ \\
+Add.2--3 & Dispersion by episode; $\Delta$IQR loadings & inline & Event-concentrated; $|t|\le0.8$ \\
+A--D & Constraint test, frozen design (HKM/PD/TFF) & \texttt{constraint\_test.py} & Spec B 7.15 [4.1] vs 0.63; C/D uninformative \\
+--- & Block-wild refinement; episode-HKM table & inline & $p$ stable 0.24--0.26; 3\%/8\% vs 32\%/37\% \\
+--- & OFR quarterly interaction (repo $\times$ RV-NAV) & \texttt{constraint\_test.py} & Uninformative, $n=52$ \\
+S1 & Structural pass: OU $\to$ first-passage $\to$ floor & \texttt{structural\_pass} & Stop-out 58.9/6.5 vs 43/2.5\%; $\lambda^*$ 18--28 vs 17.7--23.3 \\
+F1 & FLL Fig.\,2 replication, notional-weighted & \texttt{plot\_fll\_figure2.py} & 40.4 vs 54.5; peak 153.5 weighted / 151.3 equal (31-12-2008) \\
+S2 & Engine v2: daily monitoring, two horizons, CE & \texttt{tier1\_fixes} & stop 68.8/8.8\%; floors: obs.\ between RRA 1--2 at 2\% \\
+S3 & Capital charge derived ($m\times\VaR$) & \texttt{tier1\_fixes} & 2.26\% (Basel) / 1.91\% (FRTB) \\
+S4 & Chow at pre-specified quintile; LOO; composition & \texttt{tier1\_fixes} & $p=0.114$/0.127; ex-GFC collapses (2.45 [1.8]) \\
+S5 & Dispersion: uniform pre rule; within-bucket IQR & \texttt{tier1\_fixes} & 2022 pre 16.2; $<$5y IQR 5.3$\to$43.8 vs $\ge$5y 1.3$\to$4.4 \\
+S6 & 2Y post-2024 deseasonalised mean & \texttt{tier1\_fixes} & 2.8\,bp ($n=20$m): closure \emph{provisional} \\
+F2 & Table-III per-pair diagnostic (legacy panel) & inline & Long $+2.8$; short $-23/-29$: resolved by E2 \\
+E1 & Matched-pair infrastructure & \texttt{pairs\_engine\_us.csv} & 117 segments; 99.7\% coverage; mismatch med.\ 31d \\
+E2 & Table-III certification, true legs & \texttt{10\_bondlevel\_engine.py} & 59.6 vs 54.2 wN; twins $-1.1$\,bp \\
+E3 & GSW-vs-twin substitution test & \texttt{10\_bondlevel\_engine.py} & $\Delta$-corr 0.947; brackets not needed \\
+E4 & Pair-level floor certification & \texttt{10\_bondlevel\_engine.py} & 2021 min $+2.6$; seasoned short 16.1\,bp \\
+I1 & International bases, unified pipeline & \texttt{11\_intl\_basis.py} & FR $3.3\to54.4$ (15-11-11); IT 169.5; DE peak 07-2012; UK 62.3 (13-10-22) \\
+P1 & Power of the registered pooled test & \texttt{12\_power\_analysis.py} & 62.6\% / 87.4\% / 90.6\% \\
+P2 & Registered pooled test, executed & \texttt{15\_pooled\_h7.py} & $c=1.28$ [$t\,0.86$, $p\,0.455$]; FR $-4.0$, IT $-2.5$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Imported Evidence and Reinstated Caveats}
+
+Three evidence blocks asserted in the main text are \emph{imported} from the 3-July Comprehensive Report and are labelled as such pending re-verification in the merged pipeline: the 19-variable $\times$ 3-frequency spurious-trend battery (the systematic dissolution of levels relationships in differences that underwrites the ``shocks, not constraints'' reading of \S\ref{sec:constraint}); the composite-factor ex-GFC collapse across the full term structure ($R^2$ $0.42\to0.02$ at ten years, analogues at all maturities), which generalises the linear-emptiness result; and the June SMM/GKR robust-inference block ($J$ $7.56\to1.21$ under block-bootstrap moment covariance), citable but unverified until the merge. Three caveats from earlier versions are reinstated verbatim in spirit: the 2024 short-end result rests on twenty post-break months and is now re-scoped as on-the-run by the pair-level certification (Section~\ref{sec:pairfloor}); the levels-versus-changes discipline cuts \emph{both} ways (it dissolves spurious support and spurious refutation alike); and the accumulating battery of tests warrants a multiple-testing acknowledgement, with the pre-specified objects (the frozen design; the bottom quintile) carrying the inferential weight precisely because they were fixed ex ante.
+
+\begin{thebibliography}{99}
+\bibitem[Alili et al.(2005)]{alili2005} Alili, L., Patie, P., Pedersen, J.L., 2005. Representations of the first hitting time density of an Ornstein--Uhlenbeck process. \emph{Stochastic Models} 21, 967--980.
+\bibitem[Christensen and Gillan(2022)]{cg2022} Christensen, J.H.E., Gillan, J.M., 2022. Does quantitative easing affect market liquidity? \emph{Journal of Banking and Finance} 134, 106349.
+\bibitem[d'Amico et al.(2018)]{dkw2018} d'Amico, S., Kim, D.H., Wei, M., 2018. Tips from TIPS. \emph{Journal of Financial and Quantitative Analysis} 53, 395--436.
+\bibitem[Duffie(2010)]{duffie2010} Duffie, D., 2010. Asset price dynamics with slow-moving capital. \emph{Journal of Finance} 65, 1237--1267.
+\bibitem[Fleckenstein and Longstaff(2024)]{fl2024} Fleckenstein, M., Longstaff, F.A., 2024. Treasury richness. \emph{Journal of Finance} 79, 2797--2844.
+\bibitem[Fleckenstein et al.(2014)]{fll2014} Fleckenstein, M., Longstaff, F.A., Lustig, H., 2014. The TIPS--Treasury bond puzzle. \emph{Journal of Finance} 69, 2151--2197.
+\bibitem[G\^arleanu and Pedersen(2011)]{gp2011} G\^arleanu, N., Pedersen, L.H., 2011. Margin-based asset pricing and deviations from the law of one price. \emph{Review of Financial Studies} 24, 1980--2022.
+\bibitem[Gospodinov et al.(2014)]{gkr2014} Gospodinov, N., Kan, R., Robotti, C., 2014. Misspecification-robust inference in linear asset-pricing models. \emph{Review of Financial Studies} 27, 2139--2170.
+\bibitem[Gromb and Vayanos(2010)]{gromb2010} Gromb, D., Vayanos, D., 2010. Limits of arbitrage. \emph{Annual Review of Financial Economics} 2, 251--275.
+\bibitem[He et al.(2017)]{hkm2017} He, Z., Kelly, B., Manela, A., 2017. Intermediary asset pricing. \emph{Journal of Financial Economics} 126, 1--35.
+\bibitem[He et al.(2022)]{hns2022} He, Z., Nagel, S., Song, Z., 2022. Treasury inconvenience yields during the COVID-19 crisis. \emph{Journal of Financial Economics} 143, 57--79.
+\bibitem[Kondor(2009)]{kondor2009} Kondor, P., 2009. Risk in dynamic arbitrage. \emph{Journal of Finance} 64, 631--655.
+\bibitem[Linetsky(2004)]{linetsky2004} Linetsky, V., 2004. Computing hitting time densities for CIR and OU diffusions. \emph{Journal of Computational Finance} 7, 1--22.
+\bibitem[Liu and Longstaff(2004)]{liulongstaff2004} Liu, J., Longstaff, F.A., 2004. Losing money on arbitrage. \emph{Review of Financial Studies} 17, 611--641.
+\bibitem[Mitchell and Pulvino(2012)]{mp2012} Mitchell, M., Pulvino, T., 2012. Arbitrage crashes and the speed of capital. \emph{Journal of Financial Economics} 104, 469--490.
+\bibitem[Rebonato(2026)]{rebonato2026} Rebonato, R., 2026. The Idea. Unpublished note, EDHEC Business School.
+\bibitem[Shleifer and Vishny(1997)]{shleifervishny1997} Shleifer, A., Vishny, R.W., 1997. The limits of arbitrage. \emph{Journal of Finance} 52, 35--55.
+\bibitem[Tuckman and Vila(1992)]{tuckmanvila1992} Tuckman, B., Vila, J.-L., 1992. Arbitrage with holding costs. \emph{Journal of Finance} 47, 1283--1302.
+\end{thebibliography}
+
+\end{document}
