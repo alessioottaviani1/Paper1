@@ -255,19 +255,11 @@ conclusions do not hinge on the choice of $k$.
 \subsubsection{Factor Selection Across Methods}
 \label{app:aen_selection_matrix}
 
-Table~\ref{tab:aen_selection_names} reports the factor set selected for
-each strategy by every method of Table~\ref{tab:selector_robustness}.
-The overlap across selectors is partial, as expected when highly
-correlated candidates substitute for one another, but one exposure
-recurs in every method that selects at all: the fixed-income defensive
-factor for BTP~Italia and the industrial bond return for the
-CDS--Bond basis. The two data-driven selectors that choose their own
-cardinality retain little or nothing---the post-double-selection
-control set is a subset of those recurring exposures, and for the
-iTraxx skew neither it nor the knockoffs retain any candidate. The
-alpha of Table~\ref{tab:selector_robustness} is unchanged throughout,
-so the identified risks are not an artifact of the cardinality
-constraint or of any single penalization scheme.
+Table~\ref{tab:aen_selection_names} lists the factors that each method
+of Table~\ref{tab:selector_robustness} selects, strategy by strategy.
+It is the evidence behind the claim of Section~\ref{sec:aen} that the
+identity of the selected set varies across selectors while the alpha
+does not.
 
 \input{\tablepath/AEN_Selection_Names_article}
 
