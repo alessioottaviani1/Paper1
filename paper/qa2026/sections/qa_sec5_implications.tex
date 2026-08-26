@@ -1,0 +1,68 @@
+%% =============================================================================
+%% SEC 5 - IMPLICATIONS FOR INVESTORS (~540 words).
+%% Built to the same standard as Secs 1-4: every substantive claim is a
+%% condensation of the author's own paper (see % SOURCE tags). The handful of
+%% genuinely new framing sentences are tagged % NEW-FRAMING: rewrite them in
+%% your own voice, or consciously approve them, before freeze.
+%% =============================================================================
+
+\textbf{State-dependent deployment.} The premium
+is not earned evenly: the high-stress alpha is three to seven times the calm-market alpha (a gap of 2.3--5.1 percentage points per year)
+across the nine strategy--benchmark combinations, and in the
+conditional framework a one-standard-deviation rise in the lagged iTraxx Main
+spread adds 1.7--3.2 percentage points of annual alpha to the CDS--bond basis
+and 0.9--1.5 to the iTraxx skew. The state variable is public, monthly, and
+lagged---an allocator can condition on it in real time. Volatility is not a
+substitute: the volatility-managed overlay of \citet{moreira2017volatility}
+adds alpha only for the CDS--bond basis, and only at the 10\% level
+(Appendix~\ref{app:construction}), because realized volatility proxies the
+funding constraint poorly.
+% SOURCE: Table XI / App A.5 (3-7x); Table VI Panel B (CFG); Table A.7 (vol-managed).
+% NEW-FRAMING (riscrivi o approva):
+The operational translation is committed capital with stress-contingent
+capacity---dry powder that deploys as the iTraxx Main crosses into the high
+regime---rather than the constant allocation, or the forced deleveraging, that
+stress typically induces.
+
+\textbf{The internal hedge.} The BTP~Italia basis is
+not a third claim on the same intermediary factor: its correlation with the
+CDS--bond basis is $-0.30$ over the full sample, deepens to $-0.47$ precisely
+in the high-stress months in which the institutional pair draws down together,
+and its dynamic conditional correlation is negative in every single month of
+the sample, averaging $-0.29$ ($-0.10$ against the skew).
+% SOURCE: Tables XIV-XV; DCC discussion (Sec IV.B / App D).
+% NEW-FRAMING (riscrivi o approva):
+A book long all three trades therefore carries an internal, structural hedge
+against its own dominant risk---the funding shock---without paying for outside
+protection: the two institutional trades earn the carry, and the BTP~Italia
+leg stabilizes the book exactly in the months in which they bleed.
+
+\textbf{Structural persistence and monitoring.} It
+is not a decaying anomaly: the regulatory repricing of dealer balance sheet documented
+in Section~\ref{sec:smc} did not create a temporary dislocation but a new
+equilibrium level for the bases---and capacity is bounded by that scarcity of
+balance sheet, not by the size of the mispricings.
+% SOURCE: Sec IV.G "Why These Arbitrages Persist".
+% NEW-FRAMING (riscrivi o approva):
+The natural holder is therefore an investor who can be the marginal supplier
+of balance sheet when it is scarce---stable funding, no forced deleveraging,
+and a horizon of at least one basis half-life: three months for the CDS--bond
+trade, roughly two for the others. The dashboard variable is the Libor--OIS
+spread, which enters all three mispricing equations with the holder-base sign
+structure of Table~\ref{tab:smc}: it times entries in the two institutional
+trades and flags when the BTP~Italia hedge is doing its work.
+
+\textbf{Implementation and risk.} It already internalizes the frictions
+that bind in practice: only the negative CDS--bond basis is traded, because
+the reverse trade requires a corporate reverse repo exposed to recall risk in
+stress \citep{bai2019cds}; the two skew legs sit under a single netting set,
+containing margin; and transaction costs are tiered up mechanically in stress,
+so the net returns of Table~\ref{tab:performance} are conservative exactly
+when the alpha is largest. Because the payoff at maturity is deterministic,
+the residual risk is the path, not the terminal value: mark-to-market and
+funding, not default.
+% SOURCE: Sec II construction; Table A.III fee schedule; deterministic-payoff discussion.
+% NEW-FRAMING (riscrivi o approva -- ammissione nuova, ma vera e apprezzata dalle giurie):
+The honest caveat is scale: our results are index-level, and single-name
+capacity and market impact are not modeled---the premium rations access by
+balance sheet, and it will not carry unlimited size.
