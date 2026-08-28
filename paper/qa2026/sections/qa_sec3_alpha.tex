@@ -1,0 +1,112 @@
+%% =============================================================================
+%% SEC 3 - IS IT ALPHA? ~830 words + Table 2.
+%% SOURCE: paper1_sec4_benchmarks.tex + paper1_sec5_factor_selection.tex.
+%% v2 fixes: (i) selector count -- knockoffs is ONE of the five alternatives,
+%% as in the paper; (ii) regime multiplier restated as 3-7x across the NINE
+%% benchmark cells (iTraxx best-subset is flatter, so "every control set" was
+%% wrong); (iii) added sub-period + rolling-alpha stability sentence and the
+%% recurring-exposures / double-selection line from Section III.C.
+%% =============================================================================
+
+The question is whether the returns of Table~\ref{tab:performance} are
+compensation for systematic risk. We answer it with an escalating battery: if
+the alpha is an artifact of an omitted exposure, some layer should absorb it.
+% SOURCE: sec4 opening logic.
+
+The first three layers are the canonical benchmarks of the fixed-income
+arbitrage and active-management literatures---the ten-factor model of
+\citet{duarte2007risk}, the seven-factor model of \citet{fung2004hedge}, and
+the eight risk premia of \citet{brooks2020active}---estimated on euro
+counterparts of every factor (U.S.-factor versions, with the same conclusions,
+in Appendix~\ref{app:benchmarks}). The fourth layer replaces specified factors
+with the first eight principal components of a candidate universe of 75
+tradable risk factors spanning credit, liquidity, equity, volatility, and
+rates, with $K=8$ selected by the information criteria of
+\citet{bai2002determining}. The fifth is best-subset selection \citep{bertsimas2016best}: for each
+strategy, an $\ell_0$-constrained search picks whichever eight of the
+candidates explain its returns best---the hardest test we can pose, because
+the data are free to construct the most absorbing hedge. Formally,
+\begin{equation}
+(\hat\alpha_i,\hat{\boldsymbol\beta}_i)=\arg\min_{\alpha,\,\boldsymbol\beta}\;
+\sum_{t}\bigl(r_{i,t}-\alpha-\boldsymbol\beta^{\prime}\mathbf{F}_t\bigr)^{2}
+\quad\text{s.t.}\quad \lVert\boldsymbol\beta\rVert_0\le k,\qquad k=8,
+\end{equation}
+where $\lVert\boldsymbol\beta\rVert_0$ counts the nonzero coefficients.
+% SOURCE: sec4 A + sec5 A-C, compressed.
+
+Every layer estimates the spanning regression
+\begin{equation}
+r_{i,t} = \alpha_i + \sum_{j}\beta_{i,j}\,F_{j,t} + \varepsilon_{i,t},
+\end{equation}
+where $r_{i,t}$ is the monthly net excess return of strategy $i$, $F_{j,t}$
+the layer's factor set, and the null of interest is $\alpha_i = 0$.
+Table~\ref{tab:alpha_layers} reports the outcome. Moving down the rows,
+explanatory power rises from near zero to adjusted $R^2$ of 21--31\%, while
+the alpha barely moves: 1.4--2.2\% per year for BTP~Italia, 4.0--4.8\% for the
+CDS--bond basis, 1.7--2.9\% for the iTraxx skew, significant at the 1\% level
+in every cell. Panel~B repeats the exercise in real time: at each month the
+hedge is re-estimated on a past-only expanding window
+\citep{welch2008comprehensive}, so the surviving alpha is an abnormal return
+an investor could actually have earned. It survives everywhere, and for the
+best-subset hedge every out-of-sample $t$-statistic clears the 3.0 hurdle that
+\citet{harvey2016and} propose for discoveries in multiple-testing
+environments. The estimate is also stable through time: it is significant in
+every sub-period we examine, and 36-month rolling alphas are positive across
+essentially the entire sample under all three benchmarks
+(Appendix~\ref{app:benchmarks}).
+% SOURCE: sec4 B closing + Figure 4 discussion.
+
+Three details sharpen the verdict. First, the three selected factor sets are
+pairwise disjoint---no factor appears in more than one strategy---so no single
+common exposure is responsible; the economically telling loading is the iTraxx
+skew's on the traded intermediary-capital factor of \citet{he2017intermediary}:
+the strategy pays off when dealer equity underperforms. Second, the result is
+invariant to the selector. Five alternative selectors span the methodological
+space---a best subset constrained to one factor per risk category, the
+adaptive elastic net \citep{zou2009adaptive}, the relaxed lasso
+\citep{meinshausen2007relaxed}, a machine-learning screen based on random
+forests \citep{breiman2001random},
+and model-X knockoffs \citep{candes2018panning} with the false discovery rate
+controlled at 10\%---and all leave the alpha intact under honest split-sample
+inference, with factors chosen on the first half of the sample and alpha
+estimated on the second. The knockoffs are the sharpest statement of the
+two-sided message. Each candidate $j$ receives a statistic $W_j$ contrasting
+its explanatory strength against a synthetic knockoff copy, and the selection
+threshold
+\begin{equation}
+\tau_q=\min\Bigl\{t>0:\
+\frac{1+\#\{j:\,W_j\le -t\}}{\max\bigl(1,\,\#\{j:\,W_j\ge t\}\bigr)}\le q
+\Bigr\},\qquad q=0.10,
+\end{equation}
+controls the false discovery rate at $q$. In our data no threshold satisfies
+the bound: the procedure selects nothing, so the data neither identify a
+stable factor structure nor produce one that absorbs the premium
+(Appendix~\ref{app:selection}). The exposures that recur across selectors are
+the consensus ones---fixed-income defensive for BTP~Italia, emerging-market
+debt for the CDS--bond basis, the intermediary block for the iTraxx skew---and
+the post-double-selection control set of \citet{belloni2014inference} is a
+strict subset of exactly these. Third, the alpha is state-dependent. The conditional framework of
+\citet{christopherson1998conditioning} lets the alpha and the loadings vary
+with a lagged, publicly observable state variable,
+\begin{equation}
+r_{i,t} = \alpha_0 + \alpha_1 z_{t-1}
+        + (\boldsymbol\beta + \boldsymbol\delta\, z_{t-1})^{\prime}\mathbf{F}_t
+        + \varepsilon_{i,t},
+\end{equation}
+where $z_{t-1}$ is the standardized iTraxx Main 5-year spread. Estimated
+across the frameworks, a one-standard-deviation rise in $z$ adds 1.7--3.2
+percentage points of annual alpha to the CDS--bond basis and 0.9--1.5 to the
+iTraxx skew; split discretely by regime, the high-stress alpha is three to
+seven times the calm-market alpha---a gap of 2.3 to 5.1 percentage points per
+year---across the nine strategy--benchmark
+combinations, and rises monotonically with stress under the data-driven
+controls as well (Appendices~\ref{app:benchmarks}--\ref{app:selection}).
+% SOURCE: sec5 C-D + sec4 B; numbers from Tables VI, X, XI, XIII.
+
+An alpha that no factor spans, that survives in real time, and that
+concentrates in funding stress is not a risk premium in disguise; it is the
+fingerprint of an arbitrage that capital fails to close precisely when closing
+it is most profitable. The next section asks why.
+% ALEX-WRITE: check the bridge sentence lands in your voice.
+
+\input{exhibits/exh2_alpha_layers}
