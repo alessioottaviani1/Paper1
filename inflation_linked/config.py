@@ -5,11 +5,9 @@ strumenti mai emessi, scaduti compresi, richiede una ricerca sul terminale. Tutt
 (cedole, scadenze, settle date, base CPI, prezzi, YTM, CPI storico, curve ILS) lo prende il
 codice via bdp/bdh.
 
-DA SCARICARE, per ogni mercato, due file in data/universe/ con DUE sole colonne:
-    {mkt}_linkers.xlsx    ISIN | BB_ID
-    {mkt}_nominals.xlsx   ISIN | BB_ID
-SRCH -> issuer/country, Security Type = Government, Coupon Type = Index Linked (linkers) oppure
-Fixed (nominals), con "Include Matured" ATTIVO. Export di ISIN e ID_BB_UNIQUE.
+DA SCARICARE: data/raw/Bloomberg/Govt_bonds.xlsx (fogli 'IL' e 'Nominal'), letto da
+bbg.build_universe(). SRCH -> issuer/country, Security Type = Government, Coupon Type =
+Index Linked oppure Fixed, con "Include Matured" ATTIVO. Export di ISIN e ID_BB_UNIQUE.
 Per la Germania includere anche gli OBL fra i nominali: i Bund-ei a 5 anni non hanno gemelli
 fra i soli DBR.
 
@@ -28,10 +26,11 @@ import pandas as pd
 ROOT       = Path(__file__).resolve().parent          # .../src/inflation_linked (il codice)
 PROJECT    = ROOT.parent.parent                       # .../THESIS (la root del progetto)
 DATA       = PROJECT / "data"
-UNIVERSE = DATA / "universe"       # gli Excel scaricati da Bloomberg
 CACHE    = DATA / "cache"          # parquet: prezzi, YTM, curve ILS, CPI
 OUT      = ROOT / "output"
-for _p in (DATA, UNIVERSE, CACHE, OUT):
+# i dati esterni stanno in data/raw/<fonte>/ (cfr. bbg.UNIVERSE_FILE); data/universe
+# era un percorso legacy, usato solo da load_universe(), rimossa perche' mai chiamata.
+for _p in (DATA, CACHE, OUT):
     _p.mkdir(parents=True, exist_ok=True)
 
 # --------------------------------------------------------------------------- tenor ILS
@@ -153,30 +152,3 @@ MAX_MISMATCH_DAYS = 183      # oltre questo la coppia viene scartata e dichiarat
 REGRESSION_TARGET = DATA / "btpei_basis.xlsx"
 REGRESSION_TOL_BP = 0.01
 
-
-# --------------------------------------------------------------------------- anagrafica
-def load_universe(mkt: str, kind: str) -> pd.DataFrame:
-    """Legge {mkt}_{kind}.xlsx da data/universe/. kind in {'linkers','nominals'}.
-
-    Attese due colonne: ISIN e BB_ID. Tutto il resto (scadenza, settle, cedola, base CPI)
-    viene poi risolto via bdp in data.py, quindi NON va messo nel file.
-    """
-    if kind not in ("linkers", "nominals"):
-        raise ValueError("kind deve essere 'linkers' o 'nominals'")
-    path = UNIVERSE / f"{mkt}_{kind}.xlsx"
-    if not path.exists():
-        raise FileNotFoundError(
-            f"manca {path}. Scaricalo da SRCH con 'Include Matured' attivo, "
-            f"colonne ISIN e ID_BB_UNIQUE."
-        )
-    df = pd.read_excel(path)
-    df.columns = [str(c).strip().upper().replace(" ", "_") for c in df.columns]
-    ren = {"ID_BB_UNIQUE": "BB_ID", "ID": "BB_ID", "CUSIP": "ISIN", "BBG_ID": "BB_ID"}
-    df = df.rename(columns={k: v for k, v in ren.items() if k in df.columns})
-    missing = {"ISIN", "BB_ID"} - set(df.columns)
-    if missing:
-        raise ValueError(f"{path.name}: colonne mancanti {missing}; trovate {list(df.columns)}")
-    df["BB_ID"] = df["BB_ID"].astype(str).str.replace(r"\s+Corp$", "", regex=True).str.strip()
-    df["ISIN"] = df["ISIN"].astype(str).str.strip()
-    df = df.dropna(subset=["ISIN", "BB_ID"]).drop_duplicates("ISIN").reset_index(drop=True)
-    return df[["ISIN", "BB_ID"]]
