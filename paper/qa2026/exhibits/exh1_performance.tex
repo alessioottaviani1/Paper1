@@ -1,0 +1,23 @@
+%% TABLE 1 - PERFORMANCE (compact). Fusion of paper Table I Panel B + max
+%% drawdown (Sec I.C / Fig 3) + MPPM rho=3 (Table II). All cells verified
+%% against the compiled paper of 19 Jul 2026. % VERIFY vs pipeline at freeze.
+\begin{table}[t]
+\centering
+\caption{Performance of the three arbitrage strategies, net of transaction
+costs. Monthly signal-weighted excess returns; mean and volatility annualized;
+$t$-statistic Newey--West (4 lags); MPPM is the manipulation-proof performance
+measure of Goetzmann et al.\ (2007) at $\rho=3$. Samples end October~2025
+(BTP~Italia) and November~2025.
+\label{tab:performance}\label{tab:summary_stats_monthly}}
+\small
+\begin{tabular}{lcccccccc}
+\toprule
+Strategy & $n$ & Mean & $t$ & Vol. & Sharpe & Skew & Max DD & MPPM \\
+ & & (\% p.a.) & & (\% p.a.) & & & (\%) & (\% p.a.) \\
+\midrule
+BTP Italia      & 163 & 1.59 & 3.52 & 1.62 & 0.98 & 0.81 & $-3.0$ & 1.48 \\
+CDS--Bond Basis & 207 & 4.61 & 5.87 & 2.96 & 1.56 & 0.79 & $-4.4$ & 4.39 \\
+iTraxx Skew     & 243 & 1.91 & 4.92 & 1.53 & 1.25 & 1.01 & $-2.5$ & 1.87 \\
+\bottomrule
+\end{tabular}
+\end{table}
