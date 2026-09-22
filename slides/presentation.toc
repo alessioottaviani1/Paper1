@@ -1,0 +1,6 @@
+\beamer@sectionintoc {1}{Motivation}{2}{0}{1}
+\beamer@sectionintoc {2}{Strategies}{5}{0}{2}
+\beamer@sectionintoc {3}{Performance}{10}{0}{3}
+\beamer@sectionintoc {4}{Benchmark Models}{13}{0}{4}
+\beamer@sectionintoc {5}{Factor Selection}{18}{0}{5}
+\beamer@sectionintoc {6}{Cross-Strategy}{27}{0}{6}

@@ -1,0 +1,6 @@
+\beamer@sectionintoc {1}{Overview}{2}{0}{1}
+\beamer@sectionintoc {2}{BEI Premia}{3}{0}{2}
+\beamer@sectionintoc {3}{Expected Inflation}{7}{0}{3}
+\beamer@sectionintoc {4}{Inflation Surprises}{11}{0}{4}
+\beamer@sectionintoc {5}{Predictability}{15}{0}{5}
+\beamer@sectionintoc {6}{Summary}{17}{0}{6}

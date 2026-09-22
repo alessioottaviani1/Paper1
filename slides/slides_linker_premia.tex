@@ -1,0 +1,773 @@
+%==============================================================================
+%  Linker risk-premia analysis — RR's three questions (August 2026)
+%  Author: Alessio Ottaviani  |  Supervisor: Prof. Riccardo Rebonato (EDHEC)
+%
+%  STESSA FORMATTAZIONE di presentation.tex (tema CambridgeUS, stessi colori,
+%  \hlt/\hltb, block, footer). Due modi d'uso:
+%   (a) autonomo: come sta, compila con pdflatex+biber (o togli biblatex se non serve);
+%   (b) integrato: incolla i \begin{frame}...\end{frame} dentro presentation.tex
+%       (il preambolo e' identico, quindi si fondono senza attriti).
+%
+%  FIGURE: generarle con  python src/linker_premia/make_figures.py  -> fig_*.pdf
+%  in data/cache/. Copiarle in  results/figures/linker_premia/  (gia' nel graphicspath
+%  via ../results/figures/), oppure adattare il path sotto.
+%==============================================================================
+\documentclass[aspectratio=169,11pt]{beamer}
+
+\mode<presentation>{
+  \usetheme{CambridgeUS}
+  \usecolortheme{default}
+}
+
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{threeparttable}
+\usepackage{hyperref}
+\usepackage{lmodern}
+\usepackage{ragged2e}
+\usepackage{setspace}
+\usepackage{xcolor}
+\usepackage{colortbl}
+
+% --- colori identici a presentation.tex ---
+\definecolor{edhecred}{RGB}{170,30,45}
+\definecolor{accentblue}{RGB}{30,80,150}
+\definecolor{softgrey}{RGB}{100,100,100}
+\definecolor{myblue}{RGB}{0, 51, 102}
+\definecolor{myred}{RGB}{153, 0, 0}
+\definecolor{mygreen}{RGB}{0, 102, 51}
+\definecolor{mygold}{RGB}{204, 153, 0}
+\definecolor{lightgray}{RGB}{240, 240, 240}
+\newcommand{\hlt}[1]{\textcolor{edhecred}{\textbf{#1}}}
+\newcommand{\hltb}[1]{\textcolor{accentblue}{\textbf{#1}}}
+
+% --- layout identico: banner stretto, margini stretti, footer, itemize, block ---
+\setbeamerfont{frametitle}{size=\normalsize}
+\makeatletter
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip\vskip-4pt%
+  \begin{beamercolorbox}[wd=\paperwidth,ht=3.0ex,dp=1.2ex,center]{frametitle}%
+    \usebeamerfont{frametitle}\insertframetitle
+  \end{beamercolorbox}\vskip0pt}
+\makeatother
+\setbeamertemplate{headline}{}
+\setbeamersize{text margin left=3mm,text margin right=3mm}
+\setbeamertemplate{footline}{%
+  \leavevmode\hbox{%
+    \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.5ex,dp=1ex,leftskip=2ex]{author in head/foot}%
+      \usebeamerfont{author in head/foot}\insertshortauthor\hspace{0.5em}--\hspace{0.5em}\insertshorttitle
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.5ex,dp=1ex,rightskip=2ex,right]{title in head/foot}%
+      \usebeamerfont{title in head/foot}\insertsection\hspace{1em}\insertframenumber/\inserttotalframenumber
+    \end{beamercolorbox}}\vskip0pt}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{itemize items}[circle]
+\setbeamercolor{itemize item}{fg=edhecred}
+\setbeamercolor{itemize subitem}{fg=accentblue}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+\setbeamercolor{block title}{fg=white,bg=accentblue}
+\setbeamercolor{block body}{fg=black,bg=accentblue!8}
+\setbeamercolor{block title alerted}{fg=white,bg=edhecred}
+\setbeamercolor{block body alerted}{fg=black,bg=edhecred!8}
+\setbeamercolor{block title example}{fg=white,bg=mygreen}
+\setbeamercolor{block body example}{fg=black,bg=mygreen!8}
+
+\graphicspath{%
+  {../results/figures/linker_premia/}%
+  {./}{figures/}{linker_premia/}%
+}
+
+% cartella delle figure (relativa a slides/). \IfFileExists NON usa \graphicspath,
+% quindi il test e l'include devono puntare entrambi qui.
+\newcommand{\figdir}{../results/figures/linker_premia/}
+% box segnaposto se il PDF non c'e' ancora; altrimenti include la figura
+\newcommand{\figorbox}[2]{%
+  \IfFileExists{\figdir#1}%
+    {\centering\includegraphics[width=\linewidth,height=#2,keepaspectratio]{\figdir#1}}%
+    {\centering\fbox{\parbox[c][#2][c]{0.9\linewidth}{\centering\color{softgrey}%
+     \small figura non trovata --- lanciare make-figures.py e ricompilare}}}}
+
+\title{Risk Premia in Inflation-Linked Bonds}
+\author{Alessio Ottaviani}
+\institute{EDHEC Business School \\[0.15cm]\textit{Supervisor:} Prof.\ Riccardo Rebonato}
+\date{August 2026}
+
+\begin{document}
+
+%------------------------------------------------------------------------------
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+%==============================================================================
+\section{Overview}
+
+%------------------------------------------------------------------------------
+% SLIDE 2 — The three questions
+%------------------------------------------------------------------------------
+\begin{frame}[t]{Three Questions, One Dataset}
+\vspace{0.35cm}
+\begin{columns}[T]
+\begin{column}{0.58\textwidth}
+  \begin{block}{\normalsize RQ1.\ \ \emph{BEI residual premia}}
+  US vs UK breakeven minus projected and spot inflation. Similar? If different, why?
+  \end{block}
+  \begin{block}{\normalsize RQ2.\ \ \emph{Inflation surprises}}
+  TIPS yields react to surprises via protection demand and segmentation. Same for linkers?
+  \end{block}
+  \begin{block}{\normalsize RQ3.\ \ \emph{Return predictability}}
+  Slope vs CP vs Cieslak--Povala; are forwards cointegrated, and does cointegration predict?
+  \end{block}
+\end{column}
+\begin{column}{0.40\textwidth}
+  \scriptsize
+  \textbf{Data \& specification}
+  \begin{itemize}\itemsep=0.07cm\scriptsize
+    \item Curves: \hltb{BoE} (UK), \hltb{GSW} (US, official Fed files), monthly 2004--2026
+    \item Projected $=$ inflation swap (\hltb{ISR}); spot $=$ YoY
+    \item \hlt{Linker--swap basis} $b(T)\equiv\text{BEI}-\text{ISR}=-\lambda(T)$;\\
+          $b<0$: cash linker \emph{cheap} to the synthetic
+    \item Surprise $=$ YoY $-$ \emph{full} 120m MA; SA CPI (US), RPI (UK)
+    \item \hlt{Actual CPI release dates} (\texttt{ECO\_RELEASE\_DT}): US 270, UK 272 months
+    \item $t$-NW(12) on $b$; $t$-HH(12) on 12m excess returns
+  \end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+%==============================================================================
+\section{BEI Premia}
+
+%------------------------------------------------------------------------------
+% SLIDE 3 — Q1 headline
+%------------------------------------------------------------------------------
+\begin{frame}[t]{RQ1: The Answer Is \emph{Maturity-Dependent} --- Shape, Not Level}
+\vspace{0.05cm}
+\footnotesize
+Linker--swap basis $b=\text{BEI}-\text{ISR}$, common sample 2004--2026 ($n\approx 265$).
+Last two rows: the \hlt{basis differential} $b_{US}-b_{UK}$ and the share of months in which
+it is positive.
+
+\vspace{0.12cm}
+\centering
+{\footnotesize
+\begin{tabular}{lcccccc|c}
+\toprule
+Maturity & 3y & 5y & 7y & 10y & 15y & 20y & \cellcolor{edhecred!8}25y \\
+\midrule
+$b_{US}$ \ [bp]        & $-24$ & $-25$ & $-23$ & $-24$ & $-23$ & $-23$ & \cellcolor{edhecred!8}n/a \\
+$b_{UK}$ \ [bp]        & $-28$ & $-30$ & $-27$ & $-18$ & $-6$ & $+1$ & \cellcolor{edhecred!8}\hlt{$+3$} \\
+\midrule
+$b_{US}-b_{UK}$ \ [bp] & $+3$ & $+5$ & $+3$ & $-6$ & \hlt{$-18$} & \hlt{$-24$} & \cellcolor{edhecred!8}--- \\
+months $b_{US}>b_{UK}$ & 53\% & 67\% & 63\% & 30\% & \hlt{8\%} & \hlt{2\%} & \cellcolor{edhecred!8}--- \\
+\bottomrule
+\end{tabular}}
+
+\vspace{0.05cm}
+{\scriptsize \cellcolor{edhecred!8}\,25y\,: \textbf{UK only} --- GSW publish the TIPS curve for
+integers 2--20, so the comparison stops at 20y. BoE and BPSWIT both cover 25y.}
+
+\vspace{0.12cm}
+\raggedright\scriptsize
+\begin{itemize}\itemsep=0.05cm\scriptsize
+  \item \hltb{Indistinguishable to 7y}: both $\approx-25$ bp, sign of the differential a coin
+        toss (53--67\% of months) --- linkers cheap to the synthetic in both (\hltb{FLL 2014}).
+  \item \hlt{Sharply different beyond 10y}: the US basis is \emph{flat} across the curve,
+        the UK basis \emph{rises to zero}. At 20y the UK linker is fairly priced to the
+        synthetic; the US is still $-23$ bp.
+  \item By 20y the sign is \hlt{systematic, not episodic}: the US basis is below the UK in
+        98\% of months. The share is distribution-free --- it does not depend on how one
+        models the persistence of the differential.
+  \item \hlt{Where the UK can be read further, it keeps going}: the basis does not flatten
+        at 20y --- it reaches $+3$ bp at 25y and is positive in two months out of three.
+\end{itemize}
+
+\end{frame}
+
+%------------------------------------------------------------------------------
+% SLIDE 4 — Q1 the spot measure
+%------------------------------------------------------------------------------
+\begin{frame}[t]{RQ1: The Same Comparison, Subtracting \emph{Spot} Inflation}
+\vspace{0.05cm}
+\footnotesize
+Same object as before, with realised YoY inflation in place of the swap rate. Levels for each
+market, then the differential.
+
+\vspace{0.15cm}
+\centering
+{\footnotesize
+\begin{tabular}{lcccccc}
+\toprule
+Maturity & 3y & 5y & 7y & 10y & 15y & 20y \\
+\midrule
+$(\text{BEI}-\text{spot})_{US}$ \ [bp] & $-81$ & $-66$ & $-57$ & $-47$ & $-40$ & $-38$ \\
+$(\text{BEI}-\text{spot})_{UK}$ \ [bp] & $-88$ & $-82$ & $-76$ & $-63$ & $-45$ & $-36$ \\
+\midrule
+difference US$-$UK      & $+8$ & $+17$ & $+19$ & $+16$ & $+5$ & $-1$ \\
+months with US$>$UK     & 44\% & 46\% & 46\% & 45\% & 45\% & 43\% \\
+\bottomrule
+\end{tabular}}
+
+\vspace{0.25cm}
+\raggedright\scriptsize
+\begin{itemize}\itemsep=0.09cm\scriptsize
+  \item \hltb{Both markets look far cheaper} on this measure ($-38$ to $-88$ bp against
+        $\approx-25$ on the basis): over the sample realised inflation ran \emph{above} what
+        the swap market projected, and that gap enters the residual.
+  \item \hlt{No maturity discriminates}: the sign is a coin toss at every point of the curve
+        (43--46\%, against 2--67\% on the basis) --- which is not the same as the markets
+        agreeing. The identity
+        $\;\text{BEI}-\text{spot}=(\text{BEI}-\text{ISR})+(\text{ISR}-\text{spot})\;$
+        shows why: at 20y the basis differential is $-24$ bp and the expectation-gap
+        differential $+22$ bp. \hlt{They cancel --- two differences, not none.}
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------------------------------------
+% SLIDE 5 — Q1 the 2009 break
+%------------------------------------------------------------------------------
+\begin{frame}[t]{RQ1 \emph{Why} (i): The Aggregate Hides Two Opposite Regimes}
+\vspace{0.1cm}
+\footnotesize
+Basis differential $b_{US}-b_{UK}$ by sub-period [bp]. The short end \hlt{changes sign} in
+2009; the long end does not.
+
+\vspace{0.12cm}
+\centering
+{\scriptsize
+\begin{tabular}{lcccccc|c}
+\toprule
+Period & 3y & 5y & 7y & 10y & 15y & 20y & \cellcolor{edhecred!8}25y \\
+\midrule
+\multicolumn{8}{l}{\emph{Differential} $b_{US}-b_{UK}$} \\
+pre-2009    & $-29$ & $-32$ & $-27$ & $-22$ & $-19$ & $-23$ & \cellcolor{edhecred!8}--- \\
+2009--2019  & \hlt{$+11$} & \hlt{$+15$} & \hlt{$+10$} & $-2$ & $-18$ & $-27$ & \cellcolor{edhecred!8}--- \\
+2020--today & \hlt{$+11$} & \hlt{$+15$} & \hlt{$+12$} & $-2$ & $-17$ & $-18$ & \cellcolor{edhecred!8}--- \\
+\midrule
+\multicolumn{8}{l}{\emph{UK basis} $b_{UK}$ \ (readable to 25y)} \\
+pre-2009    & $-12$ & $-9$ & $-8$ & $-5$ & $-2$ & $-2$ & \cellcolor{edhecred!8}$-3$ \\
+2009--2019  & $-36$ & $-38$ & $-34$ & $-24$ & $-10$ & $-0$ & \cellcolor{edhecred!8}\hlt{$+5$} \\
+2020--today & $-25$ & $-30$ & $-28$ & $-16$ & $-0$ & $+4$ & \cellcolor{edhecred!8}\hlt{$+6$} \\
+\bottomrule
+\end{tabular}}
+
+\vspace{0.15cm}
+\raggedright\scriptsize
+\begin{itemize}\itemsep=0.05cm\scriptsize
+  \item The insignificant 3--7y differential on the full sample is the \hlt{average of two
+        opposite regimes}, not evidence of no difference.
+  \item \hltb{Pre-2009} the US basis is more negative at \emph{every} maturity (TIPS the more
+        dislocated market in the GFC); \hltb{post-2009} the ranking inverts at the short end
+        only, and stays inverted.
+  \item \hlt{The long-end shape is itself post-2009}: before the crisis the UK basis is
+        \emph{flat} across the whole curve ($-12$ to $-3$ bp, 3y to 25y). The upward slope
+        that distinguishes the UK from the US does not pre-exist --- \hlt{it appears after
+        2009 and strengthens}, exactly where the LDI clientele operates.
+  \item Event study confirms a UK-specific shock: in the \hlt{2022 LDI crisis} the
+        differential moves $+56$ bp (5y) and $+36$ bp (10y) versus its own median.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------------------------------------
+% SLIDE 5 — Q1 channels
+%------------------------------------------------------------------------------
+\begin{frame}[t]{RQ1 \emph{Why} (ii): Channels, Estimated Separately per Market}
+\vspace{0.05cm}
+\scriptsize
+Levels regressions of each market's basis on each channel; Newey--West $t$ with
+\emph{automatic} bandwidth (NW 1994) in brackets; I(1) channels confirmed in first differences.
+A channel significant in \emph{both} markets moves the two together and cannot explain the
+differential --- hence the third column.
+
+\vspace{0.18cm}
+\centering
+{\scriptsize
+\begin{tabular}{lccc|ccc}
+\toprule
+ & \multicolumn{3}{c|}{\textbf{5y}} & \multicolumn{3}{c}{\textbf{10y}} \\
+Channel & US & UK & difference & US & UK & difference \\
+\midrule
+On/off-run  & $-0.8$ & $+4.4$ & $-5.3$ & $+3.8$ & $+7.4^{***}$ & $-3.6$ \\
+            & {\tiny$[-0.4]$} & {\tiny$[+1.4]$} & {\tiny$[-1.7]$} & {\tiny$[+1.5]$} & {\tiny$[+3.7]$} & {\tiny$[-1.6]$} \\
+\addlinespace[1pt]
+MOVE        & $-1.8$ & $-8.6^{**}$ & $+6.8$ & $+0.8$ & $-4.5$ & \hlt{$+5.3^{**}$} \\
+            & {\tiny$[-1.3]$} & {\tiny$[-2.1]$} & {\tiny$[+1.5]$} & {\tiny$[+0.6]$} & {\tiny$[-1.5]$} & {\tiny$[+2.4]$} \\
+\addlinespace[1pt]
+VIX         & $-2.4$ & $-2.8$ & $+0.4$ & $+0.2$ & $-1.6$ & $+1.8$ \\
+            & {\tiny$[-1.4]$} & {\tiny$[-0.8]$} & {\tiny$[+0.2]$} & {\tiny$[+0.1]$} & {\tiny$[-0.7]$} & {\tiny$[+0.9]$} \\
+\addlinespace[1pt]
+Noise (HPW) & \hlt{$-24.6^{***}$} & $+9.7^{*}$ & \hlt{$-34.3^{***}$} & \hlt{$-14.5^{***}$} & $-1.1$ & \hlt{$-13.4^{***}$} \\
+            & {\tiny$[-6.8]$} & {\tiny$[+1.8]$} & {\tiny$[-5.5]$} & {\tiny$[-3.6]$} & {\tiny$[-0.3]$} & {\tiny$[-3.3]$} \\
+\addlinespace[1pt]
+HKM capital & $+485^{***}$ & $+453^{**}$ & $+32$ & $+255^{*}$ & $+297^{*}$ & $-42$ \\
+            & {\tiny$[+4.7]$} & {\tiny$[+2.0]$} & {\tiny$[+0.2]$} & {\tiny$[+1.9]$} & {\tiny$[+1.8]$} & {\tiny$[-0.3]$} \\
+\bottomrule
+\end{tabular}}
+
+\vspace{0.15cm}
+\raggedright\footnotesize
+\begin{itemize}\itemsep=0.05cm\footnotesize
+  \item \hlt{Noise is the one channel that separates the two markets} --- significant on the
+        difference at both maturities: Treasury-market dislocation cheapens \emph{TIPS}
+        specifically, not gilts.
+  \item \hltb{Intermediary capital (HKM) moves both together}: sizeable in each market, zero
+        on the difference --- a common global factor, not the explanation.
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+\section{Expected Inflation}
+
+%------------------------------------------------------------------------------
+% SLIDE E1 — which E[pi]: one measure per market, chosen on an external criterion
+% numeri: results/tables/rq_forecast_race.tex (script r7_forecast_race.py)
+%------------------------------------------------------------------------------
+\begin{frame}[t]{Expected Inflation: One Measure per Market, Chosen on an External Criterion}
+\vspace{0.05cm}
+\footnotesize
+RR's US candidates (Cleveland, AR(1), doubly mean-reverting Vasicek) need a UK counterpart. The
+criterion is \hlt{external}: which measure forecast \emph{realised} average inflation over the next
+$T$ years? RMSE [pp p.a.], common sample, Diebold--Mariano with HAC variance; RW $=$ current YoY.
+\vspace{-0.1cm}
+
+\vspace{0.05cm}
+\centering
+{\scriptsize
+\begin{tabular}{lcccc@{\hspace{1.2em}}|@{\hspace{1.2em}}cccc}
+\toprule
+ & \multicolumn{4}{c}{\textbf{US} (1981--2024)} & \multicolumn{4}{c}{\textbf{UK} (1992--2025)} \\
+Horizon & Cleveland & AR(1) & Vasicek2 & RW & \hlt{Affine} & AR(1) & Vasicek2 & RW \\
+\midrule
+1y  & 1.24 & \hltb{1.08} & 1.14 & 1.14 & 1.55 & \hltb{1.52} & 1.56 & 1.56 \\
+3y  & \hltb{1.29} & 1.29 & 1.50 & 1.50 & \hltb{1.53} & 2.13 & 2.35 & 2.35 \\
+5y  & \hltb{1.05} & 1.12 & 1.40 & 1.40 & \hltb{1.19} & 1.61 & 1.82 & 1.82 \\
+10y & \hltb{0.80} & 0.93 & 1.39 & 1.40 & \hltb{0.65} & 1.34 & 1.58 & 1.59 \\
+\bottomrule
+\end{tabular}}
+
+\vspace{0.06cm}
+\raggedright\scriptsize
+\begin{itemize}\itemsep=0.05cm\scriptsize
+  \item \hltb{US: Cleveland} (Haubrich--Pennacchi--Ritchken 2012, the Fed's official series): lowest
+        RMSE from 3y; the gap to the AR(1) is not significant (DM $\le 1$), DMRV and RW are
+        significantly worse from 5y (DM $2$--$3$). Chosen: Cleveland; AR(1) as the symmetric robustness.
+  \item \hlt{UK: the affine model of this paper} (next slide): best at every horizon from 2y, at 10y
+        \emph{half} the AR(1)'s RMSE (DM $>2$ from 3y). No UK ``Cleveland'' exists as a live series;
+        the race shows the affine model is not a weaker substitute for it.
+  \item \hlt{One measure per market}, not the best at each maturity: mixing models across maturities
+        would build jumps into the term structure of premia by construction.
+  \item Caveats: full-sample parameters (all models); surveys are inputs of the affine model; few
+        independent windows beyond 5y ($n_{\text{eff}}<6$).
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------------------------------------
+% SLIDE E2 — the UK affine model
+% numeri: results/tables/affine_uk_decomposition.tex, affine_uk_reform_sensitivity.tex (r9n),
+%         affine_uk_maps_validation.tex (r9m)
+%------------------------------------------------------------------------------
+\begin{frame}[t]{UK: A No-Arbitrage Decomposition of Breakevens (Kaminska et al., BoE)}
+\vspace{0.05cm}
+\begin{columns}[T]
+\begin{column}{0.44\textwidth}
+\scriptsize
+\textbf{\textcolor{accentblue}{The model}} \ Liu--Vangelista--Kaminska--Relleen (BoE SWP 551 / JBF
+2018), the UK reference: gilt \emph{and} swap breakevens, 3--25y, monthly 1992--2026.
+\begin{itemize}\itemsep=0.04cm\scriptsize
+  \item States: 3 CPI factors $+$ expected \hlt{RPI--CPI wedge} $+$ \hlt{gilt liquidity}
+        (loads on gilts only, identified by the gilt--swap gap: the LDI channel).
+  \item Kalman filter with surveys as extra measurements: HM Treasury and BoE professional
+        forecasters 1997--2026 (1--4y), Citi/YouGov households 5--10y with an
+        \emph{estimated} bias ($+1.2$pp) as the long anchor (Consensus is not available).
+  \item \hlt{RPI reform 2030} (RPI $\to$ CPIH) in the loadings, priced from Sep-2019: without
+        it, post-2020 long breakevens are misread as expected inflation.
+\end{itemize}
+\textbf{\textcolor{edhecred}{Out-of-sample check}} \ BoE Market Participants Survey, professional
+CPI 5--10y ahead (27 rounds, 2023--26, not used in estimation): survey $2.21\%$, model $2.15\%$,
+s.d.\ of the gap $0.03$pp.
+\end{column}
+\begin{column}{0.55\textwidth}
+\centering
+\scriptsize
+Decomposition of the swap breakeven, sample averages [\% / bp]
+\vspace{0.05cm}
+{\scriptsize
+\begin{tabular}{lcccc}
+\toprule
+ & 5y & 10y & 20y & 25y \\
+\midrule
+\multicolumn{5}{l}{\emph{2009--2019}} \\
+$E[\pi^{CPI}]$ & 2.08 & 2.10 & 2.13 & 2.14 \\
+expected wedge & $+98$ & $+108$ & $+113$ & $+114$ \\
+IRP $=$ swap $-E[\pi^{RPI}]$ & $-2$ & $+6$ & $+18$ & $+19$ \\
+gilt $-$ swap & $-32$ & $-18$ & $-5$ & $-1$ \\
+\midrule
+\multicolumn{5}{l}{\emph{2020--today}} \\
+$E[\pi^{CPI}]$ & 2.26 & 2.20 & 2.18 & 2.18 \\
+expected wedge & $+107$ & $+76$ & \hlt{$+38$} & \hlt{$+30$} \\
+IRP $=$ swap $-E[\pi^{RPI}]$ & $+48$ & $+64$ & \hlt{$+83$} & \hlt{$+84$} \\
+gilt $-$ swap & $-25$ & $-12$ & $+1$ & $+6$ \\
+\bottomrule
+\end{tabular}}
+
+\vspace{0.12cm}
+\raggedright\scriptsize
+\begin{itemize}\itemsep=0.04cm\scriptsize
+  \item Long-run CPI expectations \hltb{anchored at 2.1--2.2\%} throughout; 2021--23 is a 3--5y event.
+  \item After 2020 the 25y wedge falls $114\to30$bp (reform) and an \hlt{IRP of $\approx85$bp}
+        appears at the long end; without the reform: wedge $117$, IRP $-5$ --- same prices, wrong split.
+  \item gilt $-$ swap: negative to 10y, \hltb{zero or positive from 20y} --- the RQ1 shape as a state.
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+%------------------------------------------------------------------------------
+% SLIDE E3 — figure
+%------------------------------------------------------------------------------
+\begin{frame}[t]{UK Affine Model: Expectations and Premia over Time}
+\vspace{0.05cm}
+\figorbox{fig_5_affine_uk.pdf}{0.76\textheight}\par
+\vspace{0.05cm}
+\raggedright\scriptsize
+Top: observed 10y breakevens against the model's expected RPI and CPI inflation. Bottom, 25y: the three
+premia; before April 2004 there are no RPI swaps, so the swap leg is model-implied (shaded). Dashed lines:
+reform proposal (Sep-2019), UKSA decision (Nov-2020), LDI crisis (Sep-2022).
+\end{frame}
+
+%------------------------------------------------------------------------------
+% SLIDE E4 — RQ1 with the gold-standard expectations
+% numeri: results/tables/rq1_expinf_levels.tex + blocco "gold standard" di r1_bei_premia.py
+%------------------------------------------------------------------------------
+\begin{frame}[t]{RQ1 Revisited: Subtracting the \emph{Best} Expected Inflation in Each Market}
+\vspace{0.05cm}
+\footnotesize
+$\text{BEI}-E[\pi]=rp_{\pi}-\lambda$ (total premium in the breakeven) and $\text{ISR}-E[\pi]=rp_{\pi}$
+(premium in the swap), sample averages 2004--2026 [bp], release-date sampling. US: Cleveland; UK:
+affine model.
+
+\vspace{0.1cm}
+\centering
+{\footnotesize
+\begin{tabular}{lccccccc}
+\toprule
+ & 3y & 5y & 7y & 10y & 15y & 20y & 25y \\
+\midrule
+$(\text{BEI}-E[\pi])_{US}$          & $-4$ & $+6$ & $+13$ & $+17$ & $+16$ & $+11$ & --- \\
+$(\text{BEI}-E[\pi])_{UK}$          & $-12$ & $-16$ & $-11$ & $+4$ & $+25$ & \hlt{$+36$} & \hlt{$+37$} \\
+US$-$UK \ [$t$-NW] & $+8$ [0.9] & $+23$ [2.6] & $+24$ [2.5] & $+13$ [1.3] & $-9$ [$-0.8$] & \hlt{$-25$ [$-2.2$]} & --- \\
+\midrule
+$(\text{ISR}-E[\pi])_{US}$          & $+20$ & $+31$ & $+37$ & $+41$ & $+39$ & $+33$ & --- \\
+$(\text{ISR}-E[\pi])_{UK}$          & $+11$ & $+10$ & $+13$ & $+19$ & $+29$ & $+33$ & $+33$ \\
+\bottomrule
+\end{tabular}}
+
+\vspace{0.12cm}
+\raggedright\scriptsize
+\begin{itemize}\itemsep=0.05cm\scriptsize
+  \item \hltb{Both swap markets carry a positive inflation risk premium} ($+10$ to $+40$bp), rising
+        with maturity in the UK and hump-shaped in the US: RR's objection to the swap as ``projected
+        inflation'' is quantified, and it is of the same order in the two markets.
+  \item \hlt{The RQ1 shape survives the change of measure}: the UK total premium rises from $-16$ to
+        $+37$bp along the curve while the US stays within $\pm 17$bp. The differential is positive at
+        5--7y ($+23$bp, $t\,2.5$: the US carries the larger premium at the front) and negative at 20y
+        ($-25$bp, $t\,{-}2.2$) --- the same sign and size as on the basis ($-25$bp), where it is
+        measured without any $E[\pi]$.
+  \item The naive measures (AR(1), Vasicek2) put both markets at $-30$ to $-105$bp: they overstate
+        expected inflation by construction (backward-looking), and the US--UK difference on them is
+        never significant. The premium levels depend on the measure; the \hlt{shape} does not.
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+\section{Inflation Surprises}
+
+%------------------------------------------------------------------------------
+% SLIDE 6 — Q2 table
+%------------------------------------------------------------------------------
+\begin{frame}[t]{RQ2: Same for Liquidity, \emph{Opposite} for Surprises}
+\vspace{0.05cm}
+\scriptsize
+Maffei's specification exactly: \emph{separate} regressions (eq.~7), release-date sampling,
+surprise $=$ YoY $-$ full 120m MA, liquidity $=$ PC1\{VIX, MOVE, noise, on/off\}.
+$\lambda=-b$; bp per s.d.\ (liq.) or per unit (surp.); $t$-NW(12) below each coefficient.
+\hlt{25y is UK only}: GSW publishes the TIPS curve for integers 2--20.
+
+\vspace{0.18cm}
+\centering
+{\scriptsize
+\begin{tabular}{lccccccc}
+\toprule
+ & 2y / 2.5y & 5y & 10y & 12y & 15y & 20y & \cellcolor{edhecred!8}25y \\
+\midrule
+US\ $\lambda\!\sim\!$PCA  & $+9.8^{***}$ & \hltb{$+11.8^{***}$} & $+4.1^{**}$ & $+1.3$ & $-0.0$ & $+1.3$ & \cellcolor{edhecred!8}--- \\
+            & {\tiny$[+3.8]$} & {\tiny$[+4.9]$} & {\tiny$[+2.5]$} & {\tiny$[+0.9]$} & {\tiny$[-0.0]$} & {\tiny$[+0.8]$} & \cellcolor{edhecred!8}{\tiny n/a} \\
+UK\ $\lambda\!\sim\!$PCA  & \hltb{$+10.6^{***}$} & $+4.9^{***}$ & $+3.9^{**}$ & $+3.7^{**}$ & $+3.0^{**}$ & $+1.7^{**}$ & \cellcolor{edhecred!8}$+0.9$ \\
+            & {\tiny$[+4.6]$} & {\tiny$[+2.9]$} & {\tiny$[+2.1]$} & {\tiny$[+2.1]$} & {\tiny$[+2.1]$} & {\tiny$[+2.3]$} & \cellcolor{edhecred!8}{\tiny$[+0.9]$} \\
+\midrule
+US\ $\lambda\!\sim\!$InfS & $-1.7$ & $-1.5$ & $-1.2$ & $-1.2$ & $-1.5^{*}$ & \hlt{$-2.1^{**}$} & \cellcolor{edhecred!8}--- \\
+            & {\tiny$[-1.2]$} & {\tiny$[-0.8]$} & {\tiny$[-1.0]$} & {\tiny$[-1.2]$} & {\tiny$[-1.7]$} & {\tiny$[-2.4]$} & \cellcolor{edhecred!8}{\tiny n/a} \\
+UK\ $\lambda\!\sim\!$InfS & \hlt{$+6.2^{***}$} & $+2.9^{*}$ & $+1.0$ & $+0.3$ & $-0.2$ & $+0.3$ & \cellcolor{edhecred!8}\hlt{$+1.0^{***}$} \\
+            & {\tiny$[+2.6]$} & {\tiny$[+1.9]$} & {\tiny$[+0.8]$} & {\tiny$[+0.3]$} & {\tiny$[-0.2]$} & {\tiny$[+0.9]$} & \cellcolor{edhecred!8}{\tiny$[+2.8]$} \\
+\bottomrule
+\end{tabular}}
+
+
+\vspace{0.15cm}
+\raggedright\scriptsize
+\begin{itemize}\itemsep=0.05cm\scriptsize
+  \item \hltb{Liquidity: the same.} Both load on the short end and fade into the long end
+        (US $11.6\!\to\!0.9$; UK $8.5\!\to\!1.9$ bp, short vs long block).
+        \hlt{Maffei's segmentation replicates, and the UK matches it.}
+  \item \hlt{Surprises: not the same.} US $\lambda$ falls, strongest at 20y; UK $\lambda$
+        \emph{rises} at the short end --- \hlt{opposite sign, opposite end}.
+  \item \hlt{Beyond the US range the UK changes regime}: at 25y liquidity stops mattering
+        ($t\,0.9$) while the surprise channel \emph{returns} significant with a positive sign
+        ($+1.0$, $t\,2.8$) --- a U-shaped profile, not a decay.
+  \item Validation (Maffei 7.1.2): ISR$\sim$PCA $\approx0$ in both ($|t|\leq1.5$) --- not a
+        measurement artefact.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------------------------------------
+% SLIDE 7 — Q2 figure (full term structure: 12 tenors, not the 6 in the table)
+%------------------------------------------------------------------------------
+\begin{frame}[t]{RQ2: The Two Channels Across the Whole Curve}
+\vspace{0.1cm}
+\figorbox{fig_3_rq2_betas.pdf}{0.66\textheight}
+
+\vspace{0.1cm}
+\footnotesize\centering
+All twelve tenors (the table shows six). \hltb{Left}: the liquidity channel is common ---
+both curves decay. \hlt{Right}: the surprise channel is not --- the UK reacts where its basis
+matches the US, and is inert at the long end where the two bases diverge.
+\end{frame}
+
+%------------------------------------------------------------------------------
+% SLIDE 8 — Q2 inference
+%------------------------------------------------------------------------------
+\begin{frame}[t]{RQ2: How Much Survives Correct Standard Errors?}
+\vspace{0.1cm}
+\footnotesize
+The surprise contains a \hlt{12-month overlapping window} (YoY), so residual autocorrelation
+is mechanically induced to lag 11 before any economic persistence. OLS standard errors are
+badly downward-biased; NW(12) is the minimum defensible truncation.
+
+\vspace{0.25cm}
+\centering
+{\small
+\begin{tabular}{lccccc}
+\toprule
+US $\lambda\!\sim\!$InfS & 5y & 10y & 12y & 15y & 20y \\
+\midrule
+$\beta$ \ [bp/unit]             & $-1.49$ & $-1.19$ & $-1.15$ & $-1.45$ & $-2.09$ \\
+$t$-OLS \ \emph{(as published)} & $-2.1$ & $-2.9$ & $-3.2$ & $-4.0$ & \hltb{$-5.5$} \\
+$t$-NW(12) \ \emph{(corrected)} & $-0.8$ & $-1.0$ & $-1.2$ & $-1.7$ & \hlt{$-2.4$} \\
+\bottomrule
+\end{tabular}}
+
+\vspace{0.35cm}
+\raggedright\footnotesize
+\begin{itemize}\itemsep=0.12cm\footnotesize
+  \item The $t$ is \hlt{stable across lag choice} (6, 12, 18 give $-3.1$, $-2.9$, $-2.9$ at
+        20y on Maffei's sample): the gap is \hltb{OLS vs HAC}, not the truncation.
+  \item \hlt{The long-end result survives}: 20y remains significant at 5\%. What does not
+        survive is its \emph{strength} --- roughly half the published $t$.
+  \item This strengthens the finding rather than weakening it: the effect is real, and now
+        stated with inference a referee will accept.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------------------------------------
+% SLIDE 8b — Q2 with expected inflation: the premium channel
+% numeri: results/tables/rq2_maffei_{US,UK}.tex, Panel B e Panel C (script r2_surprises.py)
+%------------------------------------------------------------------------------
+\begin{frame}[t]{RQ2 with Expected Inflation: Do Surprises Move the \emph{Premium}, Not Only the Basis?}
+\vspace{0.05cm}
+\footnotesize
+Maffei's surprise test is on $\lambda=\text{ISR}-\text{BEI}$, where the inflation risk premium cancels; his
+$E[\pi]$ enters only the liquidity check on $\hat\gamma=\text{BEI}-E[\pi]$ (eq.~7). With the gold-standard
+measures we can also ask whether surprises move the premium itself: $\text{ISR}-E[\pi]$ on InfS,
+US Cleveland, UK affine model [bp per unit of surprise, $t$-NW(12)].
+
+\vspace{0.1cm}
+\centering
+{\scriptsize\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{llcccccccc}
+\toprule
+ & & 2--2.5y & 3y & 5y & 7y & 10y & 15y & 20y & 25y \\
+\midrule
+\multirow{2}{*}{US} & $\lambda$ (basis)
+  & $-1.7$ [$-1.2$] & $-2.0$ [$-1.1$] & $-1.5$ [$-0.8$] & $-1.2$ [$-0.8$] & $-1.2$ [$-1.0$] & $-1.5$ [$-1.7$] & \hlt{$-2.1$ [$-2.4$]} & --- \\
+ & $\text{ISR}-E[\pi]$
+  & \hlt{$+15.1$ [$3.6$]} & \hlt{$+12.6$ [$3.5$]} & \hlt{$+8.2$ [$2.9$]} & $+5.0$ [$1.9$] & $+2.0$ [$0.8$] & $+0.3$ [$0.1$] & $-0.3$ [$-0.1$] & --- \\
+\midrule
+\multirow{2}{*}{UK} & $\lambda$ (basis)
+  & \hlt{$+6.2$ [$2.6$]} & \hlt{$+4.7$ [$2.2$]} & $+3.0$ [$1.9$] & $+2.6$ [$1.7$] & $+1.0$ [$0.8$] & $-0.2$ [$-0.2$] & $+0.4$ [$0.9$] & \hlt{$+1.0$ [$2.8$]} \\
+ & $\text{ISR}-E[\pi]$
+  & $+2.9$ [$1.2$] & $+2.4$ [$1.1$] & $+2.0$ [$1.2$] & $+2.0$ [$1.3$] & $+3.1$ [$1.8$] & $+3.4$ [$1.8$] & \hltb{$+3.6$ [$2.0$]} & \hltb{$+3.6$ [$2.1$]} \\
+\bottomrule
+\end{tabular}}
+
+\vspace{0.12cm}
+\raggedright\scriptsize
+\begin{itemize}\itemsep=0.05cm\scriptsize
+  \item \hltb{US: surprises are priced in the short-end premium} ($+15$bp per unit at 2y, $t\,3.6$, gone by 10y)
+        and in the long-end basis (20y, Maffei's TIPS-demand reading). Two objects, two ends of the curve.
+  \item \hlt{UK: the premium barely moves} ($+2$ to $+4$bp, significant only at 20--25y); the surprise channel is
+        the short-end basis. Consistent with a structure-driven long end.
+  \item The $\hat\gamma$ liquidity check (Maffei Table VIII) holds with the new measures: $\hat\gamma\sim$PC1 has the
+        sign and decay of $-\lambda\sim$PC1 in both markets (UK affine: $-22$bp/s.d.\ at 2.5y, $t\,{-}3.2$, to zero by 15y).
+  \item With an AR(1) $E[\pi]$ these regressions are mechanically contaminated (surprise and expectation
+        share the realised YoY: $\beta\approx-50$ to $-70$, $t\approx-20$) --- the reason the basis, not
+        $\hat\gamma$, is the headline object.
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+\section{Predictability}
+
+%------------------------------------------------------------------------------
+% SLIDE 9 — Q3 table
+%------------------------------------------------------------------------------
+\begin{frame}[t]{RQ3: Two Regimes --- Inflation (US) vs Cointegration (UK)}
+\vspace{0.15cm}
+\footnotesize
+12m real excess returns (average maturity); $R^2$ with $t$-HH(12) in brackets; Johansen on
+1y real forwards.
+
+\vspace{0.3cm}
+\centering
+\begin{tabular}{lcccccc}
+\toprule
+ & SLOPE & CP & Cieslak--Povala & COINT & Realised infl. & Cointegration \\
+\midrule
+US & $0.00\,[0.1]$ & $0.22^{**}\,[2.5]$ & \hltb{$0.39^{***}\,[4.0]$} & $0.11^{***}\,[2.9]$ & $0.25^{***}\,[-4.2]$ & $r{=}4$, ADF $-7.9$ \\
+UK & $0.03\,[1.0]$ & \hlt{$0.19^{***}\,[3.1]$} & $0.10\,[1.6]$ & \hlt{$0.17^{***}\,[4.4]$} & $0.11^{**}\,[-2.2]$ & $r{=}2$, ADF $-11.7$ \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.35cm}
+\raggedright\footnotesize
+\textbf{\textcolor{accentblue}{Does CiP beat slope and CP?}} \ \hltb{In the US, yes}
+($0.39$ vs $0.22$ and $0.00$) --- the inflation-aware factor dominates, consistent with the
+TIPS result. \hlt{In the UK, no}: CiP is the \emph{weakest} of the three informative
+factors.\\[5pt]
+\textbf{\textcolor{edhecred}{Is the process cointegrated, and does it predict?}} \ Yes in both:
+Johansen finds $r{=}4$ (US) and $r{=}2$ (UK), the first ECM residual is strongly stationary,
+and the cointegration predictor works --- it is the \hlt{best single factor in the UK}
+($t\,4.4$, the highest in either market). Slope alone is inert everywhere.\\[5pt]
+\textbf{\textcolor{accentblue}{Realised inflation (Rebonato 2024, JFI)}} \ The latest published YoY
+rate predicts with a \emph{negative} sign in both markets and survives next to every other factor
+(US: $t\,{-}4.6$ with CP, $-2.8$ with CiP, CiP$+$infl.\ $R^2$ $0.47$; UK: $t\,{-}2.0$ to $-2.4$, with
+COINT and CP still dominant). The US is the inflation-driven market on this criterion too.
+\end{frame}
+
+%------------------------------------------------------------------------------
+% SLIDE 10 — Q3 robustness
+%------------------------------------------------------------------------------
+\begin{frame}[t]{RQ3: Is the Result an Artefact of the Forward Grid?}
+\vspace{0.05cm}
+\scriptsize
+\textbf{What is being varied.} CP and the cointegration predictor are both built from a vector
+of \hlt{1y forward rates} --- CP as a linear combination, COINT from the Johansen system on
+the same vector. \emph{Which} forwards enter is a free choice, so the test is whether the
+result depends on it. CiP is built from the inflation trend and cycle, does not use forwards,
+and is \hltb{unchanged by construction} --- shown as a reference line. $r$ $=$ Johansen rank
+(it moves with the grid because the dimension of the system moves).
+
+\vspace{0.18cm}
+\centering
+\begin{tabular}{lcccccc}
+\toprule
+Forward grid & UK CP & UK COINT & UK $r$ & US CP & US COINT & US $r$ \\
+\midrule
+baseline           & $0.19^{***}[3.1]$ & $0.17^{***}[4.4]$ & 2 & $0.22^{**}[2.5]$ & $0.11^{***}[2.9]$ & 4 \\
+(4,5,6,7,8)        & $0.24^{***}[3.2]$ & $0.22^{***}[4.7]$ & 3 & $0.22^{**}[2.5]$ & $0.11^{***}[3.3]$ & 3 \\
+(5,7,10)           & $0.24^{***}[3.3]$ & $0.22^{***}[5.0]$ & 1 & $0.14\phantom{^{**}}[1.5]$ & $0.06\phantom{^{**}}[1.3]$ & 1 \\
+(4,6,8,10,12)      & $0.26^{***}[3.0]$ & $0.24^{***}[4.0]$ & 1 & $0.23^{***}[2.7]$ & $0.11^{***}[4.0]$ & 2 \\
+(5,10,15)          & $0.24^{***}[2.7]$ & $0.23^{***}[3.5]$ & 1 & $0.14\phantom{^{**}}[1.4]$ & $0.04\phantom{^{**}}[1.3]$ & 1 \\
+\midrule
+\textit{CiP (reference)} & \multicolumn{3}{c}{\textit{0.10\ \ [1.6]}} & \multicolumn{3}{c}{\textit{0.39$^{***}$[4.0]}} \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.25cm}
+\raggedright\footnotesize
+\begin{itemize}\itemsep=0.08cm\footnotesize
+  \item \hlt{UK: no artefact.} COINT holds on every grid ($R^2$ $0.17$--$0.24$, $t$
+        $3.5$--$5.0$), always paired with CP --- consistent with CP \emph{being} a
+        cointegrating combination.
+  \item \hltb{US: the forward-based factors are grid-sensitive} --- both weaken on sparse
+        grids (5,7,10) and (5,10,15), where Johansen finds a single cointegrating vector.
+        CiP is unaffected and dominates throughout: the US conclusion does not rest on the
+        grid choice.
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+\section{Summary}
+
+%------------------------------------------------------------------------------
+% SLIDE 11 — Take-aways
+%------------------------------------------------------------------------------
+\begin{frame}[t]{Take-Aways: One Story Across the Three Questions}
+\vspace{0.1cm}
+\small
+\begin{block}{What the data say}
+\begin{itemize}\itemsep=0.04cm\footnotesize
+  \item \textbf{RQ1}\ \ Same \emph{level} ($\approx-25$ bp to 7y), \hlt{different shape}: the
+        US basis is flat, the UK rises to zero by 20y ($t\,{-}11$). Noise --- Treasury
+        dislocation --- is the only channel that separates them; intermediary capital moves both.
+        The shape survives the best $E[\pi]$ in each market (Cleveland; the UK affine model).
+  \item \textbf{RQ2}\ \ \hltb{Same} for liquidity (short-end loading, fading long --- Maffei
+        replicates and the UK matches). \hlt{Opposite} for surprises: US negative at the long
+        end, UK positive at the short end --- and at 25y, beyond the US range, the UK flips
+        regime again: liquidity dies, surprises return significant.
+  \item \textbf{RQ3}\ \ US: CiP dominates ($0.39$). UK: cointegration dominates ($t\,4.4$),
+        CiP weakest. Forwards cointegrated in both; the relation \emph{does} predict. Realised
+        inflation predicts in both (negative sign).
+\end{itemize}
+\end{block}
+
+\vspace{0.1cm}
+\begin{alertblock}{The thread}
+\small
+The \hlt{US} is an \textbf{inflation-driven} market: surprises move $\lambda$ (RQ2) and the
+inflation-aware factor predicts returns (RQ3). The \hlt{UK} is a \textbf{structure-driven}
+market: surprises do not bite at the long end, the basis there vanishes, and predictability
+comes from the forward structure. Both facts point at the \emph{same} long-end clientele.
+\end{alertblock}
+\end{frame}
+
+%------------------------------------------------------------------------------
+% SLIDE 12 — Open points
+%------------------------------------------------------------------------------
+\begin{frame}[t]{What Is \emph{Not} Established --- and What Would Settle It}
+\vspace{0.15cm}
+\small
+\begin{block}{Declared limits}
+\begin{itemize}\itemsep=0.04cm\small
+  \item The \hlt{LDI / clientele} reading of the UK long end and the \hlt{protection-demand}
+        reading of the surprise channel are \emph{interpretations}, not tests: no inflation-\emph{fear}
+        measure distinct from the realised surprise, no flow or holdings data in the dataset yet.
+  \item The \hlt{deflation-floor channel} is proxied, not measured: its value depends on cumulated
+        inflation since issue, so the correct test is \emph{cross-sectional} by ISIN.
+  \item Indexation lags (3m US; 3m/8m UK) and tax treatment are not modelled.
+  \item UK $E[\pi]$: household long anchor with estimated bias; professional check (MaPS) only from 2023.
+\end{itemize}
+\end{block}
+\begin{block}{Natural next steps}
+\begin{itemize}\itemsep=0.04cm\small
+  \item ISIN-level cross-section for the floor, and holdings data for the clientele story.
+  \item \hlt{Extend to euro-area linkers} (Italy, Germany, France) --- three sovereign issuers
+        indexed to the \emph{same} euro-area inflation (HICPxT, \texttt{CPTFEMU}), a natural
+        setting to separate credit from inflation-linked pricing.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\end{document}

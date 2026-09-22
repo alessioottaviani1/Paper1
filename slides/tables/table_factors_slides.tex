@@ -1,0 +1,196 @@
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.05}
+\singlespacing
+
+\begin{xltabular}{\linewidth}{@{}
+p{0.15\linewidth}
+>{\RaggedRight\arraybackslash}X
+p{0.10\linewidth}
+@{}}
+%\caption*{}
+%\label{tab:factors_slides}\\
+\toprule
+\textbf{Factor ID} & \textbf{Description} & \textbf{Reference} \\
+\midrule
+\endfirsthead
+
+\multicolumn{3}{c}{{\bfseries Table \thetable\ continued}} \\
+\toprule
+\textbf{Factor ID} & \textbf{Description} & \textbf{Reference} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{3}{@{}p{\textwidth}@{}}{\tiny\textit{Note:} Factors are organized in six families. Each series is reconstructed consistently with the original reference (transformations, shocks/innovations, lags, frequency alignment).} \\
+\endfoot
+
+\bottomrule
+\endlastfoot
+% ========== PANEL A: CREDIT ==========
+\midrule
+\multicolumn{3}{c}{\textbf{Panel A: Credit Risk Factors}} \\
+\midrule
+BTP\_BUND & Yield differential between the Italian 10-year BTP and the German Bund. & \citet{fausch2018impact} \\ \addlinespace[0.25em]
+
+CDX\_IG & First difference of the CDS spread on the CDX Investment Grade index. & \citet{klaus2009hedge} \\ \addlinespace[0.25em]
+
+CREDIT\_EU & Same construction as CREDIT\_US, computed using Bloomberg euro-area corporate bond yield indices for BBB and AAA ratings. & \citet{fama1989business} \\ \addlinespace[0.25em]
+
+CREDIT\_US & Bond credit risk factor. Yield spread between Moody's BAA and AAA corporate bond indices. & \citet{fama1989business} \\ \addlinespace[0.25em]
+
+DEF\_EU & Same construction as DEF\_US, computed using long-term European corporate bond total returns relative to long-term German Bund total returns. & \citet{fama1993common} \\ \addlinespace[0.25em]
+
+DEF\_US & Bond default risk factor. Total return spread between a long-term U.S. corporate bond portfolio and a long-term U.S. government bond portfolio. & \citet{fama1993common} \\ \addlinespace[0.25em]
+
+EBP & Excess Bond Premium. Residual component of aggregate corporate bond spreads after netting out expected default risk and bond characteristics via cross-sectional spread regressions; proxies time-varying credit risk compensation tied to intermediary constraints. Used with a one-month lag. & \citet{gilchrist2012credit} \\ \addlinespace[0.25em]
+
+ITRX\_MAIN & First difference of the CDS spread on the iTraxx Europe Main index. & \citet{klaus2009hedge} \\ \addlinespace[0.25em]
+
+MAIN\_5/3\_FLATTENER & First difference of the natural logarithm of the ratio between the 5-year and 3-year iTraxx Europe Main CDS spreads. & Market indicator \\ \addlinespace[0.25em]
+
+PB\_EU\_CDS\_1Y & Average 1-year CDS spread of European prime brokers. & \citet{klaus2009hedge} \\ \addlinespace[0.25em]
+
+PB\_EU\_CDS\_5Y & Average 5-year CDS spread of European prime brokers. & \citet{klaus2009hedge} \\ \addlinespace[0.25em]
+
+PB\_US\_CDS\_1Y & Average 1-year CDS spread of U.S. prime brokers. & \citet{klaus2009hedge} \\ \addlinespace[0.25em]
+
+PB\_US\_CDS\_5Y & Average 5-year CDS spread of U.S. prime brokers. & \citet{klaus2009hedge} \\ \addlinespace[0.25em]
+
+SNR-MAIN & First difference of the 5-year CDS spread difference between the iTraxx Senior Financials index and the iTraxx Europe Main index. & Market indicator \\ \addlinespace[0.25em]
+
+XOVER/MAIN & First difference of the natural logarithm of the ratio between the 5-year iTraxx Crossover and 5-year iTraxx Europe Main CDS spreads. & Market indicator \\ \addlinespace[0.25em]
+
+% ========== PANEL B: LIQUIDITY ==========
+\midrule
+\multicolumn{3}{c}{\textbf{Panel B: Liquidity Factors}} \\
+\midrule
+$\Delta$FAILS\_PCT\_TSY & First difference of the ratio of Monthly total notional amount of U.S. Treasury securities fails-to-deliver reported by primary dealers, excluding TIPS, to U.S. Total Debt Outstanding, expressing repo fails as a share of total marketable U.S. Treasury debt. & \citet{fleckenstein2014tips} \\ \addlinespace[0.25em]
+
+EURIBOR\_OIS & Euribor--OIS spread. Difference between 3-month Euribor and the 3-month overnight index swap rate based on EONIA or €STR. & \citet{nyborg2014money} \\ \addlinespace[0.25em]
+
+GC-REPO\_T-BILL & Spread between the 3-month U.S. Treasury general-collateral repo rate and the 3-month U.S. Treasury bill yield. & \citet{bai2019cds} \\ \addlinespace[0.25em]
+
+HKM\_IC & Intermediary capital factor. AR(1) innovation in the market-based capital ratio of primary dealers, scaled by the lagged capital ratio. & \citet{he2017intermediary} \\ \addlinespace[0.25em]
+
+HPW\_NOISE & Treasury noise measure of market-wide illiquidity. Root mean squared deviation between observed U.S. Treasury yields and model-implied yields from a fitted smooth zero-coupon yield curve, aggregated across bonds with maturities between 1 and 10 years. & \citet{hu2013noise} \\ \addlinespace[0.25em]
+
+ILLIQ & Change in the Amihud illiquidity measure. First difference of the ratio of absolute daily return to daily dollar volume, capturing shocks to market illiquidity. & \citet{amihud2015pricing} \\ \addlinespace[0.25em]
+
+LIBOR\_OIS & Libor--OIS spread. Difference between 3-month LIBOR and the 3-month overnight index swap rate. & \citet{nyborg2014money} \\ \addlinespace[0.25em]
+
+LIBOR\_REPO\_SHOCK & Defined as the AR(2) residual of the spread, where the spread is the monthly average of daily 3-month U.S. interbank LIBOR minus the 3-month U.S. Treasury general-collateral repo rate. & \citet{asness2013value} \\ \addlinespace[0.25em]
+
+LIQ\_V & Value-weighted return on a 10--1 portfolio formed by sorting stocks on historical liquidity betas. & \citet{pastor2003liquidity} \\ \addlinespace[0.25em]
+
+LIQNT & Pastor--Stambaugh non-traded liquidity factor. Innovation in aggregate market liquidity constructed from a cross-sectional average of stock-level order-flow-induced return-reversal measures, with predictable components removed. & \citet{pastor2003liquidity} \\ \addlinespace[0.25em]
+
+SILLIQ & Stock illiquidity shock. Innovation in the monthly stock-market illiquidity series, defined as the AR(3) residual of the aggregate Amihud illiquidity measure. & \citet{acharya2013liquidity} \\ \addlinespace[0.25em]
+
+TED\_SHOCK\_EU & Same construction as TED\_SHOCK\_US, computed using the monthly average of daily 3-month Euribor minus the 3-month German government bill rate. & \citet{asness2013value} \\ \addlinespace[0.25em]
+
+TED\_SHOCK\_US & Defined as the AR(2) residual of the TED spread, where the TED spread is the monthly average of daily 3-month U.S. interbank LIBOR minus the 3-month U.S. government bill rate. & \citet{asness2013value} \\ \addlinespace[0.25em]
+
+% ========== PANEL C: EQUITY ==========
+\midrule
+\multicolumn{3}{c}{\textbf{Panel C: Equity Factors}} \\
+\midrule
+BAB\_EU & Betting Against Beta (Europe). Same construction as BAB\_US, implemented on the European equity universe. & \citet{frazzini2014betting} \\ \addlinespace[0.25em]
+
+BAB\_US & Betting Against Beta (US). Long low-beta stocks and short high-beta stocks; each leg is rescaled to unit beta, forming a near market-neutral zero-cost factor. & \citet{frazzini2014betting} \\ \addlinespace[0.25em]
+
+CMA\_EU & Investment factor (Conservative Minus Aggressive). Return spread between European conservative and aggressive investment portfolios from independent size-investment sorts. & \citet{fama2017international} \\ \addlinespace[0.25em]
+
+GMOM\_EU & Global momentum factor. Return spread between recent winner and loser equity portfolios based on past 12-month returns excluding the most recent month, expressed in euros. & \citet{asness2013value} \\ \addlinespace[0.25em]
+
+GVAL\_EU & Global value factor. Return spread between high and low book-to-market equity portfolios formed within major developed equity regions, expressed in euros. & \citet{asness2013value} \\ \addlinespace[0.25em]
+
+HML\_EU & Value factor (High Minus Low). Return spread between European high and low book-to-market portfolios from independent size--B/M sorts, approximately size-neutral. & \citet{fama2017international}\\ \addlinespace[0.25em]
+
+MKT\_EU & Market excess return on the European value-weighted equity market portfolio over the 1-month German government bill. Returns are expressed in euros. & \citet{fama2017international} \\ \addlinespace[0.25em]
+
+RMW\_EU & Profitability factor (Robust Minus Weak). Return spread between European robust and weak operating profitability portfolios from independent size-profitability sorts. & \citet{fama2017international}\\ \addlinespace[0.25em]
+
+SMB\_EU & Size factor (Small Minus Big). Return spread between diversified European small- and large-cap portfolios from independent size sorts (five-factor construction). & \citet{fama2017international}\\ \addlinespace[0.25em]
+
+UMD\_EU & Momentum factor (Up Minus Down). Monthly return on a European zero-investment winners-minus-losers momentum portfolio. & \citet{carhart1997persistence} \\ \addlinespace[0.25em]
+
+% ========== PANEL D: VOLATILITY ==========
+\midrule
+\multicolumn{3}{c}{\textbf{Panel D: Volatility Factors}} \\
+\midrule
+$\Delta$V2X & Change in V2X. Monthly first difference of the V2X index, the European counterpart of VIX measuring 30-day implied volatility on Euro STOXX 50 options. & \citet{chung2019volatility} \\ \addlinespace[0.25em]
+
+$\Delta$VIX & Change in VIX. Monthly first difference of the VIX index, a model-free measure of 30-day implied volatility on S\&P 500 options. & \citet{chung2019volatility} \\ \addlinespace[0.25em]
+
+ATM\_IV\_CDX & 3-month at-the-money implied volatility on options written on the CDX Investment Grade index. & \citet{novales2019splitting} \\ \addlinespace[0.25em]
+
+ATM\_IV\_ITRX & 3-month at-the-money implied volatility on options written on the iTraxx Europe Main index. & \citet{novales2019splitting} \\ \addlinespace[0.25em]
+
+EP\_SVIX\_1M & Equity premium proxy from the SVIX methodology. Option-implied risk-neutral variance of the market simple return over the next month, computed by integrating out-of-the-money index option prices across strikes. & \citet{martin2017expected} \\ \addlinespace[0.25em]
+
+EP\_SVIX\_3M & Same construction as EP\_SVIX\_1M, using options with a 3-month horizon. & \citet{martin2017expected} \\ \addlinespace[0.25em]
+
+IV\_BUND & 3-month at-the-money implied volatility on the 10-year German Bund futures options, based on 100\% moneyness. & \citet{cremers2021treasury} \\ \addlinespace[0.25em]
+
+IV\_TSY & 3-month at-the-money implied volatility on the 10-year U.S. Treasury futures options, based on 100\% moneyness. & \citet{cremers2021treasury} \\ \addlinespace[0.25em]
+
+MOVE & Option-implied U.S. rates volatility. Yield-curve weighted average of at-the-money implied normal yield volatilities from OTC options on 2-, 5-, 10-, and 30-year constant-maturity interest rate swaps; used lagged by one month. & \citet{bansal2022bond} \\ \addlinespace[0.25em]
+
+MOVE2 & Squared MOVE; used lagged by one month to capture nonlinear exposure to option-implied U.S. interest rate volatility. & \citet{bansal2022bond} \\ \addlinespace[0.25em]
+
+PTFSBD & Return on the bond trend-following factor, constructed from lookback straddles on government bond futures. & \citet{fung2001risk} \\[0.25em]
+
+PTFSCOM & Return on the commodity trend-following factor, constructed from lookback straddles on commodity futures. & \citet{fung2001risk} \\[0.25em]
+
+PTFSFX & Return on the currency trend-following factor, constructed from lookback straddles on major currency futures. & \citet{fung2001risk} \\[0.25em]
+
+PTFSIR & Return on the short-term interest rate trend-following factor, constructed from lookback straddles on 3-month interest rate futures. & \citet{fung2001risk} \\[0.25em]
+
+PTFSSTK & Return on the equity index trend-following factor, constructed from lookback straddles on stock index futures. & \citet{fung2001risk} \\[0.25em]
+
+
+% ========== PANEL E: MACRO ==========
+\midrule
+\multicolumn{3}{c}{\textbf{Panel E: Macro Factors}} \\
+\midrule
+$\Delta$UF & Change in financial uncertainty. First difference of the financial uncertainty index, constructed as $\Delta$UM but using a panel of financial market variables. & \citet{ludvigson2021uncertainty} \\ \addlinespace[0.25em]
+
+$\Delta$UM & Change in macroeconomic uncertainty. First difference of the macro uncertainty index, a model-based measure of expected volatility in the unforecastable component of a large panel of macroeconomic variables. & \citet{ludvigson2021uncertainty} \\ \addlinespace[0.25em]
+
+$\Delta$UR & Change in real uncertainty. First difference of the real-activity uncertainty subindex, constructed from real activity variables. & \citet{ludvigson2021uncertainty} \\ \addlinespace[0.25em]
+
+5Y5YREAL\_YIELD & First difference of the spread between the 5y5y interest rate swap rate and the 5y5y inflation swap rate. & Market indicator \\ \addlinespace[0.25em]
+
+BFCI\_EU & Bloomberg Euro Area Financial Conditions Index. Composite Z-score of euro-area money, bond, and equity indicators, standardized to the 1999 to July 1, 2008 pre-crisis period and expressed in standard deviations from pre-crisis conditions. & \citet{osina2019global} \\ \addlinespace[0.25em]
+
+EPU\_EU & Economic Policy Uncertainty index for Europe. Same construction as EPU\_US, implemented on European newspapers and aggregated across European countries. & \citet{baker2016measuring} \\ \addlinespace[0.25em]
+
+EPU\_US & Economic Policy Uncertainty index for the United States. Newspaper-based index constructed from the normalized frequency of articles that jointly reference the economy, uncertainty, and policy-related terms. & \citet{baker2016measuring} \\ \addlinespace[0.25em]
+
+% ========== PANEL F: RATES ==========
+\midrule
+\multicolumn{3}{c}{\textbf{Panel F: Interest Rate Factors}} \\
+\midrule
+$\Delta$SLOPE\_EU & Same construction as $\Delta$SLOPE\_US, computed using the 10-year German government bond yield minus the 3-month German government bill yield. & \citet{ferson1991variation} \\ \addlinespace[0.25em]
+
+$\Delta$SLOPE\_US & First difference of the U.S. yield-curve slope, defined as the 10-year Treasury yield minus the 3-month Treasury bill yield. & \citet{ferson1991variation} \\ \addlinespace[0.25em]
+
+EURUSD\_3M\_IV & First difference of the 3-month at-the-money implied volatility on the EUR/USD exchange rate. & Market indicator \\ \addlinespace[0.25em]
+
+SS2Y & Difference between the 2-year EUR fixed swap par rate and the 2-year German Schatz yield. & \citet{collin2001determinants} \\ \addlinespace[0.25em]
+
+SS5Y & Difference between the 5-year EUR fixed swap par rate and the 5-year German Bobl yield. & \citet{collin2001determinants} \\ \addlinespace[0.25em]
+
+SS10Y & Difference between the 10-year EUR fixed swap par rate and the 10-year German Bund yield. & \citet{collin2001determinants} \\ \addlinespace[0.25em]
+
+TERM\_EU & Same construction as TERM\_US, computed using long-term German Bund total returns in excess of the 1-month German government bill return. & \citet{fama1993common} \\ \addlinespace[0.25em]
+
+TERM\_US & Bond term structure factor. Excess total return on long-term U.S. government bonds over the 1-month U.S. Treasury bill return. & \citet{fama1993common} \\ \addlinespace[0.25em]
+
+YSP\_EU & Yield-curve slope factor. Difference between the 5-year and 1-year German government bond yields. & \citet{koijen2017cross} \\ \addlinespace[0.25em]
+
+YSP\_US & Yield-curve slope factor. Difference between the 5-year and 1-year U.S. Treasury yields. & \citet{koijen2017cross} \\ \addlinespace[0.25em]
+
+\end{xltabular}
+

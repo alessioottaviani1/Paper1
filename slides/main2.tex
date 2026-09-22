@@ -1,0 +1,845 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+
+%----------------------------------------------------------------------------------------
+%	BEAMER THEME
+%----------------------------------------------------------------------------------------
+
+\mode<presentation> {
+    \usetheme{CambridgeUS}
+    \usecolortheme{default}
+}
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES
+%----------------------------------------------------------------------------------------
+
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath, amssymb}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{tikz}
+\usepackage{threeparttable}
+\usepackage{hyperref}
+
+
+\usepackage{lmodern}
+\usepackage{ragged2e}     % per \RaggedRight dentro le colonne
+\usepackage{xltabular}    % longtable + tabularx (break + width control)
+\usepackage{setspace}     % già lo usi per \singlespacing
+% ---- citations: use biblatex (NOT natbib) ----
+\usepackage[
+  backend=biber,
+  style=authoryear,
+  natbib=true,
+  maxcitenames=2,
+  maxbibnames=99
+]{biblatex}
+\addbibresource{references.bib}
+% -----------------------------------------------------------------------
+% BIB ENTRIES TO ADD TO references.bib IF NOT ALREADY PRESENT:
+%
+% @article{tibshirani1996,
+%   author  = {Tibshirani, Robert},
+%   title   = {Regression Shrinkage and Selection via the Lasso},
+%   journal = {Journal of the Royal Statistical Society: Series B},
+%   year    = {1996}, volume = {58}, pages = {267--288}}
+%
+% @article{friedman2010,
+%   author  = {Friedman, Jerome and Hastie, Trevor and Tibshirani, Robert},
+%   title   = {Regularization Paths for Generalized Linear Models via Coordinate Descent},
+%   journal = {Journal of Statistical Software},
+%   year    = {2010}, volume = {33}, number = {1}, pages = {1--22}}
+%
+% @article{meinshausen2010,
+%   author  = {Meinshausen, Nicolai and B{\"u}hlmann, Peter},
+%   title   = {Stability Selection},
+%   journal = {Journal of the Royal Statistical Society: Series B},
+%   year    = {2010}, volume = {72}, pages = {417--473}}
+%
+% @article{politisromano1994,
+%   author  = {Politis, Dimitris N. and Romano, Joseph P.},
+%   title   = {The Stationary Bootstrap},
+%   journal = {Journal of the American Statistical Association},
+%   year    = {1994}, volume = {89}, pages = {1303--1313}}
+%
+% @article{belloni2014,
+%   author  = {Belloni, Alexandre and Chernozhukov, Victor and Hansen, Christian},
+%   title   = {Inference on Treatment Effects after Selection among High-Dimensional Controls},
+%   journal = {Review of Economic Studies},
+%   year    = {2014}, volume = {81}, pages = {608--650}}
+% -----------------------------------------------------------------------
+%----------------------------------------------------------------------------------------
+%	LAYOUT TWEAKS
+%----------------------------------------------------------------------------------------
+
+% frametitle: banda rossa CambridgeUS molto più sottile
+\setbeamerfont{frametitle}{size=\normalsize}
+
+\makeatletter
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip%
+  \vskip-4pt% alza la banda verso l'alto (più negativo = più su)
+  \begin{beamercolorbox}[wd=\paperwidth,ht=2.3ex,dp=0.8ex,center]{frametitle}%
+    \usebeamerfont{frametitle}\insertframetitle
+  \end{beamercolorbox}%
+  \vskip0pt% quasi nessuno spazio sotto la banda
+}
+\makeatother
+
+
+% margini orizzontali leggermente ridotti
+\setbeamersize{text margin left=3mm,text margin right=3mm}
+
+% Graphics path (facoltativo)
+\graphicspath{{./}{figures/}}
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE SETUP
+%----------------------------------------------------------------------------------------
+
+\title[Fixed Income Arbitrage Alpha]{Exploring Alpha Generation through \\ Fixed Income Arbitrages}
+\subtitle{Preliminary Empirical Results — All Three Strategies}
+
+\author{Alessio Ottaviani}
+\institute[EDHEC Business School]{
+    EDHEC Business School \\
+    \medskip
+    \textit{Supervisor: Prof. Riccardo Rebonato}
+}
+\date{\today}
+
+%----------------------------------------------------------------------------------------
+%	START DOCUMENT
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+%------------------------------------------------------------
+
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\begin{frame}
+    \titlepage
+\end{frame}
+\begin{frame}[t]{Construction of Strategy Returns}
+\small
+
+\textbf{BTP Italia Basis}\\
+Returns are built from opening positions whenever the basis between BTP Italia and the matched nominal BTP becomes sufficiently wide (positive or negative).  
+Positions remain open until convergence or maturity.  
+Daily trade-level returns are aggregated into a single equal–weighted strategy index, resampled to monthly frequency.
+
+\vspace{0.35cm}
+
+\textbf{CDS--Bond Basis}\\
+Universe includes all EUR corporate bonds whose issuer belongs to the iTraxx Main at the trade date.  
+We only trade \textit{negative} basis (long bond / long protection), for which implementation is liquid and feasible.  
+Trades remain open until the basis reverts or the bond approaches maturity.  
+Daily returns across all active trades form the CDS–Bond Basis index.
+
+\vspace{0.35cm}
+
+\textbf{iTraxx Index Skew}\\
+We use the four EUR indices (Main, Senior Financials, Subordinated Financials, Crossover).  
+At each decision date, only the on–the–run series are considered, each with thresholds calibrated to its volatility.  
+The most mispriced index (in absolute basis) is traded.  
+Returns are aggregated into a single iTraxx Skew index.
+
+\end{frame}
+
+%------------------------------------------------------------
+\begin{frame}[t]{Factor Frameworks for Performance Attribution}
+\small
+
+We evaluate our three fixed–income arbitrage strategies under the 
+established risk–factor models used in the literature:
+
+\begin{itemize}
+    \item \textit{Duarte, Longstaff \& Yu (2007), Review of Financial Studies}.\\
+    Fixed–income arbitrage benchmark used to assess exposure to equity, 
+    credit and Treasury–based relative–value factors.
+
+    \item \textit{Fung \& Hsieh (2004), Financial Analysts Journal}.\\
+    Trend–following and option–based factors widely used to benchmark 
+    hedge–fund strategies.
+
+    \item \textit{Brooks, Gould \& Richardson (2020), Journal of Fixed Income}.\\
+    Active fixed–income premium decomposition: term, credit, EM, inflation–linked, 
+    and volatility premia.
+\end{itemize}
+
+\vspace{0.3cm}
+
+\scriptsize
+US factors are mapped to their EUR counterparts. 
+European equity factors use the Fama–French Europe datasets, converted from USD 
+into EUR following the methodology of Glück, Hübel \& Scholz (JPM, 2020). 
+Trend–following factors (Fung–Hsieh) are global and directly applicable.
+
+\end{frame}
+
+% %------------------------------------------------------------
+% \begin{frame}{Summary Statistics — Daily Returns (Annualized)}
+% \centering
+% \vfill
+
+% \scriptsize
+% \setlength{\tabcolsep}{3pt}
+
+% \input{../../results/tables/summary_statistics_daily_beamer.tex}
+
+% \vfill
+% \end{frame}
+
+
+
+\begin{frame}[t]{Two Approaches to Position Sizing}
+\small
+
+All three strategies involve multiple simultaneous open trades. The question is: \textit{how much weight to assign to each trade when constructing the strategy index?}
+
+\vspace{0.25cm}
+
+\begin{columns}[T]
+\column{0.48\textwidth}
+\textbf{Equal-Weight (EW)}\\[0.15cm]
+Each open trade receives the same weight on any given day. The daily strategy return is the simple cross-sectional average of all active trade returns:
+\[
+r^{EW}_t = \frac{1}{N_t}\sum_{k \in \mathcal{A}_t} r_{k,t}
+\]
+where $\mathcal{A}_t$ is the set of active trades at $t$.\\[0.1cm]
+\textit{Benchmark approach, following \citet{duarte2007risk}.}
+
+\column{0.48\textwidth}
+\textbf{Signal-Weight (SW)}\\[0.15cm]
+Each trade is weighted by how rich the entry opportunity was relative to historical fair value. Following \citet{rebonato2021convexity}:
+\[
+r^{SW}_t = \frac{\sum_{k \in \mathcal{A}_t} w_k\, r_{k,t}}{\sum_{k \in \mathcal{A}_t} w_k}
+\]
+where $w_k = |b_k^{\text{entry}} - \theta_{t_k}|$, with $\theta_t$ the expanding-window historical mean of the aggregate basis.\\[0.1cm]
+\textit{Larger position when the basis is further from equilibrium.}
+\end{columns}
+
+\vspace{0.2cm}
+\small
+The intuition: if the basis is unusually wide, the trade is more attractive \emph{and} more likely to converge — so it deserves a larger weight.
+
+\end{frame}
+
+\begin{frame}[t,shrink=18]{SW vs EW — Basic Metrics (Daily, Annualized)}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{2pt} 
+\renewcommand{\arraystretch}{0.95}
+
+\input{../../results/tables/SW_EW_basic_metrics_3strategies.tex}
+
+\end{frame}
+
+
+\begin{frame}[t,shrink=18]{SW vs EW — MPPM Comparison (Monthly)}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+
+\input{../../results/tables/MPPM_analysis_monthly.tex}
+
+\end{frame}
+
+
+\begin{frame}[t,shrink=10]{SW vs EW — Volatility-Managed Performance (Monthly)}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+
+\input{../../results/tables/moreira_muir_performance_monthly.tex}
+
+\end{frame}
+
+\begin{frame}[t,shrink=10]{SW vs EW — Volatility-Managed Robustness (Monthly)}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+
+\input{../../results/tables/moreira_muir_robustness_monthly.tex}
+
+\end{frame}
+
+
+%------------------------------------------------------------
+% DUARTE FACTOR MODEL - TABELLA GENERATA AUTOMATICAMENTE
+%------------------------------------------------------------
+\input{../../results/tables/Duarte_Presentation_Slide_monthly.tex}
+
+%------------------------------------------------------------
+% FUNG & HSIEH
+%------------------------------------------------------------
+\input{../../results/tables/FungHsieh_Presentation_Slide_monthly.tex}
+
+%------------------------------------------------------------
+% ACTIVE FI
+%------------------------------------------------------------
+\input{../../results/tables/ActiveFI_Presentation_Slide_monthly.tex}
+
+%------------------------------------------------------------
+% PCA INTRO SLIDE (Implementation Choices)
+%------------------------------------------------------------
+\begin{frame}[t]{PCA-based Risk Adjustment: Implementation Choices}
+\small
+
+\begin{itemize}\itemsep=0.25cm
+  \item \textbf{Factor universe:} PCA on the full set of 80+ factors (tradable, non-tradable, macro and transformed variables); no grouping by factor families.
+  \item \textbf{Estimation scheme:} out-of-sample rolling PCA with fixed window $W$ (baseline $W=24$ months); loadings estimated on $[t-W,t-1]$.
+  \item \textbf{Timing:} both contemporaneous ($R_t$ on $PC_t$) and predictive ($R_{t+1}$ on $PC_t$) specifications.
+  \item \textbf{Inference:} Newey--West HAC standard errors; robustness to window length $W$ and number of PCs $K$.
+\end{itemize}
+
+\end{frame}
+
+
+% =========================
+% PCA TABLE 1 (Alpha)
+% =========================
+\begin{frame}[t]{PCA Spanning Regression — Alpha}
+\centering
+\scriptsize
+
+% ============================================================================
+% PCA SPANNING REGRESSION RESULTS
+% Rolling Window: 24 months
+% Number of PCs: 8
+% Timings: predictive, contemporaneous
+% ============================================================================
+
+% ============================================================================
+% TABLE 1: ALPHA COMPARISON
+% ============================================================================
+
+\centering
+\begin{threeparttable}
+\begin{tabular}{lcccccc}
+\toprule
+ & \multicolumn{3}{c}{Predictive ($PC_t \to R_{t+1}$)} & \multicolumn{3}{c}{Contemporaneous ($PC_t \to R_t$)} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7}
+Strategy & $\alpha$ (\%) & $R^2$ adj & N & $\alpha$ (\%) & $R^2$ adj & N \\
+\midrule
+\textit{Btp Italia} & 1.47*** & 0.036 & 157 & 1.37** & 0.040 & 158 \\
+ & (2.73) & & & (2.35) & & \\
+\addlinespace
+\textit{Cds Bond Basis} & 6.38*** & -0.013 & 198 & 6.53*** & 0.073 & 199 \\
+ & (4.43) & & & (4.82) & & \\
+\addlinespace
+\textit{Itraxx Combined} & 3.31*** & 0.002 & 181 & 2.61*** & 0.103 & 182 \\
+ & (4.19) & & & (3.92) & & \\
+\addlinespace
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\small
+\item \textit{Notes:} Alpha is annualized. PC1--PC8 are the first 8 principal components extracted from 24-month rolling windows. The first 8 PCs explain on average 79.2\% of factor variance (min 73.1\%, max 86.6\%). t-statistics in parentheses based on Newey-West HAC standard errors.
+\item *** p$<$0.01, ** p$<$0.05, * p$<$0.10.
+\end{tablenotes}
+\end{threeparttable}
+
+
+\end{frame}
+
+
+% =========================
+% PCA TABLE 2 (Full model)
+% =========================
+\begin{frame}[t,shrink=15]{PCA Spanning Regression — Full Model}
+
+\scriptsize
+
+% ============================================================================
+% TABLE 2: FULL MODEL RESULTS (ALPHA + ALL BETAS)
+% ============================================================================
+
+\centering
+\begin{threeparttable}
+\setlength{\tabcolsep}{2pt}
+\renewcommand{\arraystretch}{1.05}
+\begin{tabular}{lccccccccccc}
+\toprule
+Strategy & $\alpha$ (\%) & $\beta_{PC1}$ & $\beta_{PC2}$ & $\beta_{PC3}$ & $\beta_{PC4}$ & $\beta_{PC5}$ & $\beta_{PC6}$ & $\beta_{PC7}$ & $\beta_{PC8}$ & $R^2$ adj & N \\
+\midrule
+\multicolumn{12}{l}{\textbf{Panel A: Predictive ($PC_t \to R_{t+1}$)}} \\
+\addlinespace
+\textit{Btp Italia} & 1.47*** & 0.006 & 0.011 & -0.022 & -0.026 & -0.058*** & 0.016 & -0.011 & -0.073** & 0.036 & 157 \\
+ & (2.73) & (0.45) & (0.78) & (-1.12) & (-0.71) & (-2.80) & (0.55) & (-0.36) & (-2.04) & & \\
+\addlinespace
+\textit{Itraxx Combined} & 3.31*** & -0.004 & 0.017 & -0.054** & -0.021 & 0.013 & -0.027 & 0.066** & -0.002 & 0.002 & 181 \\
+ & (4.19) & (-0.26) & (0.80) & (-2.03) & (-0.76) & (0.48) & (-0.78) & (2.27) & (-0.08) & & \\
+\addlinespace
+\textit{Cds Bond Basis} & 6.38*** & -0.006 & -0.037 & -0.038 & 0.015 & -0.011 & 0.035 & 0.030 & 0.025 & -0.013 & 198 \\
+ & (4.43) & (-0.27) & (-1.55) & (-1.00) & (0.30) & (-0.33) & (1.03) & (0.49) & (0.53) & & \\
+\addlinespace
+\midrule
+\multicolumn{12}{l}{\textbf{Panel B: Contemporaneous ($PC_t \to R_t$)}} \\
+\addlinespace
+\textit{Btp Italia} & 1.37** & 0.004 & 0.029 & 0.013 & 0.012 & 0.027 & 0.019 & 0.047* & 0.032 & 0.040 & 158 \\
+ & (2.35) & (0.39) & (1.62) & (0.47) & (0.46) & (1.03) & (0.82) & (1.75) & (1.29) & & \\
+\addlinespace
+\textit{Itraxx Combined} & 2.61*** & -0.022** & 0.005 & 0.004 & 0.021 & -0.008 & 0.073*** & 0.072*** & -0.011 & 0.103 & 182 \\
+ & (3.92) & (-2.24) & (0.22) & (0.15) & (0.60) & (-0.27) & (2.64) & (2.68) & (-0.53) & & \\
+\addlinespace
+\textit{Cds Bond Basis} & 6.53*** & -0.024 & -0.043 & 0.059 & -0.099*** & 0.006 & -0.081** & 0.023 & 0.070 & 0.073 & 199 \\
+ & (4.82) & (-0.96) & (-1.35) & (1.11) & (-3.04) & (0.10) & (-2.05) & (0.47) & (1.42) & & \\
+\addlinespace
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\tiny
+\item This table reports spanning regression results of monthly strategy excess returns on the first 8 principal components. Principal components are extracted from a rolling window of 24 months. Alpha is reported in annualized percentage terms. t-statistics in parentheses are based on Newey-West HAC standard errors. The first 8 PCs explain on average 79.2\% of factor variance (min 73.1\%, max 86.6\%). \item *** p$<$0.01, ** p$<$0.05, * p$<$0.10.
+\end{tablenotes}
+\vspace{0.05cm}
+\tiny
+\end{threeparttable}
+
+
+\end{frame}
+
+\begin{frame}[t]{PCA Scree Plot}
+\vspace{-0.3cm}
+\centering
+\includegraphics[height=0.9\textheight,keepaspectratio]{../../results/figures/pca/pca_scree_plot.png}
+\end{frame}
+
+% =========================
+% PCA ROBUSTNESS (W, K)
+% =========================
+\begin{frame}[t,shrink=12]{PCA Robustness — Window Length and Number of PCs}
+\centering
+\input{../../results/robustness/tables/PCA_robustness_alpha_R2.tex}
+\end{frame}
+
+
+
+% %------------------------------------------------------------ CTRL + ù per sbloccarla
+% %\begin{frame}[t,shrink=15]{MPPM and Volatility-Managed Performance}
+% \begin{frame}[t,shrink=15]{MPPM and Volatility-Managed Performance}
+% \centering
+% \scriptsize
+% \setlength{\tabcolsep}{3pt}
+
+% % --------- MPPM TABLE ----------
+% \textbf{Manipulation-Proof Performance Measure (MPPM)}\\[0.1cm]
+
+% \begin{threeparttable}
+% \begin{tabular}{lrrrrrrr}
+% \toprule
+% Strategy & \multicolumn{3}{c}{MPPM (\% p.a.)} & Avg Return & Vol & Sharpe & N \\
+% \cmidrule(lr){2-4}
+% & $\rho=2$ & $\rho=3$ & $\rho=4$ & (\% p.a.) & (\% p.a.) & & \\
+% \midrule
+% CDS\textit{-}Bond Basis   & 4.86 & 4.82 & 4.79 & 4.93 & 2.62 & 1.89 & 207 \\
+% iTraxx \textit{combined}  & 3.38 & 3.37 & 3.35 & 3.42 & 1.84 & 1.86 & 243 \\
+% BTP\textit{-}Italia       & 1.58 & 1.57 & 1.55 & 1.62 & 1.84 & 0.88 & 163 \\
+% \bottomrule
+% \end{tabular}
+% \begin{tablenotes}
+% \tiny
+% \item MPPM as in Goetzmann et al.\ (2007), based on monthly returns and reported in annualized percentage terms. All moments are annualized.
+% \end{tablenotes}
+% \end{threeparttable}
+
+% \vspace{0.25cm}
+
+% % --------- MOREIRA–MUIR TABLE ----------
+% \textbf{Volatility-Managed Portfolios (Moreira--Muir, 2017)}\\[0.1cm]
+
+% \begin{threeparttable}
+% \begin{tabular}{lrrrrrrrrrr}
+% \toprule
+% Strategy & \multicolumn{3}{c}{Buy-and-Hold} & \multicolumn{3}{c}{Volatility-Managed} & \multicolumn{3}{c}{Regression} & N \\
+% \cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
+% & Return & Vol & Sharpe & Return & Vol & Sharpe & Alpha & Beta & $R^2$ & \\
+% & (\% p.a.) & (\% p.a.) & & (\% p.a.) & (\% p.a.) & & (\% p.a.) & & & \\
+% \midrule
+% CDS\textit{-}Bond Basis   & 4.92 & 2.62 & 1.88 & 3.13 & 2.62 & 1.19 & +2.00 & 0.23 & 0.053 & 202 \\
+% iTraxx \textit{combined}  & 3.43 & 1.84 & 1.86 & 1.63 & 1.84 & 0.89 & -0.04 & 0.49 & 0.239 & 242 \\
+% BTP\textit{-}Italia       & 1.50 & 1.80 & 0.84 & 1.08 & 1.80 & 0.60 & +0.10 & 0.65 & 0.422 & 162 \\
+% \bottomrule
+% \end{tabular}
+% \begin{tablenotes}
+% \tiny
+% \item Volatility-managed portfolios scale exposure inversely with realized variance so that unconditional volatility matches buy-and-hold. Regression alpha measures the volatility-timing premium from $r^{VM}_{t+1} = \alpha + \beta r_{t+1} + \varepsilon_{t+1}$.
+% \end{tablenotes}
+% \end{threeparttable}
+
+% \vspace{0.15cm}
+
+% \tiny
+% \begin{itemize}
+%   \item All three strategies deliver positive MPPM, with the highest utility-based performance for the CDS--Bond basis and iTraxx strategies.
+%   \item Volatility timing generates a sizable premium for the CDS--Bond basis, while effects are more modest for BTP Italia and iTraxx, consistent with their lower return variance.
+% \end{itemize}
+
+% \end{frame}'''
+
+%------------------------------------------------------------
+% Volatility Timing Robustness
+% \begin{frame}[t]{Volatility Timing Robustness — Leverage Constraints}
+% \centering
+% \scriptsize
+% \setlength{\tabcolsep}{4pt}
+
+% \begin{threeparttable}
+% \begin{tabular}{llrrr}
+% \toprule
+% Strategy & Metric & No Leverage & 50\% Leverage & Table V \\
+%          &        & $(\leq 1)$  & $(\leq 1.5)$   & $[0.1,2.0]$ \\
+% \midrule
+% CDS\textit{-}Bond Basis   & Alpha (\% p.a.) & +0.60 & +0.80 & +0.83 \\
+%                           & Sharpe          & 1.53  & 1.48  & 1.49  \\
+% \addlinespace
+% iTraxx \textit{combined}  & Alpha (\% p.a.) & +0.03 & +0.01 & -0.02 \\
+%                           & Sharpe          & 1.35  & 1.18  & 1.09  \\
+% \addlinespace
+% BTP\textit{-}Italia       & Alpha (\% p.a.) & +0.02 & +0.14 & +0.21 \\
+%                           & Sharpe          & 0.69  & 0.73  & 0.74  \\
+% \bottomrule
+% \end{tabular}
+% \begin{tablenotes}
+% \tiny
+% \item Leverage constraints follow Moreira and Muir (2017), Table V. ``No Leverage'' constrains the scaling factor to $[0,1]$, ``50\% Leverage'' to $[0,1.5]$, and ``Table V'' to $[0.1,2.0]$. Alpha measures the volatility-timing premium under each constraint.
+% \end{tablenotes}
+% \end{threeparttable}
+
+% \vspace{0.25cm}
+
+% \tiny
+% \begin{itemize}
+%   \item Volatility-timing alpha for the CDS--Bond basis remains positive and stable across all leverage constraints, indicating that results are not driven by extreme leverage.
+%   \item For BTP Italia and iTraxx, volatility timing adds a smaller but consistent premium, with Sharpe ratios largely preserved under realistic constraints.
+% \end{itemize}
+
+% \end{frame}
+
+%------------------------------------------------------------
+% BRIDGE SLIDE: OLD RESULTS -> 
+%------------------------------------------------------------
+\begin{frame}[t]{Systematic Extension of Risk Adjustment}
+\small
+
+
+To strengthen the risk-adjustment side beyond the standard benchmarks, I conducted an extensive review of the recent fixed-income and arbitrage literature and \textbf{reconstructed the full historical time-series dataset} for a comprehensive set of candidate risk controls (80+ factors).  Each series was rebuilt consistently with the original paper definitions (transformations, shocks/innovations, lags, and frequency alignment).
+
+\vspace{0.35cm}
+
+\textbf{Factor universe (organized in 6 families)}\\[-0.05cm]
+\begin{itemize}\itemsep=0.12cm
+    \item \textit{Credit risk} (e.g., CDS indices, excess bond premium, sovereign spreads)
+    \item \textit{Liquidity \& funding stress} (e.g., OIS spreads, repo indicators, noise/illiquidity measures)
+    \item \textit{Equity / intermediary proxies} (e.g., BAB, value, momentum)
+    \item \textit{Volatility} (e.g., VIX/V2X, MOVE, option-implied measures, trend-following)
+    \item \textit{Macro uncertainty \& policy} (e.g., uncertainty indices, EPU, financial conditions)
+    \item \textit{Rates \& term structure} (e.g., term, slope, swap spreads)
+\end{itemize}
+
+\vspace{0.15cm}
+\footnotesize
+\textit{Next: full factor list (as a “menu”) and then a parsimonious spanning set will be identified for each strategy.}
+
+\end{frame}
+
+%------------------------------------------------------------
+
+\begin{frame}[t,allowframebreaks]{Risk Factors Universe (Literature-Based, Reconstructed Series)}
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{0.88}
+\input{tables/table_factors_slides}
+\end{frame}
+
+%------------------------------------------------------------
+% SLIDE 1/5 — FROM PCA TO AEN (condensed bridge)
+%------------------------------------------------------------
+\begin{frame}[t]{From PCA to a Parsimonious Factor Benchmark}
+\small
+
+PCA spanning regressions show alpha is \textbf{large and significant} across all three strategies, but explain \textbf{little variation} in returns (adj.\ $R^2$ typically below 10\%) — the PC loadings mix all 80+ factors indiscriminately, offering no economic interpretation.
+
+\vspace{0.25cm}
+
+\textbf{What we want instead:} a \emph{small, named} set of risk factors that best spans each strategy's returns and lets us assess whether alpha reflects a genuine anomaly or compensation for an overlooked risk.
+
+\vspace{0.25cm}
+
+\textbf{Challenge:} with $p \approx 80$ candidate factors and $T$ between 150 and 240 monthly observations depending on the strategy, standard OLS is technically feasible but unreliable:
+\begin{itemize}\itemsep=0.15cm
+  \item Strong multicollinearity across factors (credit spreads, liquidity proxies, rate factors all move together) produces unstable coefficient estimates and inflated standard errors
+  \item With no selection discipline, in-sample fit is deceptively high and alpha inference is unreliable
+\end{itemize}
+
+\vspace{0.2cm}
+
+We rely on \textbf{machine learning} — specifically the Adaptive Elastic Net — to perform principled, data-driven factor selection.
+
+\end{frame}
+
+%------------------------------------------------------------
+% SLIDE 2/5 — WHY AEN (not OLS, not LASSO)
+%------------------------------------------------------------
+\begin{frame}[t]{Why Adaptive Elastic Net?}
+\small
+
+\textbf{Why not plain LASSO?} LASSO \citep{tibshirani1996regression} penalizes all coefficients equally and tends to pick one factor arbitrarily when several are correlated — known to be selection-inconsistent in this setting.
+
+\vspace{0.2cm}
+
+\textbf{Why not Ridge?} Ridge shrinks all coefficients toward zero but never sets any exactly to zero — no variable selection, no parsimony, no interpretable benchmark.
+
+\vspace{0.2cm}
+
+\textbf{Adaptive Elastic Net} \citep{zou2009adaptive} combines both penalties with factor-specific weights:
+\begin{itemize}\itemsep=0.15cm
+  \item $\ell_1$ penalty $\Rightarrow$ exact zeros (automatic factor selection)
+  \item $\ell_2$ penalty $\Rightarrow$ handles correlated groups of factors gracefully
+  \item adaptive weights $\Rightarrow$ \textit{oracle property}: asymptotically selects the correct model and produces unbiased estimates on the selected set
+\end{itemize}
+
+\vspace{0.2cm}
+
+The result is a \textbf{sparse, interpretable factor benchmark} — typically 4--8 named factors per strategy — that can be used for credible alpha inference.
+
+\end{frame}
+
+%------------------------------------------------------------
+% SLIDE 3/5 — THE AEN ESTIMATOR (math, solution method)
+%------------------------------------------------------------
+\begin{frame}[t]{The Adaptive Elastic Net Estimator}
+\small
+
+\textbf{Step 1 — Elastic Net first pass.} Solve the convex problem:
+\[
+\hat{\beta}^{EN}
+= \arg\min_{\beta}
+\left\{
+\frac{1}{T}\sum_{t=1}^{T}\!\bigl(r_t - \alpha - \beta'f_t\bigr)^2
++ \lambda_2\|\beta\|_2^2
++ \lambda_1\|\beta\|_1
+\right\}.
+\]
+
+\textbf{Step 2 — Construct adaptive weights.} For each factor $j$:
+$\displaystyle w_j = \bigl|\hat{\beta}^{EN}_j\bigr|^{-\gamma}$\enspace ($\gamma=1$). Factors weakly selected in Step 1 receive \emph{higher} penalty.
+
+\vspace{0.1cm}
+
+\textbf{Step 3 — Adaptive Elastic Net.} Re-solve with factor-specific penalties:
+\[
+\hat{\beta}^{AEN}
+= \arg\min_{\beta}
+\left\{
+\frac{1}{T}\sum_{t=1}^{T}\!\bigl(r_t-\alpha-\beta'f_t\bigr)^2
++ \lambda_2\|\beta\|_2^2
++ \lambda_1\sum_{j=1}^{p} w_j|\beta_j|
+\right\}.
+\]
+
+\vspace{0.05cm}
+
+\textbf{Solution method.} Both problems are \emph{strictly convex} (unique global minimum). The solution is obtained via \textbf{coordinate descent}: each $\beta_j$ is updated cyclically in closed form (soft-thresholding with ridge correction) until convergence — no matrix inversion, no gradient approximation \citep{friedman2010regularization}.
+
+\vspace{0.1cm}
+
+\textbf{Tuning.} $(\lambda_1, \lambda_2)$ selected by minimizing the \textbf{Hannan--Quinn criterion} (HQC), which penalizes model complexity as $2\log(\log T)\cdot k$, intermediate between AIC and BIC — appropriate for our $T \approx 158$.
+
+\end{frame}
+
+%------------------------------------------------------------
+% SLIDE 4/5 — STABILITY SELECTION
+%------------------------------------------------------------
+\begin{frame}[t]{Stability Selection: Guarding Against Sample-Specific Factors}
+\small
+
+A single AEN run on the full sample may select factors that are artefacts of the specific time period.
+
+\vspace{0.2cm}
+
+We apply \textbf{stability selection} \citep{meinshausen2010stability}, adapted for time-series dependence:
+
+\begin{enumerate}\itemsep=0.20cm
+  \item Draw $B = 1000$ bootstrap resamples using a \textbf{stationary block bootstrap} \citep{politis1994stationary} with expected block length $L = 9$ months, preserving autocorrelation structure.
+  \item For each resample, run the full AEN procedure and record which factors are selected.
+  \item Compute each factor's \textbf{selection frequency} $\hat{\pi}_j \in [0,1]$ across the $B$ resamples.
+  \item Retain only factors with $\hat{\pi}_j \geq \pi^* = 0.60$.
+\end{enumerate}
+
+\vspace{0.2cm}
+
+\textbf{Theoretical guarantee \citep{meinshausen2010stability}:} under mild conditions, the expected number of falsely selected factors is bounded by $q^2 / [p(2\pi^*-1)]$, where $q$ is the maximum model size per draw.
+
+\vspace{0.15cm}
+
+The final stable factor set $\hat{S}_i$ is used for post-selection OLS inference.
+
+\end{frame}
+
+%------------------------------------------------------------
+% SLIDE 5/5 — POST-SELECTION OLS AND ALPHA INFERENCE
+%------------------------------------------------------------
+\begin{frame}[t]{Post-Selection OLS: Results}
+\small
+
+Once the stable factor set $\hat{S}_i$ is identified, we estimate an unrestricted OLS on those factors:
+
+\[
+r_{i,t} = \alpha_i + \beta_i' f_{\hat{S}_i,t} + \varepsilon_{i,t},
+\qquad t = 1,\ldots,T.
+\]
+
+\vspace{0.15cm}
+
+Penalized AEN coefficients are intentionally shrunk and not directly interpretable — OLS on the selected set recovers unbiased estimates. Standard errors are Newey--West HAC with 6 lags.
+
+\vspace{0.2cm}
+
+\begin{columns}[T]
+\column{0.50\textwidth}
+\textbf{Full pipeline:}\\[0.15cm]
+\scriptsize
+\[
+\underbrace{\text{80+ factors}}_{\text{Factor Zoo}}
+\xrightarrow{\;\text{AEN + HQC}\;}
+\underbrace{\hat{S}_i}_{\substack{\text{stable set} \\ \pi_j \geq 0.60}}
+\xrightarrow{\;\text{OLS + HAC}\;}
+\hat{\alpha}_i
+\]
+
+\column{0.46\textwidth}
+\scriptsize
+\vspace{0.3cm}
+\textbf{References:}\\[0.1cm]
+Factor selection: Zou \& Zhang (2009)\\
+Stability: Meinshausen \& Bühlmann (2010)\\
+Bootstrap: Politis \& Romano (1994)\\
+Post-selection OLS: Belloni et al.\ (2014)
+\end{columns}
+
+\vspace{0.25cm}
+
+\textbf{Results on the following slides.}
+
+\end{frame}
+
+
+%------------------------------------------------------------
+% AEN STABLE OLS - AUTO GENERATED SLIDES
+%------------------------------------------------------------
+\input{../../results/aen/hqc/tables/AEN_Stable_OLS_BTP_Italia_Presentation_Slide.tex}
+\input{../../results/aen/hqc/tables/AEN_Stable_OLS_CDS_Bond_Basis_Presentation_Slide.tex}
+\input{../../results/aen/hqc/tables/AEN_Stable_OLS_iTraxx_Combined_Presentation_Slide.tex}
+
+
+%------------------------------------------------------------
+% RQ3: CROSS-MARKET INTERDEPENDENCE (DUFFIE 2010)
+%------------------------------------------------------------
+
+\begin{frame}[t]{From Alpha to Market Structure: Why Do These Opportunities Persist?}
+\small
+
+All three strategies deliver \textbf{significant, risk-adjusted alpha} that survives both standard benchmarks and machine-learning factor selection (80+ factors, AEN).
+
+\vspace{0.25cm}
+
+\textbf{The natural follow-up question:} if alpha is real, why doesn't capital eliminate it?
+
+\vspace{0.25cm}
+
+\textbf{Duffie (2010) — Slow-Moving Capital:}
+\begin{itemize}\itemsep=0.15cm
+  \item Intermediary capital moves slowly across markets due to balance sheet constraints, margin requirements, and search frictions
+  \item When arbitrageurs face funding pressure in one market, they \textit{reduce positions across multiple markets simultaneously}
+  \item \textbf{Testable prediction:} mispricing magnitudes should co-move, especially during financial stress
+\end{itemize}
+
+\vspace{0.2cm}
+
+\textbf{Our test:} construct mispricing magnitudes $m_{i,t}$ for each strategy and examine whether $\Delta m$ co-moves across markets, whether the common factor reflects funding stress, and whether interdependence intensifies in HIGH-stress regimes.
+
+\end{frame}
+
+%------------------------------------------------------------
+\begin{frame}[t]{Mispricing Construction and Regime Classification}
+\small
+
+\textbf{Mispricing magnitude} $m_{i,t} \geq 0$, increasing with the size of the opportunity:
+
+\vspace{0.15cm}
+
+\begin{columns}[T]
+\column{0.32\textwidth}
+\centering
+\textbf{CDS--Bond Basis}\\[0.1cm]
+\scriptsize
+$m_t = -\text{basis}_t$\\
+(only when basis $< 0$)\\[0.05cm]
+Negative basis = arb opportunity.\\
+NaN when basis $\geq 0$.
+
+\column{0.32\textwidth}
+\centering
+\textbf{BTP Italia}\\[0.1cm]
+\scriptsize
+$m_t = |\text{basis}_t|$\\[0.05cm]
+Mispricing exists in both directions.\\
+$m$ increases as basis deviates from zero.
+
+\column{0.32\textwidth}
+\centering
+\textbf{iTraxx Combined}\\[0.1cm]
+\scriptsize
+$m_t = |\text{basis}_t|$\\[0.05cm]
+Same construction as BTP Italia.
+\end{columns}
+
+\vspace{0.25cm}
+
+For all three: $\Delta m_t > 0$ $\Rightarrow$ \textbf{widening} (mispricing grows, more capital needed).
+
+\vspace{0.2cm}
+
+\textbf{Regime classification:} iTraxx Main level with manual thresholds (no look-ahead):
+\begin{itemize}\itemsep=0.08cm
+  \item \textbf{LOW:} Main $\leq$ 60 bps \quad (55 months)
+  \item \textbf{MEDIUM:} 60 $<$ Main $\leq$ 120 bps \quad (83 months)
+  \item \textbf{HIGH:} Main $>$ 120 bps \quad (9 months)
+\end{itemize}
+
+\scriptsize
+Robustness: iTraxx Crossover, VIX, V2X; percentile-based regimes. Trivariate overlap: $T = 144$ months (Jun 2012 -- Mar 2025).
+
+\end{frame}
+
+%------------------------------------------------------------
+% CO-WIDENING TABLE (auto-generated)
+%------------------------------------------------------------
+\input{../../results/rq3_duffie/tables/RQ3_cowidening_proxies_slide.tex}
+
+%------------------------------------------------------------
+% GRANGER CAUSALITY TABLE (auto-generated)
+%------------------------------------------------------------
+\input{../../results/rq3_duffie/tables/RQ3_granger_causality_slide.tex}
+
+%------------------------------------------------------------
+% INTERACTION REGRESSIONS (auto-generated)
+%------------------------------------------------------------
+\input{../../results/rq3_duffie/tables/RQ3_interaction_regressions_slide.tex}
+
+%------------------------------------------------------------
+% PC1 FUNDING REGRESSION (auto-generated)
+%------------------------------------------------------------
+\input{../../results/rq3_duffie/tables/RQ3_pc1_funding_slide.tex}
+
+%------------------------------------------------------------
+% DUFFIE SCORECARD (auto-generated)
+%------------------------------------------------------------
+\input{../../results/rq3_duffie/tables/RQ3_duffie_scorecard_slide.tex}
+
+\end{document}
